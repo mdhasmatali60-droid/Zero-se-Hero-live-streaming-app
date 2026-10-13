@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - GLOBAL</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:linear-gradient(90deg,#ff006a,#0066ff,#00ff88);padding:15px;text-align:center;font-weight:900}
+.card{background:#111;margin:10px;border-radius:18px;padding:15px;border:1px solid #222}
+.btn{padding:10px 16px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
+.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
+.flag{font-size:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.country{padding:10px;background:#1a1a1a;border-radius:12px;text-align:center;border:2px solid transparent;cursor:pointer}
+.country.active{border-color:#ff006a;background:#ff006a22}
+.langBtn{padding:8px 12px;background:#222;border-radius:20px;border:none;color:#fff;margin:4px;font-size:12px}
+.langBtn.active{background:#ff006a}
+</style>
+</head>
+<body>
+<div class="header">🌍 ZERO SE HERO - GLOBAL BASED - 150+ Countries 🌍</div>
+
+<div class="card">
+<h3>🌐 Select Your Country - Global Discovery On</h3>
+<div class="grid" id="countryGrid"></div>
+<div style="margin-top:12px;font-size:12px;opacity:.6">Selected: <span id="selectedCountry">India 🇮🇳</span> • Time: <span id="localTime"></span></div>
+</div>
+
+<div class="card">
+<h3>🗣️ Language - Auto Translate</h3>
+<div id="langList">
+<button class="langBtn active" onclick="setLang('hi',this)">🇮🇳 Hindi</button>
+<button class="langBtn" onclick="setLang('en',this)">🇺🇸 English</button>
+<button class="langBtn" onclick="setLang('bho',this)">Bhojpuri</button>
+<button class="langBtn" onclick="setLang('ar',this)">🇸🇦 Arabic</button>
+<button class="langBtn" onclick="setLang('om',this)">🇴🇲 Oman - Arabic</button>
+<button class="langBtn" onclick="setLang('es',this)">🇪🇸 Spanish</button>
+<button class="langBtn" onclick="setLang('fr',this)">🇫🇷 French</button>
+<button class="langBtn" onclick="setLang('pt',this)">🇧🇷 Portuguese</button>
+</div>
+<div style="margin-top:10px;padding:10px;background:#1a1a1a;border-radius:10px;font-size:13px" id="translatedText">🔥 Zero Se Hero - Ab Puri Duniya Me Live!</div>
+</div>
+
+<div class="card">
+<h3>💱 Global Coins - Auto Currency</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+<div style="background:#1a1a1a;padding:12px;border-radius:12px">🇮🇳 India: 100 Coins = Free<br>💰 No Real Money</div>
+<div style="background:#1a1a1a;padding:12px;border-radius:12px">🇴🇲 Oman: 100 Coins = Free<br>💰 Virtual Only</div>
+<div style="background:#1a1a1a;padding:12px;border-radius:12px">🇺🇸 USA: 100 Coins = Free<br>💰 Entertainment</div>
+<div style="background:#1a1a1a;padding:12px;border-radius:12px">🌍 Global: Same Everywhere<br>✅ Policy Safe</div>
+</div>
+</div>
+
+<div class="card">
+<h3>📡 Global Servers - Fast Everywhere</h3>
+<div style="font-size:12px;line-height:1.8;opacity:.8">
+✅ <b>CDN:</b> Cloudflare Global - India, Oman, USA, Europe - Fast Loading<br>
+✅ <b>Time Zone:</b> Auto Detect - Muscat +4, India +5:30<br>
+✅ <b>Discovery:</b> Random people from 150+ countries<br>
+✅ <b>Translation:</b> Live chat auto translate<br>
+✅ <b>Compliance:</b> GDPR (Europe), IT Act (India), Oman Law - All Covered<br>
+✅ <b>Hosting:</b> GitHub Pages - Global Edge
+</div>
+<button class="btn primary" style="width:100%;margin-top:12px" onclick="goGlobal()">🚀 ENTER GLOBAL APP - 150+ Countries Live</button>
+</div>
+
+<script>
+let countries=[
+{flag:'🇮🇳',name:'India',code:'IN',users:'50K+'},
+{flag:'🇴🇲',name:'Oman',code:'OM',users:'12K+'},
+{flag:'🇸🇦',name:'Saudi',code:'SA',users:'18K+'},
+{flag:'🇦🇪',name:'UAE',code:'AE',users:'15K+'},
+{flag:'🇺🇸',name:'USA',code:'US',users:'30K+'},
+{flag:'🇬🇧',name:'UK',code:'GB',users:'20K+'},
+{flag:'🇳🇵',name:'Nepal',code:'NP',users:'8K+'},
+{flag:'🇧🇩',name:'Bangladesh',code:'BD',users:'25K+'},
+{flag:'🇵🇰',name:'Pakistan',code:'PK',users:'22K+'},
+];
+
+function renderCountries(){
+let html='';
+countries.forEach((c,i)=>{
+html+=`<div class="country ${i==0?'active':''}" onclick="selectCountry('${c.name}','${c.flag}',this)"><div class="flag">${c.flag}</div><div style="font-size:12px;font-weight:bold">${c.name}</div><div style="font-size:10px;opacity:.6">${c.users} Online</div></div>`;
+});
+document.getElementById('countryGrid').innerHTML=html;
+}
+
+function selectCountry(name,flag,el){
+document.querySelectorAll('.country').forEach(c=>c.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('selectedCountry').innerText=`${name} ${flag}`;
+localStorage.setItem('zsh_country',name);
+}
+
+let translations={
+hi:'🔥 Zero Se Hero - Ab Puri Duniya Me Live!',
+en:'🔥 Zero Se Hero - Now Live Worldwide!',
+bho:'🔥 Zero Se Hero - Ab Poora Duniya Me Live Ba!',
+ar:'🔥 زيرو سي هيرو - الآن مباشر في جميع أنحاء العالم!',
+om:'🔥 زيرو سي هيرو - مباشر من مسقط إلى العالم!',
+es:'🔥 Zero Se Hero - ¡Ahora En Vivo En Todo El Mundo!',
+fr:'🔥 Zero Se Hero - Maintenant En Direct Dans Le Monde!',
+pt:'🔥 Zero Se Hero - Agora Ao Vivo No Mundo Todo!'
+};
+
+function setLang(code,el){
+document.querySelectorAll('.langBtn').forEach(b=>b.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('translatedText').innerText=translations[code]||translations['en'];
+localStorage.setItem('zsh_lang',code);
+}
+
+function goGlobal(){
+let c=localStorage.getItem('zsh_country')||'India';
+let l=localStorage.getItem('zsh_lang')||'hi';
+alert(`🌍 Global Mode On!\nCountry: ${c}\nLanguage: ${l}\n\nAb tumhe 150+ countries ke log dikhenge Random me!\n\nRedirecting to Main App...`);
+location.href='index.html?global=1&country='+c+'&lang='+l;
+}
+
+function updateTime(){
+let now=new Date();
+document.getElementById('localTime').innerText=now.toLocaleString('en-IN',{timeZone:'Asia/Muscat',hour:'2-digit',minute:'2-digit'})+' Muscat Time';
+}
+renderCountries(); updateTime(); setInterval(updateTime,60000);
+</script>
+</body>
+</html>
