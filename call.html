@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - 1 to 1 Call</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:linear-gradient(90deg,#ff006a,#ff8c00);padding:12px;display:flex;justify-content:space-between;align-items:center}
+.coins{background:#111;padding:10px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:99;border-bottom:2px solid #ff006a}
+.card{background:#111;margin:10px;border-radius:18px;padding:12px;border:1px solid #222}
+.user{display:flex;gap:10px;align-items:center;padding:10px;background:#1a1a1a;border-radius:14px;margin:8px 0}
+.user img{width:55px;height:55px;border-radius:50%;border:2px solid #ff006a}
+.btn{padding:10px 16px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
+.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
+.callBox{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999;display:none;flex-direction:column}
+.videos{flex:1;position:relative;background:#111}
+.videos video{position:absolute;width:100%;height:100%;object-fit:cover}
+#remoteVideo{width:100%;height:100%}
+#localVideo{width:110px;height:150px;position:absolute;bottom:80px;right:10px;border-radius:12px;border:2px solid #fff;z-index:10;transform:scaleX(-1);background:#000}
+.timer{position:absolute;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);padding:8px 15px;border-radius:20px;font-weight:bold;z-index:10}
+.charge{position:absolute;top:15px;right:10px;background:#ff006a;padding:6px 10px;border-radius:10px;font-size:11px;z-index:10}
+.tools{position:absolute;bottom:0;width:100%;background:linear-gradient(transparent,#000);padding:15px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px}
+.tools button{width:50px;height:50px;border-radius:50%;border:none;font-size:20px;background:#222;color:#fff}
+.tools button.active{background:#00aa00}
+.rate{font-size:10px;background:#ffd700;color:#000;padding:3px 6px;border-radius:6px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="header">
+<span>📞 ZERO SE HERO - 1 to 1 Call</span>
+<span style="font-size:12px">Chingari Style</span>
+</div>
+
+<div class="coins">
+<div>💰 Coins: <span id="coinBal">100</span> <span style="font-size:10px;opacity:.6">Virtual</span></div>
+<div style="font-size:12px">Per Min: <b style="color:#ffd700">10 Coins</b></div>
+<div><button class="btn" style="padding:6px 10px;background:#222;color:#fff;font-size:11px" onclick="addCoins()">+100 Free</button></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3>🔥 Online Hosts - 1 to 1 Call Ke Liye Ready</h3>
+<select id="filter" onchange="showHosts()" style="background:#222;color:#fff;border:none;padding:6px;border-radius:10px;font-size:12px">
+<option>All</option><option>Hindi</option><option>Bhojpuri</option><option>Punjabi</option>
+</select>
+</div>
+<div id="hostList"></div>
+</div>
+
+<!-- CALL SCREEN -->
+<div class="callBox" id="callBox">
+<div class="videos">
+<video id="remoteVideo" autoplay playsinline></video>
+<video id="localVideo" autoplay muted playsinline></video>
+<div class="timer" id="timer">00:00</div>
+<div class="charge" id="chargeBox">💰 -10 coins / min • <span id="spent">0</span> spent</div>
+<div style="position:absolute;top:50px;left:10px;z-index:10;background:rgba(0,0,0,.6);padding:6px 10px;border-radius:15px;font-size:12px" id="hostName">Host</div>
+</div>
+<div class="tools">
+<button onclick="toggleMic()" id="micBtn">🎤</button>
+<button onclick="toggleVideo()" id="camBtn">📹</button>
+<button onclick="toggleBeauty()" id="beautyBtn">✨</button>
+<button onclick="sendGiftCall()">🎁</button>
+<button onclick="switchCam()">🔄</button>
+<button onclick="endCall()" style="background:#ff0000">📵</button>
+</div>
+<div style="position:absolute;bottom:75px;width:100%;text-align:center;font-size:11px;opacity:.6">Chingari jaise tools - Beauty, Gift, Flip - Per minute charge</div>
+</div>
+
+<script>
+let coins=parseInt(localStorage.getItem('zsh_coins')||'100');
+let hosts=[];
+for(let i=1;i<=20;i++){
+hosts.push({id:i,name:`${['Pooja','Riya','Simran','Anjali','Kajal','Priya'][i%6]} ${i}`,lang:['Hindi','Bhojpuri','Punjabi'][i%3],pic:`https://i.pravatar.cc/100?img=${i+10}`,rate:10,online:true,verified:true});
+}
+let callTimer=null, seconds=0, currentHost=null, localStream=null, micOn=true, camOn=true, beautyOn=false;
+
+function updateCoins(){document.getElementById('coinBal').innerText=coins; localStorage.setItem('zsh_coins',coins);}
+function addCoins(){coins+=100; updateCoins(); alert("100 Free Coins Added!");}
+
+function showHosts(){
+let html='';
+hosts.forEach(h=>{
+html+=`<div class="user"><img src="${h.pic}"><div style="flex:1"><div style="font-weight:bold;font-size:14px">${h.name} ${h.verified?'✅':''} <span style="font-size:10px;color:#0f0">● Online</span></div><div style="font-size:11px;opacity:.6">${h.lang} • 1 to 1 Call • <span class="rate">${h.rate} coins/min</span></div><div style="font-size:11px;color:#ffd700">⭐ 4.8 • 1.2k calls • Chingari Tools</div></div><button class="btn primary" style="padding:8px 14px;font-size:12px" onclick="startCall(${h.id})">📞 CALL</button></div>`;
+});
+document.getElementById('hostList').innerHTML=html;
+}
+
+async function startCall(id){
+currentHost=hosts.find(h=>h.id==id);
+if(coins<10){alert("Coins kam hain! +100 Free lo");return;}
+if(!confirm(`📞 ${currentHost.name} ko 1-to-1 Call?\n\n💰 Charge: ${currentHost.rate} coins/min\nVideo + Mic + Beauty Filters\n\nCall start karu?`)) return;
+
+document.getElementById('callBox').style.display='flex';
+document.getElementById('hostName').innerText=`📞 ${currentHost.name} • ${currentHost.rate} coins/min`;
+try{
+localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});
+document.getElementById('localVideo').srcObject=localStream;
+// Fake remote - same local for demo, in real WebRTC peer
+document.getElementById('remoteVideo').srcObject=localStream;
+document.getElementById('remoteVideo').style.transform='scaleX(-1)';
+}catch(e){alert("Camera/Mic allow karo: "+e.message); return;}
+
+seconds=0; startTimer();
+}
+
+function startTimer(){
+callTimer=setInterval(()=>{
+seconds++;
+let m=String(Math.floor(seconds/60)).padStart(2,'0');
+let s=String(seconds%60).padStart(2,'0');
+document.getElementById('timer').innerText=`${m}:${s}`;
+if(seconds%60==0 && seconds>0){
+let charge=currentHost.rate;
+coins-=charge; if(coins<0) coins=0;
+updateCoins();
+document.getElementById('spent').innerText=seconds/60*charge;
+if(coins<=0){alert("💰 Coins khatam! Call end ho raha hai"); endCall();}
+}
+},1000);
+}
+
+function endCall(){
+clearInterval(callTimer);
+if(localStream) localStream.getTracks().forEach(t=>t.stop());
+document.getElementById('callBox').style.display='none';
+let totalMin=Math.ceil(seconds/60);
+let totalCharge=totalMin* (currentHost?currentHost.rate:10);
+alert(`📞 Call Ended\nTime: ${Math.floor(seconds/60)}m ${seconds%60}s\nCharge: ${totalCharge} coins (Virtual)\n\nThanks for using Zero Se Hero 1-to-1 Call!`);
+seconds=0;
+}
+
+function toggleMic(){
+micOn=!micOn;
+if(localStream) localStream.getAudioTracks().forEach(t=>t.enabled=micOn);
+document.getElementById('micBtn').style.background=micOn?'#222':'#ff0000';
+document.getElementById('micBtn').innerText=micOn?'🎤':'🔇';
+}
+
+function toggleVideo(){
+camOn=!camOn;
+if(localStream) localStream.getVideoTracks().forEach(t=>t.enabled=camOn);
+document.getElementById('camBtn').style.background=camOn?'#222':'#ff0000';
+document.getElementById('localVideo').style.display=camOn?'block':'none';
+}
+
+function toggleBeauty(){
+beautyOn=!beautyOn;
+document.getElementById('beautyBtn').classList.toggle('active',beautyOn);
+let v=document.getElementById('localVideo');
+let r=document.getElementById('remoteVideo');
+let f=beautyOn?'brightness(1.15) contrast(1.1) saturate(1.3) blur(0.3px)':'none';
+v.style.filter=f; r.style.filter=f;
+}
+
+function switchCam(){
+let v=document.getElementById('localVideo');
+v.style.transform=v.style.transform.includes('scaleX(-1)')?'scaleX(1)':'scaleX(-1)';
+}
+
+function sendGiftCall(){
+if(coins<20){alert("Gift ke liye 20 coins chahiye");return}
+coins-=20; updateCoins();
+alert("🎁 Gift Bheja! 💋 Kiss Lips pe gaya (Chingari style)");
+}
+
+updateCoins(); showHosts();
+</script>
+
+<div style="font-size:10px;opacity:.4;text-align:center;padding:10px;margin:10px;background:#111;border-radius:10px">
+⚠️ Virtual Coins Only - No Real Money - Entertainment Only - Per minute charge is virtual for demo - Chingari style 1-to-1 call simulation
+</div>
+</body>
+</html>
