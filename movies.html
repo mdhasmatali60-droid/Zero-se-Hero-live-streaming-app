@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - Movies - Netflix Style</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:#000;padding:12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222;position:sticky;top:0;z-index:100}
+.logo{color:#E50914;font-weight:900;font-size:22px;letter-spacing:1px}
+.row{padding:12px}
+.row h3{margin:8px 0;font-size:16px}
+.scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px}
+.scroll::-webkit-scrollbar{display:none}
+.card{flex:0 0 140px;height:200px;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;background:#111}
+.card img{width:100%;height:100%;object-fit:cover}
+.card .title{position:absolute;bottom:0;width:100%;background:linear-gradient(transparent,#000);padding:8px;font-size:11px;font-weight:bold}
+.hero{height:55vh;position:relative;background:#111;overflow:hidden}
+.hero img{width:100%;height:100%;object-fit:cover;opacity:.6}
+.heroContent{position:absolute;bottom:20px;left:15px;right:15px}
+.btn{padding:10px 18px;border-radius:6px;border:none;font-weight:bold;margin-right:8px;cursor:pointer}
+.play{background:#fff;color:#000}.info{background:rgba(109,109,110,.7);color:#fff}
+.badge{padding:3px 6px;border-radius:4px;font-size:9px;font-weight:bold;margin-right:4px}
+.badge.new{background:#E50914}.badge.free{background:#00aa00}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">ZERO SE HERO • MOVIES</div>
+<div style="display:flex;gap:12px;font-size:13px"><span>Home</span><span>New</span><span style="color:#E50914">Free Legal</span></div>
+</div>
+
+<div class="hero">
+<img src="https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg" id="heroImg">
+<div class="heroContent">
+<div><span class="badge new">NEW 2026</span><span class="badge free">FREE LEGAL</span><span class="badge" style="background:#333">HD</span></div>
+<h1 id="heroTitle" style="margin:8px 0;font-size:28px">Free Movies - Netflix Style UI</h1>
+<p id="heroDesc" style="font-size:12px;opacity:.8;max-width:400px">Legal free movies, trailers, YouTube public movies, public domain - No piracy - Policy safe - Netflix jaisa experience</p>
+<div style="margin-top:12px">
+<button class="btn play" onclick="playHero()">▶ Play Trailer (Legal)</button>
+<button class="btn info" onclick="showInfo()">ℹ️ More Info</button>
+</div>
+</div>
+</div>
+
+<div class="row">
+<h3>🔥 Trending Now - Legal Trailers (TMDB API)</h3>
+<div class="scroll" id="trendingRow"></div>
+</div>
+
+<div class="row">
+<h3>🆓 100% Free Movies - Public Domain + YouTube Legal</h3>
+<div class="scroll" id="freeRow"></div>
+</div>
+
+<div class="row">
+<h3>🎬 New Releases - Trailers Only (No Piracy)</h3>
+<div class="scroll" id="newRow"></div>
+</div>
+
+<div id="playerBox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999;flex-direction:column">
+<div style="padding:10px;display:flex;justify-content:space-between;background:#111"><span id="playerTitle">Playing</span><button onclick="closePlayer()" style="background:#E50914;color:#fff;border:none;padding:8px 12px;border-radius:6px">✕ Close</button></div>
+<iframe id="player" style="flex:1;width:100%;border:none" allowfullscreen></iframe>
+<div style="padding:10px;background:#111;font-size:11px;opacity:.6">Legal Source: YouTube Official Trailers / Public Domain Movies - No Netflix Piracy - Policy Safe</div>
+</div>
+
+<div style="font-size:10px;opacity:.4;text-align:center;padding:15px;margin:10px;background:#111;border-radius:10px">
+⚠️ Netflix paid content free me dikhana illegal hai - Ham Netflix style UI use kar rahe hain, par content legal hai: 1. YouTube official trailers 2. Public domain movies (pre-1960) 3. TMDB API for info only - No piracy - No Netflix rip - Policy safe for Play Store
+</div>
+
+<script>
+let movies=[
+{id:'trending',title:'Oppenheimer Trailer - Legal',img:'https://image.tmdb.org/t/p/w300/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',yt:'uYPbbksJxIg'},
+{id:'trending',title:'Barbie Trailer - Legal',img:'https://image.tmdb.org/t/p/w300/iuFNMS8U5cb6xfzi81RuehKB8q.jpg',yt:'8zIf0XvoL9Y'},
+{id:'trending',title:'John Wick 4 Trailer',img:'https://image.tmdb.org/t/p/w300/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg',yt:'qEVU3r4ESvs'},
+{id:'free',title:'Charlie Chaplin - Public Domain (Free)',img:'https://image.tmdb.org/t/p/w300/eG0oOQVsR0U2a8aFvs4o8x1f0y.jpg',yt:'8F5V1hE9v8w'},
+{id:'free',title:'Night of the Living Dead - Free Legal',img:'https://image.tmdb.org/t/p/w300/3M1v1w2b6w1n3v1n3v1n3.jpg',yt:'H91BxkBX6dE'},
+{id:'free',title:'Free YouTube Movie - Public',img:'https://image.tmdb.org/t/p/w300/1E5baAaEse26fej7uHcjOgEE2t2.jpg',yt:'L3oOldViIgY'},
+{id:'new',title:'Dune 2 Trailer - New 2024',img:'https://image.tmdb.org/t/p/w300/czembW0Rk1Ke7lCJGahbOhdCuhV.jpg',yt:'Way9Dexny3w'},
+{id:'new',title:'Inside Out 2 Trailer',img:'https://image.tmdb.org/t/p/w300/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg',yt:'LEjhY15eCx0'},
+];
+
+function render(){
+let t='', f='', n='';
+movies.forEach(m=>{
+let card=`<div class="card" onclick="play('${m.yt}','${m.title}')"><img src="${m.img}"><div class="title">${m.title}</div></div>`;
+if(m.id=='trending') t+=card;
+if(m.id=='free') f+=card;
+if(m.id=='new') n+=card;
+});
+document.getElementById('trendingRow').innerHTML=t;
+document.getElementById('freeRow').innerHTML=f;
+document.getElementById('newRow').innerHTML=n;
+}
+
+function play(yt,title){
+document.getElementById('playerBox').style.display='flex';
+document.getElementById('playerTitle').innerText=title+' - Legal Trailer / Free Movie';
+document.getElementById('player').src='https://www.youtube.com/embed/'+yt+'?autoplay=1';
+}
+function closePlayer(){document.getElementById('playerBox').style.display='none'; document.getElementById('player').src='';}
+function playHero(){play('uYPbbksJxIg','Featured Trailer - Legal');}
+function showInfo(){alert("Netflix Style UI hai, par content legal hai:\n\n1. Trailers: YouTube official - Legal\n2. Free Movies: Public Domain - 70+ years old - Free by law\n3. Info: TMDB API - Free API for movie info\n\nNetflix ke paid movies free me dikhana illegal hai - Aise karoge toh Play Store ban + Copyright strike\n\nIsko use karo: Netflix jaisa look, legal content only!");}
+
+render();
+
+// TMDB API Example - Free Legal API for info (No video)
+// fetch('https://api.themoviedb.org/3/trending/movie/day?api_key=YOUR_TMDB_KEY').then(r=>r.json()).then(d=>console.log(d)); // Add your TMDB free key
+</script>
+</body>
+</html>
