@@ -62,3 +62,64 @@ window.open(wa,"_blank");
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recharge - Zero Se Hero</title>
+<style>
+body{background:#0a001a;color:#fff;font-family:Arial;padding:10px}
+h2{text-align:center;color:#ffcc00}
+.card{background:#1a0033;border:1px solid gold;border-radius:12px;padding:12px;margin:10px 0;text-align:center}
+button{background:gold;color:#000;border:none;padding:8px 20px;border-radius:20px;font-weight:900;margin-top:6px}
+</style>
+</head>
+<body>
+<h2>💰 ZERO SE HERO RECHARGE</h2>
+<p style="text-align:center">Balance: <span id="bal">0</span> Coins</p>
+
+<div class="card">
+<div>100 Coins</div>
+<div>₹10</div>
+<button onclick="buy(100)">BUY 100</button>
+</div>
+
+<div class="card" style="border-color:red">
+<div>1,150 Coins 🔥 POPULAR</div>
+<div>₹100 (1000+150 Bonus)</div>
+<button onclick="buy(1150)">BUY 1150</button>
+</div>
+
+<div class="card" style="background:linear-gradient(135deg,gold,orange);color:#000">
+<div>👑 SVIP 1</div>
+<div>10,000 Coins - ₹500</div>
+<button onclick="buy(10000)">BUY SVIP 1</button>
+</div>
+
+<div class="card" style="background:linear-gradient(135deg,#7000ff,#E50914)">
+<div>👑 SVIP 5 - KING</div>
+<div>400,000 Coins - ₹10,000</div>
+<div style="font-size:11px">30% Discount + Emperor Badge</div>
+<button onclick="buy(400000)">BUY SVIP 5</button>
+</div>
+
+<div class="card">
+<div>📅 Monthly Gold - 25,000 Coins</div>
+<div>₹1,000 / Month</div>
+<button onclick="buy(25000)">BUY MONTHLY</button>
+</div>
+
+<script>
+let b = localStorage.getItem('coins')||0;
+document.getElementById('bal').innerText=b;
+function buy(c){
+let cur = parseInt(localStorage.getItem('coins')||'0');
+let nb = cur + c;
+localStorage.setItem('coins',nb);
+document.getElementById('bal').innerText=nb;
+alert(c+" Coins Added! New Balance: "+nb);
+}
+</script>
+</body>
+</html>
