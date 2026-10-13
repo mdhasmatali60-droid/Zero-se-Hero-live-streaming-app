@@ -511,3 +511,51 @@ function searchUser(){
   let result = users.filter(u => u.toLowerCase().includes(q));
   document.getElementById('searchResult').innerHTML = result.length ? result.join("<br>") : "❌ Koi user nahi mila";
 }
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Se Hero Live</title>
+<style>
+body{margin:0;background:#0a001a;color:#fff;text-align:center;font-family:sans-serif}
+.header{padding:20px}
+.logo{width:90px;height:90px;border-radius:20px;border:2px solid gold}
+.liveGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#1a0033;padding:10px;border-radius:15px}
+.card img{width:100%;border-radius:10px;height:120px;object-fit:cover}
+.btn{padding:12px 25px;background:linear-gradient(90deg,#ff006a,#ff9900);border:none;border-radius:30px;color:#fff;font-weight:bold;margin-top:20px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h2 style="color:gold">🏆 ZERO SE HERO 🔴</h2>
+  <p style="opacity:.7">Live Streaming - No Login Needed</p>
+</div>
+
+<!-- FRONT SE LOGIN HATA DIYA - DIRECT LIVE GRID -->
+<div class="liveGrid">
+  <div class="card">🔴 Riya Live<br><small style="color:gold">12.5K Viewers</small></div>
+  <div class="card">🔴 Simran Queen<br><small style="color:gold">8.2K Viewers</small></div>
+  <div class="card">🔴 Pooja Official<br><small style="color:gold">15K Viewers</small></div>
+  <div class="card">🔴 BD ADMIN<br><small style="color:gold">25K Viewers</small></div>
+</div>
+
+<button class="btn" onclick="enterApp()">🚀 ENTER LIVE</button>
+
+<p style="margin-top:30px;opacity:.5;font-size:12px">BD ADMIN Official ✅ Helpline 24/7</p>
+
+<script>
+function enterApp(){
+  // Direct andar bhejo - Bina login ke
+  window.location.href = "live.html"; // Ya jo bhi andar ka page hai
+  // Agar live.html nahi hai toh camera wala page kholo:
+  // window.location.href = "recharge.html";
+}
+
+// Camera error wala code hata diya - Front pe ab kuch nahi maangega
+</script>
+
+</body>
+</html>
