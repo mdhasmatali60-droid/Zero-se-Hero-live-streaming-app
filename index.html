@@ -101,3 +101,177 @@ init();
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZERO SE HERO - STARMAKER SINGING</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#0A0A12;color:#fff;min-height:100vh;padding-bottom:85px}
+.topPurple{background:linear-gradient(135deg,#9C4DFF,#FF3D9A);padding:12px;border-radius:0 0 20px 20px;position:sticky;top:0;z-index:10}
+.searchBar{background:rgba(255,255,255,.2);padding:10px 14px;border-radius:25px;display:flex;align-items:center;gap:8px}
+.searchBar input{background:transparent;border:0;outline:0;color:#fff;width:100%}.searchBar input::placeholder{color:rgba(255,255,255,.7)}
+.tabBar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0 12px 0;z-index:99}
+.tabBtn{background:none;border:0;color:#666;font-size:10px;text-align:center;font-weight:700}
+.tabBtn.active{color:#FF3D9A}.tabBtn span{display:block;font-size:20px}
+
+/* STARMAKER SINGING UI */
+.songCard{background:#1A1A2E;margin:10px;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;border:1px solid #2A2A4A}
+.songThumb{width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,#FF3D9A,#9C4DFF);display:flex;align-items:center;justify-content:center;font-size:28px}
+.singBtn{background:linear-gradient(90deg,#FF3D9A,#FF8A00);color:#fff;border:0;padding:8px 16px;border-radius:20px;font-weight:900;font-size:12px;cursor:pointer}
+.liveSingModal{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#1A0A2E,#000);display:none;flex-direction:column;padding:14px}
+.lyricsBox{background:rgba(255,255,255,.08);border-radius:16px;padding:14px;height:220px;overflow:auto;margin:10px 0;text-align:center;line-height:2;font-size:15px}
+.micAnim{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FF8A00);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:40px;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1);box-shadow:0 0 30px #FF3D9A}100%{transform:scale(1)}}
+.recordBar{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.actionBtn{padding:12px 20px;border-radius:30px;border:0;font-weight:900;cursor:pointer}
+.postCard{background:#fff;color:#111;border-radius:18px;margin:10px;overflow:hidden}
+</style>
+</head>
+<body>
+
+<div class="topPurple">
+<div style="display:flex;justify-content:space-between;align-items:center"><b>🎤 STARMAKER SINGING</b><span style="font-size:12px">🔴 1.2k Singing Live</span></div>
+<div class="searchBar" style="margin-top:10px">🔍 <input id="songSearch" placeholder="Song search karo - Arijit, Shreya, Atif..." oninput="searchSong(this.value)"></div>
+<div style="display:flex;gap:8px;margin-top:10px;overflow:auto;white-space:nowrap"><button onclick="filterSongs('all')" style="background:#fff;color:#111;padding:6px 12px;border-radius:20px;border:0;font-weight:800;font-size:11px">All</button><button onclick="filterSongs('hindi')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">Hindi</button><button onclick="filterSongs('punjabi')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">Punjabi</button><button onclick="filterSongs('english')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">English</button></div>
+</div>
+
+<!-- SONG LIST + POSTS -->
+<div id="singHome">
+<div style="margin:10px;font-weight:900">🔥 Trending Songs - Live Singing</div>
+<div id="songList"></div>
+
+<div style="margin:16px 10px 6px 10px;display:flex;justify-content:space-between;align-items:center"><b>📱 User Posts - Khud ka Gana</b><button onclick="openMyPosts()" style="background:gold;color:#000;border:0;padding:6px 10px;border-radius:20px;font-weight:800;font-size:11px">My Posts</button></div>
+<div id="userPosts"></div>
+</div>
+
+<!-- LIVE SINGING ROOM -->
+<div class="liveSingModal" id="singModal">
+<div style="display:flex;justify-content:space-between;align-items:center"><button onclick="closeSing()" style="background:rgba(255,255,255,.2);color:#fff;border:0;padding:8px 12px;border-radius:20px">← Back</button><b id="nowSingingTitle">Kesariya - Arijit</b><button onclick="closeSing()" style="background:#FF1744;color:#fff;border:0;padding:8px 12px;border-radius:20px">END</button></div>
+
+<div class="micAnim">🎤</div>
+<div style="text-align:center"><b id="singerName">Hasmat Ali is Singing Live</b><div style="font-size:11px;opacity:.6">🔴 342 Listeners • Gift Right Corner me hai</div></div>
+
+<div class="lyricsBox" id="lyrics">Lyrics yaha ayenge...<br><br>Tune jo na kaha<br>Main wo sunta raha<br>Khamkha bewajah<br>Khwab bunta raha...</div>
+
+<div style="position:relative;height:120px;background:rgba(255,255,255,.05);border-radius:16px;margin:10px 0;overflow:hidden">
+<div style="position:absolute;left:0;top:50%;width:100%;height:3px;background:linear-gradient(90deg,#FF3D9A,#FFD700);animation:wave 2s infinite"></div>
+<div style="text-align:center;padding-top:50px;font-size:12px;opacity:.6">🎵 Music Playing - Sing along!</div>
+</div>
+
+<div class="recordBar">
+<button class="actionBtn" style="background:#fff;color:#000" id="recBtn" onclick="toggleRecord()">🔴 Start Recording</button>
+<button class="actionBtn" style="background:#00E676;color:#000" onclick="goLiveSing()">🔴 Go Live Singing</button>
+<button class="actionBtn" style="background:#9C4DFF;color:#fff" onclick="postMySing()">📤 Post Karo</button>
+</div>
+
+<!-- Gift Right Side - Singing me bhi -->
+<div style="position:absolute;right:10px;top:50%;display:flex;flex-direction:column;gap:8px">
+<div style="background:gold;padding:8px 12px;border-radius:20px;font-weight:900;color:#000;font-size:12px" onclick="sendGiftSing('🌹')">🌹 10</div>
+<div style="background:gold;padding:8px 12px;border-radius:20px;font-weight:900;color:#000;font-size:12px" onclick="sendGiftSing('💎')">💎 50</div>
+<div style="background:linear-gradient(135deg,#FF6EC7,#FF3D9A);padding:8px 12px;border-radius:20px;font-weight:900;color:#fff;font-size:12px" onclick="sendGiftSing('🎤')">🎤 100</div>
+</div>
+</div>
+
+<div class="tabBar">
+<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>🏠</span>Live</button>
+<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>🎉</span>Party</button>
+<button class="tabBtn active"><span>🎤</span>Sing</button>
+<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>💬</span>Message</button>
+<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>👤</span>Me</button>
+</div>
+
+<script>
+let songs=[
+{id:1,title:"Kesariya",singer:"Arijit Singh",cat:"hindi",emoji:"💖",plays:"12.5k"},
+{id:2,title:"Heeriye",singer:"Arijit",cat:"hindi",emoji:"💘",plays:"9.2k"},
+{id:3,title:"Apna Bana Le",singer:"Arijit",cat:"hindi",emoji:"❤️",plays:"15k"},
+{id:4,title:"Brown Munde",singer:"AP Dhillon",cat:"punjabi",emoji:"🔥",plays:"22k"},
+{id:5,title:"Calm Down",singer:"Rema",cat:"english",emoji:"🌊",plays:"18k"},
+{id:6,title:"Tum Hi Ho",singer:"Arijit",cat:"hindi",emoji:"🥀",plays:"30k"},
+{id:7,title:"295",singer:"Sidhu Moosewala",cat:"punjabi",emoji:"🦁",plays:"25k"},
+{id:8,title:"Perfect",singer:"Ed Sheeran",cat:"english",emoji:"💍",plays:"11k"},
+];
+
+let myPosts=JSON.parse(localStorage.getItem('my_songs')||'[]');
+let isRecording=false;
+let currentSong=null;
+let mediaRecorder=null;
+let audioChunks=[];
+
+function renderSongs(list){
+  let html='';
+  list.forEach(s=>{
+    html+=`<div class="songCard"><div class="songThumb">${s.emoji}</div><div style="flex:1"><b>${s.title}</b><div style="font-size:11px;opacity:.7">${s.singer} • ${s.plays} sings • ${s.cat}</div></div><button class="singBtn" onclick="openSing(${s.id})">🎤 SING</button></div>`;
+  });
+  document.getElementById('songList').innerHTML=html;
+}
+
+function searchSong(q){
+  q=q.toLowerCase();
+  let filtered=songs.filter(s=>s.title.toLowerCase().includes(q)||s.singer.toLowerCase().includes(q));
+  renderSongs(filtered.length?filtered:songs);
+}
+
+function filterSongs(cat){
+  if(cat=='all') renderSongs(songs);
+  else renderSongs(songs.filter(s=>s.cat==cat));
+}
+
+function openSing(id){
+  currentSong=songs.find(s=>s.id==id);
+  document.getElementById('nowSingingTitle').innerText=currentSong.title+' - '+currentSong.singer;
+  document.getElementById('lyrics').innerHTML=`${currentSong.title} Lyrics...<br><br>Tune jo na kaha<br>Main wo sunta raha<br>${currentSong.title} tera ishq hai piya...<br><br>[Music]...<br>Rang sari...`;
+  document.getElementById('singModal').style.display='flex';
+}
+
+function closeSing(){ document.getElementById('singModal').style.display='none'; if(mediaRecorder && mediaRecorder.state!='inactive'){ mediaRecorder.stop(); } isRecording=false; document.getElementById('recBtn').innerText='🔴 Start Recording'; }
+
+async function toggleRecord(){
+  let btn=document.getElementById('recBtn');
+  if(!isRecording){
+    try{
+      let stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      mediaRecorder=new MediaRecorder(stream);
+      audioChunks=[];
+      mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+      mediaRecorder.onstop=()=>{ let blob=new Blob(audioChunks,{type:'audio/webm'}); let url=URL.createObjectURL(blob); myPosts.unshift({title:currentSong.title,singer:currentSong.singer,url:url,date:new Date().toLocaleString(),likes:0}); localStorage.setItem('my_songs',JSON.stringify(myPosts)); renderMyPosts(); alert('Recording saved! Ab Post Karo pe click karo'); };
+      mediaRecorder.start();
+      isRecording=true; btn.innerText='⏹️ Stop Recording'; btn.style.background='#FF1744'; btn.style.color='#fff';
+    }catch(e){ alert('Mic Allow karo'); }
+  }else{
+    mediaRecorder.stop(); isRecording=false; btn.innerText='🔴 Start Recording'; btn.style.background='#fff'; btn.style.color='#000';
+  }
+}
+
+function goLiveSing(){
+  alert('🔴 LIVE Singing Started! '+currentSong.title+' - 20 Seats Party Room me log sun rahe hai! Gift Right Corner me bhejenge!');
+}
+
+function postMySing(){
+  if(myPosts.length==0){ alert('Pehle Record karo!'); return; }
+  let last=myPosts[0];
+  if(!last.posted){ last.posted=true; localStorage.setItem('my_songs',JSON.stringify(myPosts)); }
+  renderMyPosts();
+  alert('✅ Post Ho Gaya! Sabko dikhega - Profile me jayega!');
+  closeSing();
+}
+
+function renderMyPosts(){
+  let html='';
+  myPosts.forEach((p,i)=>{
+    html+=`<div class="postCard"><div style="padding:12px;display:flex;gap:10px;align-items:center"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FF8A00);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">H</div><div><b>Hasmat Ali</b><div style="font-size:11px;color:#666">${p.date} • ${p.title}</div></div><div style="margin-left:auto">❤️ ${p.likes}</div></div><div style="background:#111;padding:10px;text-align:center;color:#fff"><audio controls src="${p.url}" style="width:100%"></audio><div style="margin-top:6px;font-size:12px">${p.singer} - ${p.title} Cover 🎤</div></div></div>`;
+  });
+  document.getElementById('userPosts').innerHTML=html||'<div style="text-align:center;opacity:.5;padding:20px">Koi post nahi - Gana gao aur post karo!</div>';
+}
+
+function sendGiftSing(e){ alert(e+' Gift Sent Singing Pe! 🎤'); }
+
+function openMyPosts(){ document.getElementById('singHome').scrollIntoView(); }
+
+renderSongs(songs);
+renderMyPosts();
+</script>
+</body>
+</html>
