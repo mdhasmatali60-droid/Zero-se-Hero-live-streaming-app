@@ -559,3 +559,53 @@ function enterApp(){
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero Se Hero Live</title>
+<style>
+body{margin:0;background:#0a001a;color:#fff;font-family:sans-serif}
+.header{text-align:center;padding:15px;background:#000;position:sticky;top:0;z-index:10}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;padding-bottom:90px}
+.card{background:#1a0033;border-radius:16px;padding:8px;border:1px solid #30006a;position:relative}
+.card img{width:100%;height:130px;object-fit:cover;border-radius:12px;background:#222}
+.liveTag{position:absolute;top:14px;left:14px;background:red;color:#fff;font-size:10px;padding:3px 8px;border-radius:20px}
+.btn{flex:1;padding:7px;border:none;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer}
+.btn-live{background:linear-gradient(90deg,#ff006a,#ff9900);color:#fff}
+.btn-msg{background:#2a0055;color:#fff;border:1px solid #7000ff}
+.goLiveBar{position:fixed;bottom:0;width:100%;background:#000;padding:12px;text-align:center;border-top:1px solid #333;z-index:20}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h2 style="color:gold;margin:5px">🏆 ZERO SE HERO 🔴 LIVE</h2>
+<button onclick="location.href='task.html'" style="padding:7px 18px;background:gold;color:#000;border:none;border-radius:20px;font-weight:bold;font-size:12px;margin-top:8px">🎯 Daily Tasks - 930 Coins</button>
+</div>
+
+<div class="grid">
+<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=5"><div style="font-size:13px;font-weight:bold;margin-top:4px">Riya 🔥 12.5K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Riya'">Watch</button><button class="btn btn-msg" onclick="openChat('Riya')">Msg</button></div></div>
+<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=9"><div style="font-size:13px;font-weight:bold;margin-top:4px">Simran 8.2K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Simran'">Watch</button><button class="btn btn-msg" onclick="openChat('Simran')">Msg</button></div></div>
+<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=26"><div style="font-size:13px;font-weight:bold;margin-top:4px">Pooja 15K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Pooja'">Watch</button><button class="btn btn-msg" onclick="openChat('Pooja')">Msg</button></div></div>
+<div class="card"><div class="liveTag" style="background:gold;color:#000">⭐ ADMIN</div><img src="https://i.pravatar.cc/300?img=12"><div style="font-size:13px;font-weight:bold;margin-top:4px">BD ADMIN 25K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=BD ADMIN'">Watch</button><button class="btn btn-msg" onclick="openChat('BD ADMIN')">Msg</button></div></div>
+</div>
+
+<div class="goLiveBar"><button onclick="location.href='live.html'" style="padding:14px 40px;background:red;color:#fff;border:none;border-radius:30px;font-weight:bold;font-size:16px">🔴 GO LIVE</button></div>
+
+<div id="chatBox" style="display:none;position:fixed;bottom:0;width:100%;height:55%;background:#0f0025;z-index:99;border-radius:20px 20px 0 0;border-top:2px solid gold;flex-direction:column">
+<div style="padding:12px;display:flex;justify-content:space-between;border-bottom:1px solid #333"><b id="chatName"></b><span onclick="closeChat()" style="background:red;padding:4px 12px;border-radius:20px;cursor:pointer">X</span></div>
+<div id="messages" style="flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px"></div>
+<div style="padding:10px;display:flex;gap:8px;background:#000"><input id="msgInput" placeholder="Message..." style="flex:1;padding:12px;border-radius:20px;background:#1a0033;color:#fff;border:1px solid #7000ff"><button onclick="sendMsg()" style="padding:12px 20px;background:gold;border:none;border-radius:20px;font-weight:bold">Send</button></div>
+</div>
+
+<script>
+let cur='';
+function openChat(n){cur=n;document.getElementById('chatName').innerText='💬 '+n;document.getElementById('chatBox').style.display='flex';document.getElementById('messages').innerHTML='<div style="background:#1a0033;padding:8px;border-radius:10px">Hi! '+n+' se baat karo 👇</div>';}
+function closeChat(){document.getElementById('chatBox').style.display='none';}
+function sendMsg(){let v=document.getElementById('msgInput').value.trim();if(!v)return;document.getElementById('messages').innerHTML+='<div style="align-self:flex-end;background:linear-gradient(90deg,#ff006a,#ff9900);padding:8px 12px;border-radius:12px;max-width:70%">You: '+v+'</div>';document.getElementById('msgInput').value='';setTimeout(()=>{document.getElementById('messages').innerHTML+='<div style="align-self:flex-start;background:#2a0055;padding:8px 12px;border-radius:12px;max-width:70%">'+cur+': Thanks! 😍</div>';document.getElementById('messages').scrollTop=9999;},800);document.getElementById('messages').scrollTop=9999;}
+</script>
+
+</body>
+</html>
