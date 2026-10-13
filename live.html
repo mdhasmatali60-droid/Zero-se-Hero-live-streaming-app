@@ -1,0 +1,20 @@
+<!-- live.html page me ye daal de -->
+<button onclick="goLive()" style="padding:15px 30px;background:red;color:#fff;border-radius:30px;border:none;font-weight:bold">🔴 GO LIVE</button>
+<video id="myLive" autoplay playsinline muted style="width:100%;height:70vh;background:#000;border-radius:20px;display:none"></video>
+
+<script>
+function goLive(){
+  // Camera on karo jab LIVE pe click kare - Error nahi ayega
+  navigator.mediaDevices.getUserMedia({video:true, audio:true})
+  .then(stream => {
+    let v = document.getElementById('myLive');
+    v.style.display='block';
+    v.srcObject = stream;
+    alert("🔴 Tum Live Ho! Sab tumhe dekh rahe hain!");
+    
+    // Firebase me live status save karo
+    // firebase.database().ref('liveUsers/'+userId).set({name:'BD User', live:true})
+  })
+  .catch(e => alert("Camera Allow karo"));
+}
+</script>
