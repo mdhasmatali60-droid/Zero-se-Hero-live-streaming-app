@@ -504,3 +504,10 @@ showRandom(); showMyGroups();
 <meta name="apple-mobile-web-app-capable" content="yes">
 <!-- Video tag me playsinline zaruri hai -->
 <video autoplay muted playsinline></video>
+// SIMPLE SEARCH - LOCAL USERS
+const users = ["Riya","Simran","Pooja","BD ADMIN","Zero Hero"];
+function searchUser(){
+  let q = document.getElementById('searchInput').value.toLowerCase();
+  let result = users.filter(u => u.toLowerCase().includes(q));
+  document.getElementById('searchResult').innerHTML = result.length ? result.join("<br>") : "❌ Koi user nahi mila";
+}
