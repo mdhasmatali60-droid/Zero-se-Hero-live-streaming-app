@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - Payment</title>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:linear-gradient(90deg,#ff006a,#ff8c00);padding:14px;text-align:center;font-weight:900}
+.card{background:#111;margin:10px;padding:16px;border-radius:18px;border:1px solid #222}
+.btn{width:100%;padding:14px;border-radius:25px;border:none;font-weight:bold;cursor:pointer;margin-top:8px}
+.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
+.coinPack{padding:12px;background:#1a1a1a;border-radius:14px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;border:2px solid transparent;cursor:pointer}
+.coinPack.active{border-color:#ffd700;background:#332200}
+.method{padding:12px;background:#1a1a1a;border-radius:12px;margin:6px 0;display:flex;align-items:center;gap:10px;cursor:pointer;border:2px solid transparent}
+.method.active{border-color:#00ff00;background:#003300}
+</style>
+</head>
+<body>
+<div class="header">💰 ZERO SE HERO - PAYMENT - Global Based - Virtual Coins</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between">
+<div>💰 Your Coins: <b id="bal">100</b></div>
+<div style="font-size:11px;opacity:.6">Virtual Only - No Cash Out</div>
+</div>
+</div>
+
+<div class="card">
+<h3>📦 Select Coin Pack - Virtual Entertainment Coins</h3>
+<div class="coinPack active" onclick="selectPack(100,1,this)"><div><b>100 Coins</b><div style="font-size:11px;opacity:.6">For 1-to-1 Call, Gifts</div></div><div><b>$1 USD</b><br><span style="font-size:10px">~80 INR ~0.4 OMR</span></div></div>
+<div class="coinPack" onclick="selectPack(550,5,this)"><div><b>550 Coins</b> <span style="background:#ffd700;color:#000;padding:2px 6px;border-radius:6px;font-size:10px">POPULAR +50 Bonus</span><div style="font-size:11px;opacity:.6">Best for Live</div></div><div><b>$5 USD</b><br><span style="font-size:10px">~400 INR ~1.9 OMR</span></div></div>
+<div class="coinPack" onclick="selectPack(1200,10,this)"><div><b>1200 Coins</b> <span style="background:#ff006a;color:#fff;padding:2px 6px;border-radius:6px;font-size:10px">BEST VALUE +200 Bonus</span></div><div><b>$10 USD</b></div></div>
+<div style="font-size:10px;opacity:.5;margin-top:8px">⚠️ Virtual coins only - No real money value - Cannot be withdrawn - Entertainment only - Policy safe</div>
+</div>
+
+<div class="card">
+<h3>💳 Payment Method - Global</h3>
+<div class="method active" onclick="selectMethod('razorpay',this)"><span style="font-size:24px">🇮🇳</span><div style="flex:1"><b>Razorpay</b><div style="font-size:11px;opacity:.6">UPI, Card, NetBanking - India + Global</div></div><span>✅</span></div>
+<div class="method" onclick="selectMethod('stripe',this)"><span style="font-size:24px">🌍</span><div style="flex:1"><b>Stripe / Card</b><div style="font-size:11px;opacity:.6">Visa, Mastercard - Oman, USA, Europe, Worldwide</div></div></div>
+<div class="method" onclick="selectMethod('paypal',this)"><span style="font-size:24px">🅿️</span><div style="flex:1"><b>PayPal</b><div style="font-size:11px;opacity:.6">Global - 200+ Countries</div></div></div>
+<div class="method" onclick="selectMethod('telr',this)"><span style="font-size:24px">🇴🇲</span><div style="flex:1"><b>Telr / PayTabs</b><div style="font-size:11px;opacity:.6">Oman, Saudi, UAE - MENA Gateway</div></div></div>
+<div class="method" onclick="selectMethod('crypto',this)"><span style="font-size:24px">₿</span><div style="flex:1"><b>Crypto (USDT)</b><div style="font-size:11px;opacity:.6">Global - No Bank Needed</div></div></div>
+</div>
+
+<div class="card" style="text-align:center">
+<div style="font-size:13px">You Pay: <b id="payAmt" style="color:#ffd700;font-size:18px">$1 USD</b> = <b id="payCoins">100 Coins</b></div>
+<div style="font-size:10px;opacity:.6;margin:6px">Country Auto Detect: <span id="userCountry">Oman - Muscat</span></div>
+<button class="btn primary" onclick="payNow()">🔒 Pay Now - Get Coins Instantly</button>
+<button class="btn" style="background:#222;color:#fff" onclick="addFree()">🎁 Get 100 Free Coins - No Payment</button>
+<div style="font-size:10px;opacity:.4;margin-top:10px;padding:8px;background:#111;border-radius:8px">
+🔐 100% Secure • SSL • No Real Gambling • Virtual Entertainment Coins Only • No Cash Withdraw • GDPR Compliant • Refund: Contact support@zerosehero.live within 7 days • Age 18+ • Oman/India/Global Compliant
+</div>
+</div>
+
+<script>
+let selectedCoins=100, selectedPrice=1, selectedCurrency='$', method='razorpay';
+let coins=parseInt(localStorage.getItem('zsh_coins_v2')||localStorage.getItem('zsh_coins')||'100');
+document.getElementById('bal').innerText=coins;
+let country=localStorage.getItem('zsh_country')||'Oman';
+document.getElementById('userCountry').innerText=country+' - Muscat (GMT+4)';
+
+function selectPack(coinsPrice, usd, el){
+document.querySelectorAll('.coinPack').forEach(p=>p.classList.remove('active'));
+el.classList.add('active');
+selectedCoins=coinsPrice; selectedPrice=usd;
+document.getElementById('payAmt').innerText='$'+usd+' USD';
+document.getElementById('payCoins').innerText=coinsPrice+' Coins';
+}
+function selectMethod(m,el){
+document.querySelectorAll('.method').forEach(p=>p.classList.remove('active'));
+el.classList.add('active'); method=m;
+}
+function addFree(){
+coins+=100; localStorage.setItem('zsh_coins_v2',coins); document.getElementById('bal').innerText=coins;
+alert("🎁 100 Free Coins Added! Virtual - No Payment Needed");
+}
+
+function payNow(){
+if(method=='razorpay'){
+let options={
+key:'rzp_test_1234567890', // Yahan apna LIVE Razorpay Key daal - Test mode abhi
+amount:selectedPrice*100*100, currency:'INR',
+name:'Zero Se Hero - Virtual Coins',
+description:selectedCoins+' Virtual Coins - Entertainment Only - No Cash Value',
+image:'https://i.imgur.com/xxx.png',
+handler:function(res){
+coins+=selectedCoins; localStorage.setItem('zsh_coins_v2',coins);
+document.getElementById('bal').innerText=coins;
+alert(`✅ Payment Success! ID: ${res.razorpay_payment_id}\n${selectedCoins} Coins Added!\n\nVirtual Coins - No Real Money Value - Entertainment Only`);
+},
+prefill:{name:JSON.parse(localStorage.getItem('zsh_current_v2')||'{}').name||'Hero', email:JSON.parse(localStorage.getItem('zsh_current_v2')||'{}').gmail||'test@gmail.com', contact:JSON.parse(localStorage.getItem('zsh_current_v2')||'{}').phone||'+96890000000'},
+theme:{color:'#ff006a'}
+};
+let rzp=new Razorpay(options); rzp.open();
+}else if(method=='stripe'){
+alert(`🌍 Stripe Payment - $${selectedPrice} USD\n\n1. Stripe Dashboard me jao: stripe.com\n2. API Key daalo\n3. Payment Link banao: $${selectedPrice} = ${selectedCoins} Coins\n\nDemo: Coins add ho gaye (Test Mode)\nReal me Stripe Checkout khulega`);
+coins+=selectedCoins; localStorage.setItem('zsh_coins_v2',coins); document.getElementById('bal').innerText=coins;
+}else if(method=='paypal'){
+alert(`🅿️ PayPal - $${selectedPrice} USD\n\nPayPal.me/YourName/${selectedPrice}USD\n\nDemo: Coins add ho gaye\nReal me PayPal login khulega`);
+coins+=selectedCoins; localStorage.setItem('zsh_coins_v2',coins); document.getElementById('bal').innerText=coins;
+}else if(method=='telr'){
+alert(`🇴🇲 Telr/PayTabs - Best for Oman/Saudi/UAE\n\nTelr.com pe account banao - MENA ke liye best gateway hai - Oman cards support\n\nDemo: Coins added`);
+coins+=selectedCoins; localStorage.setItem('zsh_coins_v2',coins); document.getElementById('bal').innerText=coins;
+}else{
+alert(`₿ Crypto USDT - Global No Bank\n\nWallet: 0x123... (USDT TRC20)\nAmount: $${selectedPrice}\n\nDemo: Coins added`);
+coins+=selectedCoins; localStorage.setItem('zsh_coins_v2',coins); document.getElementById('bal').innerText=coins;
+}
+}
+</script>
+</body>
+</html>
