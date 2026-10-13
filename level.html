@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Level - Zero Se Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:linear-gradient(180deg,#0a001a,#2d0066);color:#fff;padding:12px}
+.level-card{background:linear-gradient(135deg,#1a0033,#4d0099);border:1px solid #7000ff;border-radius:16px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:8px;background:#222;border-radius:10px;overflow:hidden;margin-top:6px}
+.fill{height:100%;background:linear-gradient(90deg,#ffd700,#ff6600);width:0%;transition:1s}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900}
+</style>
+</head>
+<body>
+<h2 style="text-align:center">⭐ ZERO SE HERO LEVELS</h2>
+<p style="text-align:center;font-size:11px;opacity:.7;margin:6px 0">Roz update - Coins spend / Gifts receive pe level up</p>
+
+<div style="display:flex;gap:8px;margin:14px 0">
+<button onclick="show('user')" id="b1" style="flex:1;padding:10px;background:#a020f0;color:#fff;border:none;border-radius:20px;font-weight:900">User Level</button>
+<button onclick="show('host')" id="b2" style="flex:1;padding:10px;background:#222;color:#fff;border:1px solid #555;border-radius:20px">Host Level</button>
+</div>
+
+<div id="userLevels">
+<div class="level-card">
+<div style="font-size:30px">🔹</div>
+<div style="flex:1"><div style="font-weight:900">Level 55 - Beginner <span class="badge" style="background:#555">55</span></div>
+<div style="font-size:11px;opacity:.7">Next: 60 Level (Need 5000 more coins)</div><div class="bar"><div class="fill" style="width:70%"></div></div></div>
+</div>
+<div class="level-card">
+<div style="font-size:30px">💎</div>
+<div style="flex:1"><div style="font-weight:900">Level 159 - Legend Top <span class="badge" style="background:linear-gradient(90deg,#ff0000,#ff9900)">159</span></div>
+<div style="font-size:11px">Top Badge - Jaise Thakur Saheb</div><div class="bar"><div class="fill" style="width:85%"></div></div></div>
+</div>
+<div class="level-card" style="border-color:gold;box-shadow:0 0 15px gold">
+<div style="font-size:30px">👑</div>
+<div style="flex:1"><div style="font-weight:900">Level 208 - Legend Top1 <span class="badge" style="background:gold;color:#000">208 KING</span></div>
+<div style="font-size:11px">SHIVAA Style - No.1 Rank</div><div class="bar"><div class="fill" style="width:95%;background:linear-gradient(90deg,gold,orange)"></div></div></div>
+</div>
+</div>
+
+<div id="hostLevels" style="display:none">
+<div class="level-card">
+<div style="font-size:30px">🌟</div>
+<div style="flex:1"><div>Rising Star - Level 25</div><div style="font-size:11px">Need 100k Beans for Next</div><div class="bar"><div class="fill" style="width:60%"></div></div></div>
+</div>
+</div>
+
+<script>
+function show(t){
+document.getElementById('userLevels').style.display=t=='user'?'block':'none';
+document.getElementById('hostLevels').style.display=t=='host'?'block':'none';
+document.getElementById('b1').style.background=t=='user'?'#a020f0':'#222';
+document.getElementById('b2').style.background=t=='host'?'#a020f0':'#222';
+}
+// Auto Level Update - Har gift pe level badhega
+let currentLevel = parseInt(localStorage.getItem('userLevel')||'55');
+let coins = parseInt(localStorage.getItem('coins')||'200');
+function addCoins(c){
+coins+=c; localStorage.setItem('coins',coins);
+let newLevel = Math.floor(coins/100)+1;
+if(newLevel>currentLevel){alert("🎉 LEVEL UP! Level "+currentLevel+" -> "+newLevel+" - New Badge Unlocked!"); localStorage.setItem('userLevel',newLevel);}
+}
+</script>
+</body>
+</html>
