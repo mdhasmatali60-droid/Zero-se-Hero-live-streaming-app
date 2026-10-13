@@ -282,3 +282,204 @@ startCamera();
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - SUPER SOCIAL</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.top{position:sticky;top:0;z-index:99;background:#000;display:flex;border-bottom:1px solid #222}
+.top div{flex:1;padding:14px;text-align:center;font-weight:bold;font-size:13px}
+.top .active{border-bottom:3px solid #ff006a;color:#ff006a}
+.card{background:#111;margin:10px;border-radius:18px;padding:12px;border:1px solid #222}
+.btn{padding:10px 16px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
+.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
+.user{ display:flex;gap:10px;align-items:center;padding:8px;background:#1a1a1a;border-radius:12px;margin:6px 0}
+.user img{width:45px;height:45px;border-radius:50%}
+.videoFeed{height:78vh;overflow-y:scroll;scroll-snap-type:y mandatory}
+.reel{height:78vh;position:relative;scroll-snap-align:start;background:#000;border-bottom:2px solid #111}
+.reel video{width:100%;height:100%;object-fit:cover}
+.reelInfo{position:absolute;bottom:0;left:0;width:100%;padding:15px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.quality{position:absolute;top:10px;right:10px;background:#ff006a;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:bold}
+.add100{background:#222;padding:12px;border-radius:12px;margin:10px 0;text-align:center;border:2px dashed #ff006a}
+</style>
+</head>
+<body>
+
+<div class="top">
+<div class="active" onclick="tab('random',this)">🎲 RANDOM</div>
+<div onclick="tab('group',this)">👥 GROUPS (100+)</div>
+<div onclick="tab('shorts',this)">🎬 SHORTS HD</div>
+</div>
+
+<!-- RANDOM TAB - Telegram Style -->
+<div id="randomTab">
+<div class="card">
+<div style="display:flex;gap:10px">
+<input id="groupNameInput" placeholder="Group ka naam likho - Eg: BD Lovers" style="flex:1;padding:14px;border-radius:25px;border:none;background:#222;color:#fff">
+<button class="btn primary" onclick="createGroup()">CREATE</button>
+</div>
+<div class="add100" onclick="addRandom100()">
+➕ <b>100+ Random Log Add Karo - Facebook Jaisa</b><br><span style="font-size:12px;opacity:.6">Tap karo - 100 random log turant group me</span>
+</div>
+<div id="randomPeople"></div>
+</div>
+<div id="myGroups"></div>
+</div>
+
+<!-- GROUPS TAB -->
+<div id="groupTab" style="display:none">
+<div class="card">
+<h3>👥 Mere Groups - Telegram Style</h3>
+<div id="groupList"></div>
+<button class="btn primary" style="width:100%;margin-top:10px" onclick="createRandomGroup()">🎲 Random Group Banao - 150 Logon Ke Saath</button>
+</div>
+<div class="card">
+<h4>🔥 Active Members (Online 1.2K)</h4>
+<div id="onlineList"></div>
+</div>
+</div>
+
+<!-- SHORTS TAB - Insta Best Quality + YouTube -->
+<div id="shortTab" style="display:none">
+<div style="display:flex;gap:8px;padding:10px;background:#111">
+<label class="btn primary" style="flex:1;text-align:center">📤 HD Short Upload (1080p)
+<input type="file" id="shortInput" accept="video/*" hidden onchange="uploadShort(event)">
+</label>
+<select id="qualitySelect" style="background:#222;color:#fff;border:none;padding:10px;border-radius:20px">
+<option>1080p HD - Insta Best</option>
+<option>4K - YouTube Quality</option>
+<option>720p</option>
+</select>
+</div>
+<div class="videoFeed" id="videoFeed"></div>
+</div>
+
+<script>
+// FAKE USERS POOL - 200 Users
+let users=[];
+for(let i=1;i<=200;i++){
+users.push({id:i,name:`Hero ${i} ${['🔥','❤️','💎','👑','😍'][i%5]}`,pic:`https://i.pravatar.cc/100?img=${(i%70)+1}`,online:Math.random()>0.3});
+}
+let myGroups=JSON.parse(localStorage.getItem('zsh_groups')||'[]');
+let shorts=JSON.parse(localStorage.getItem('zsh_shorts')||'[]');
+
+function tab(t,el){
+document.querySelectorAll('.top div').forEach(d=>d.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('randomTab').style.display=t=='random'?'block':'none';
+document.getElementById('groupTab').style.display=t=='group'?'block':'none';
+document.getElementById('shortTab').style.display=t=='shorts'?'block':'none';
+if(t=='random') showRandom();
+if(t=='group') showGroups();
+if(t=='shorts') showShorts();
+}
+
+function showRandom(){
+let html='';
+let shuffled=[...users].sort(()=>0.5-Math.random()).slice(0,15);
+shuffled.forEach(u=>{
+html+=`<div class="user"><img src="${u.pic}"><div style="flex:1"><div style="font-weight:bold;font-size:14px">${u.name}</div><div style="font-size:11px;opacity:.6">${u.online?'🟢 Online':'⚪ Offline'} • Random</div></div><button class="btn primary" style="padding:6px 12px;font-size:12px" onclick="addToCurrentGroup(${u.id})">ADD +</button></div>`;
+});
+document.getElementById('randomPeople').innerHTML=html;
+}
+
+let currentGroup=null;
+function createGroup(){
+let name=document.getElementById('groupNameInput').value||`Zero Se Hero Group ${myGroups.length+1}`;
+let g={id:Date.now(),name, members:[], created: new Date().toLocaleString()};
+myGroups.push(g);
+currentGroup=g;
+localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
+showMyGroups();
+document.getElementById('groupNameInput').value='';
+alert(`✅ Group Ban Gaya: ${name} - Ab 100+ log add karo!`);
+addRandom100();
+}
+
+function addRandom100(){
+if(myGroups.length==0) return createGroup();
+if(!currentGroup) currentGroup=myGroups[myGroups.length-1];
+let random100=[...users].sort(()=>0.5-Math.random()).slice(0,100);
+random100.forEach(u=>{if(!currentGroup.members.find(m=>m.id==u.id)) currentGroup.members.push(u)});
+localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
+showMyGroups();
+showGroups();
+alert(`🔥 ${random100.length} Random Log Add Ho Gaye! Total: ${currentGroup.members.length}`);
+}
+
+function createRandomGroup(){
+let name=`Random Dhamaka Group ${Math.floor(Math.random()*1000)}`;
+let members=[...users].sort(()=>0.5-Math.random()).slice(0,150);
+let g={id:Date.now(),name,members,created:'Just Now'};
+myGroups.push(g);
+currentGroup=g;
+localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
+showGroups();
+alert(`👥 ${name} ban gaya - 150 log add hain! Facebook jaise!`);
+}
+
+function addToCurrentGroup(uid){
+if(!currentGroup){alert("Pehle group banao!");return}
+let u=users.find(x=>x.id==uid);
+if(!currentGroup.members.find(m=>m.id==uid)){currentGroup.members.push(u); localStorage.setItem('zsh_groups',JSON.stringify(myGroups)); showMyGroups();}
+}
+
+function showMyGroups(){
+let html='';
+myGroups.slice().reverse().forEach(g=>{
+html+=`<div class="card"><div style="display:flex;justify-content:space-between"><div><div style="font-weight:bold">👑 ${g.name}</div><div style="font-size:11px;opacity:.6">${g.members.length} Members • ${g.created}</div></div><button class="btn" style="background:#222;color:#fff" onclick="openGroup(${g.id})">OPEN</button></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">${g.members.slice(0,20).map(m=>`<img src="${m.pic}" style="width:28px;height:28px;border-radius:50%">`).join('')}${g.members.length>20?`<span style="font-size:11px;padding:6px;background:#ff006a;border-radius:20px">+${g.members.length-20}</span>`:''}</div></div>`;
+});
+document.getElementById('myGroups').innerHTML=html||'<div style="text-align:center;opacity:.5;padding:20px">Koi group nahi - Pehla banao!</div>';
+document.getElementById('groupList').innerHTML=html;
+}
+
+function showGroups(){
+showMyGroups();
+let html='';
+users.filter(u=>u.online).slice(0,30).forEach(u=>{
+html+=`<div class="user"><img src="${u.pic}"><div style="flex:1"><div style="font-weight:bold;font-size:13px">${u.name}</div><div style="font-size:11px;color:#0f0">Online • Insta Quality Reels Dekh Raha</div></div><div style="font-size:12px">❤️</div></div>`;
+});
+document.getElementById('onlineList').innerHTML=html;
+}
+
+function openGroup(id){
+let g=myGroups.find(x=>x.id==id);
+if(!g) return;
+alert(`👥 ${g.name} Opened\n${g.members.length} Members\n\nTelegram jaise chat yahan ayega!\nGroup Link: https://zero-se-hero.live/g/${g.id}`);
+}
+
+// SHORTS - Insta Best + YouTube Quality
+let demoVideos=[
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+];
+
+function showShorts(){
+let all=[...shorts, ...demoVideos.map((url,i)=>({url, caption:`Zero Se Hero Trending #${i+1} 🔥 Insta HD Quality`, quality:"1080p HD", likes:Math.floor(Math.random()*5000)+500}))];
+let html='';
+all.forEach(v=>{
+html+=`<div class="reel"><video src="${v.url}" loop autoplay muted playsinline onclick="this.paused?this.play():this.pause()"></video><div class="quality">${v.quality||'1080p HD'}</div><div class="reelInfo"><div style="display:flex;gap:10px;align-items:center"><img src="https://i.pravatar.cc/40?img=${Math.floor(Math.random()*70)}" style="width:35px;height:35px;border-radius:50%;border:2px solid #ff006a"><div><div style="font-weight:bold;font-size:14px">Hero Official • ${v.quality||'1080p'}</div><div style="font-size:13px">${v.caption}</div></div></div><div style="display:flex;gap:15px;margin-top:10px;font-size:13px"><span>❤️ ${v.likes||1200}</span><span>💬 89</span><span>↗️ Share</span><span>🎵 Original Audio - HD</span></div></div></div>`;
+});
+document.getElementById('videoFeed').innerHTML=html||'<div style="text-align:center;padding:40px">Koi short nahi - Pehla upload karo 1080p me!</div>';
+}
+
+function uploadShort(e){
+let file=e.target.files[0];
+let url=URL.createObjectURL(file);
+let quality=document.getElementById('qualitySelect').value;
+let caption=prompt("Caption likho - #Hashtag ke saath:")||"My First HD Short 🔥 #ZeroSeHero";
+shorts.unshift({url,caption,quality,likes:0});
+localStorage.setItem('zsh_shorts',JSON.stringify(shorts.slice(0,10))); // Keep 10 local
+showShorts();
+alert(`✅ ${quality} me Upload Ho Gaya! Insta Best Quality me!`);
+}
+
+// INIT
+showRandom(); showMyGroups();
+</script>
+</body>
+</html>
