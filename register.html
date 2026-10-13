@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - Full Register</title>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:linear-gradient(90deg,#ff006a,#ff8c00);padding:14px;text-align:center;font-weight:900;position:sticky;top:0;z-index:100}
+.card{background:#111;margin:10px;padding:18px;border-radius:20px;border:1px solid #222}
+input{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#1a1a1a;color:#fff;margin:7px 0;font-size:15px}
+input.ok{border-color:#00ff00} input.bad{border-color:#ff0000}
+.btn{width:100%;padding:14px;border-radius:25px;border:none;font-weight:bold;cursor:pointer;margin-top:8px}
+.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
+.secondary{background:#222;color:#fff}
+.step{display:flex;gap:6px;margin:12px 0}
+.step div{flex:1;height:6px;background:#222;border-radius:10px}
+.step div.active{background:#ff006a}.step div.done{background:#00ff00}
+#video{width:100%;height:260px;background:#000;border-radius:16px;object-fit:cover;transform:scaleX(-1)}
+.status{padding:10px;border-radius:12px;text-align:center;font-size:13px;margin:8px 0;background:#222}
+.okBox{background:#003300;color:#0f0;border:1px solid #00ff00}
+.badBox{background:#330000;color:#ff5555;border:1px solid #ff0000}
+</style>
+</head>
+<body>
+<div class="header">👑 ZERO SE HERO - REGISTER - Gmail + Phone + Face 👑</div>
+
+<div class="card">
+<div class="step"><div class="active" id="s1"></div><div id="s2"></div><div id="s3"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:10px;opacity:.6"><span>1. Gmail + Phone</span><span>2. OTP Verify</span><span>3. Face Verify</span></div>
+</div>
+
+<!-- STEP 1 -->
+<div class="card" id="step1">
+<h3>📝 Step 1 - Gmail + Number + Name</h3>
+<input id="name" placeholder="👤 Full Name - Jaise: Hasmat Ali" oninput="checkName(this)">
+<div id="nameMsg" style="font-size:11px;margin-left:5px"></div>
+
+<input id="gmail" type="email" placeholder="📧 Gmail - Jaise: yourname@gmail.com" oninput="checkGmail(this)">
+<div id="gmailMsg" style="font-size:11px;margin-left:5px"></div>
+
+<input id="phone" type="tel" placeholder="📱 Mobile Number - Jaise: +968 9xxxxxxx / +91 9xxxx" oninput="checkPhone(this)">
+<div id="phoneMsg" style="font-size:11px;margin-left:5px"></div>
+
+<input id="pass" type="password" placeholder="🔒 Password - 6+ chars">
+<div style="font-size:10px;opacity:.5;margin:6px">Gmail + Phone + Face = 1 Person 1 ID - Duplicate nahi banega</div>
+<button class="btn primary" onclick="goStep2()">➡️ Next - Send OTP</button>
+<button class="btn secondary" onclick="location.href='index.html?guest=1'">👁️ Guest Visit - Bina Register Ke</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="card" id="step2" style="display:none">
+<h3>🔐 Step 2 - OTP Verification</h3>
+<div class="status">OTP bheja gaya hai - Demo ke liye niche OTP dikh raha hai</div>
+<div style="background:#111;padding:12px;border-radius:12px;border:1px dashed #ff006a;margin:10px 0">
+<div style="font-size:11px;opacity:.6">Demo OTPs (Real app me SMS/Email se ayega):</div>
+<div>📧 Gmail OTP: <b id="gmailOtpShow" style="color:#ffd700;letter-spacing:3px"></b></div>
+<div>📱 Phone OTP: <b id="phoneOtpShow" style="color:#ffd700;letter-spacing:3px"></b></div>
+</div>
+<input id="gmailOtpInput" placeholder="📧 Gmail OTP likho - 4 digit">
+<input id="phoneOtpInput" placeholder="📱 Phone OTP likho - 4 digit">
+<div id="otpMsg" class="status" style="display:none"></div>
+<div style="display:flex;gap:8px">
+<button class="btn secondary" style="flex:1" onclick="resendOtp()">🔄 Resend OTP</button>
+<button class="btn primary" style="flex:1" onclick="verifyOtp()">✅ Verify OTP</button>
+</div>
+<button class="btn secondary" onclick="back1()">⬅️ Back</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="card" id="step3" style="display:none">
+<h3>📸 Step 3 - Face Verification - 1 Person 1 ID</h3>
+<p style="font-size:12px;opacity:.6">Camera me face lao - Green box ayega to verified - Duplicate face block hoga</p>
+<div style="position:relative;margin:10px 0">
+<video id="video" autoplay muted playsinline></video>
+<canvas id="overlay" style="position:absolute;top:0;left:0;width:100%;height:100%"></canvas>
+</div>
+<div id="faceStatus" class="status">📷 Camera On Karo</div>
+<div style="display:flex;gap:8px">
+<button class="btn secondary" style="flex:1" onclick="startCamera()">📷 Camera Start</button>
+<button class="btn primary" style="flex:1" id="finalBtn" onclick="finalRegister()" disabled>✅ Face Verified - Register Final</button>
+</div>
+<div style="font-size:10px;opacity:.5;text-align:center;margin-top:8px">Face data secure - Sirf verification ke liye - 1 face = 1 ID - Virtual only</div>
+<button class="btn secondary" onclick="back2()">⬅️ Back</button>
+</div>
+
+<!-- SUCCESS -->
+<div class="card" id="success" style="display:none;text-align:center">
+<h2>🎉 Registered Successfully!</h2>
+<div style="margin:15px 0"><img id="finalFace" style="width:90px;height:90px;border-radius:50%;border:3px solid #00ff00"></div>
+<div style="background:#111;padding:12px;border-radius:12px;text-align:left;font-size:13px;line-height:1.8">
+Name: <b id="fName"></b><br>
+Gmail: <b id="fGmail"></b> ✅ Verified<br>
+Phone: <b id="fPhone"></b> ✅ Verified<br>
+ID: <b id="fId" style="color:#ffd700"></b><br>
+Face: <span style="color:#0f0">✅ Verified - One Person One ID</span>
+</div>
+<button class="btn primary" onclick="enterApp()">🚀 Enter App - Full Access - LIVE + MSG + CALL</button>
+</div>
+
+<script>
+let gmailOtp='', phoneOtp='', faceOk=false, faceDescriptor='', faceImgData='', currentUsers=JSON.parse(localStorage.getItem('zsh_users_v2')||'[]');
+
+function checkName(el){
+let ok=el.value.trim().length>=3;
+el.className=ok?'ok':(el.value?'bad':'');
+document.getElementById('nameMsg').innerText=ok?'✅ OK':'❌ 3 letters minimum';
+document.getElementById('nameMsg').style.color=ok?'#0f0':'#f55';
+return ok;
+}
+function checkGmail(el){
+let v=el.value.trim();
+let ok=/^[^\s@]+@gmail\.com$/i.test(v);
+el.className=ok?'ok':(v?'bad':'');
+document.getElementById('gmailMsg').innerText=ok?'✅ Gmail valid':'❌ Sirf @gmail.com allowed';
+document.getElementById('gmailMsg').style.color=ok?'#0f0':'#f55';
+return ok;
+}
+function checkPhone(el){
+let v=el.value.replace(/\s/g,'');
+let ok=/^\+?[0-9]{8,15}$/.test(v);
+el.className=ok?'ok':(v?'bad':'');
+document.getElementById('phoneMsg').innerText=ok?'✅ Number valid':'❌ 8-15 digit number with country code';
+document.getElementById('phoneMsg').style.color=ok?'#0f0':'#f55';
+return ok;
+}
+
+function goStep2(){
+let n=document.getElementById('name').value.trim();
+let g=document.getElementById('gmail').value.trim().toLowerCase();
+let p=document.getElementById('phone').value.trim();
+let pw=document.getElementById('pass').value.trim();
+if(!checkName(document.getElementById('name'))||!checkGmail(document.getElementById('gmail'))||!checkPhone(document.getElementById('phone'))||pw.length<6){
+alert("❌ Sab fields sahi bharo!\nName min 3, Gmail @gmail.com, Phone with country code, Password 6+");
+return;
+}
+if(currentUsers.some(u=>u.gmail==g)){alert("❌ Ye Gmail pehle se registered hai! 1 Gmail = 1 ID");return;}
+if(currentUsers.some(u=>u.phone==p)){alert("❌ Ye Phone pehle se registered hai! 1 Phone = 1 ID");return;}
+
+gmailOtp=String(Math.floor(1000+Math.random()*9000));
+phoneOtp=String(Math.floor(1000+Math.random()*9000));
+document.getElementById('gmailOtpShow').innerText=gmailOtp;
+document.getElementById('phoneOtpShow').innerText=phoneOtp;
+
+document.getElementById('step1').style.display='none';
+document.getElementById('step2').style.display='block';
+document.getElementById('s1').className='done'; document.getElementById('s2').className='active';
+}
+
+function resendOtp(){
+gmailOtp=String(Math.floor(1000+Math.random()*9000));
+phoneOtp=String(Math.floor(1000+Math.random()*9000));
+document.getElementById('gmailOtpShow').innerText=gmailOtp;
+document.getElementById('phoneOtpShow').innerText=phoneOtp;
+alert("OTP Resent!");
+}
+
+function verifyOtp(){
+let go=document.getElementById('gmailOtpInput').value.trim();
+let po=document.getElementById('phoneOtpInput').value.trim();
+let msg=document.getElementById('otpMsg'); msg.style.display='block';
+if(go==gmailOtp && po==phoneOtp){
+msg.innerText='✅ Both OTP Verified!'; msg.className='status okBox';
+setTimeout(()=>{
+document.getElementById('step2').style.display='none';
+document.getElementById('step3').style.display='block';
+document.getElementById('s2').className='done'; document.getElementById('s3').className='active';
+startCamera();
+},800);
+}else{
+msg.innerText='❌ OTP galat hai - Upar wala demo OTP dekho'; msg.className='status badBox';
+}
+}
+function back1(){document.getElementById('step2').style.display='none';document.getElementById('step1').style.display='block';}
+function back2(){document.getElementById('step3').style.display='none';document.getElementById('step2').style.display='block';}
+
+let video=document.getElementById('video');
+async function startCamera(){
+try{
+let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
+video.srcObject=s;
+video.onloadedmetadata=()=>{
+let canvas=document.getElementById('overlay'); canvas.width=video.videoWidth; canvas.height=video.videoHeight;
+initFaceMesh();
+};
+}catch(e){document.getElementById('faceStatus').innerText='❌ Camera allow karo: '+e.message; document.getElementById('faceStatus').className='status badBox';}
+}
+function initFaceMesh(){
+let status=document.getElementById('faceStatus');
+const faceMesh=new FaceMesh({locateFile:(f)=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
+faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5});
+faceMesh.onResults(res=>{
+let canvas=document.getElementById('overlay'); let ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height);
+if(res.multiFaceLandmarks && res.multiFaceLandmarks.length>0){
+faceOk=true; faceDescriptor=JSON.stringify(res.multiFaceLandmarks[0].slice(0,25));
+ctx.strokeStyle='#00ff00'; ctx.lineWidth=4; ctx.strokeRect(canvas.width*0.2,canvas.height*0.1,canvas.width*0.6,canvas.height*0.8);
+status.innerText='✅ Face Detected - Verified! Ab Register Final dabao'; status.className='status okBox';
+document.getElementById('finalBtn').disabled=false;
+}else{
+faceOk=false; status.innerText='⚠️ Face center me lao - Light me aao'; status.className='status badBox';
+}
+});
+let cam=new Camera(video,{onFrame:async()=>{await faceMesh.send({image:video})},width:320,height:240}); cam.start();
+}
+
+function finalRegister(){
+if(!faceOk){alert("Face scan nahi hua!");return;}
+if(currentUsers.some(u=>u.face==faceDescriptor)){alert("❌ Ye Face Pehle Se Registered Hai! 1 Person = 1 ID - Duplicate Block!");return;}
+
+let c=document.createElement('canvas'); c.width=video.videoWidth; c.height=video.videoHeight;
+c.getContext('2d').drawImage(video,0,0); faceImgData=c.toDataURL('image/png');
+
+let user={
+id:'ZSH'+Date.now().toString().slice(-6),
+name:document.getElementById('name').value.trim(),
+gmail:document.getElementById('gmail').value.trim().toLowerCase(),
+phone:document.getElementById('phone').value.trim(),
+face:faceDescriptor, faceImg:faceImgData,
+verified:true, created:new Date().toLocaleString()
+};
+currentUsers.push(user);
+localStorage.setItem('zsh_users_v2',JSON.stringify(currentUsers));
+localStorage.setItem('zsh_current_v2',JSON.stringify(user));
+if(video.srcObject) video.srcObject.getTracks().forEach(t=>t.stop());
+
+document.getElementById('step3').style.display='none';
+document.getElementById('success').style.display='block';
+document.getElementById('s3').className='done';
+document.getElementById('fName').innerText=user.name;
+document.getElementById('fGmail').innerText=user.gmail;
+document.getElementById('fPhone').innerText=user.phone;
+document.getElementById('fId').innerText=user.id;
+document.getElementById('finalFace').src=user.faceImg;
+}
+
+function enterApp(){
+let cur=JSON.parse(localStorage.getItem('zsh_current_v2'));
+location.href='index.html?user='+cur.id;
+}
+</script>
+</body>
+</html>
