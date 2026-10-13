@@ -1,612 +1,103 @@
-<!DOCTYPE html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>ZERO SE HERO LIVE - Watch Stream Earn</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#070A1A;color:#fff;overflow-x:hidden}.top{position:fixed;top:0;left:0;right:0;z-index:999;background:linear-gradient(90deg,#FF0055,#FF8A00);padding:10px 12px;display:flex;justify-content:space-between;font-weight:900;font-size:13px}.page{padding:60px 0 80px 0;min-height:100vh}.card{background:#fff;color:#111;margin:10px;border-radius:20px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.3)}.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;margin:5px;cursor:pointer}.live-dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}@keyframes blink{50%{opacity:.3}}.badge{background:linear-gradient(90deg,#00E676,#00BFA5);color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:800}.official{background:linear-gradient(90deg,#2962FF,#AA00FF);color:#fff;padding:3px 8px;border-radius:12px;font-size:11px}.gift{display:inline-block;font-size:20px;padding:8px 14px;border:2px solid #FFD700;border-radius:30px;margin:4px;background:linear-gradient(135deg,#FFF9C4,#FFEB3B);cursor:pointer;font-weight:800}.tab{position:fixed;bottom:0;left:0;right:0;background:#0F1225;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0;z-index:999}.tab button{background:none;border:0;color:#666;font-size:22px}.tab button.active{color:#FFD700}.input{width:100%;padding:12px;border-radius:14px;border:2px solid #eee;margin:8px 0;font-size:14px}#regScreen{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0F1225,#1A237E);display:flex;align-items:center;justify-content:center;padding:16px}.regBox{background:#fff;color:#111;width:100%;max-width:380px;border-radius:24px;padding:20px;text-align:center}</style></head><body>
-<div class="top"><span>💰<span id="coins">0</span> | $<span id="dollars">0.00</span></span><span><span class="live-dot"></span> 341 LIVE</span><span id="userNameTop">GUEST</span></div>
-<div id="regScreen"><div class="regBox"><div style="font-size:50px">🏆🔴</div><h2>ZERO SE HERO LIVE</h2><p style="font-size:12px;color:#666">Register Karo • 100 Free Coins • $1 Invite Bonus</p><input id="rName" class="input" placeholder="Apna Naam"><input id="rPhone" class="input" placeholder="Phone +880..."><input id="rRef" class="input" placeholder="Referral Code (HASMAT60)"><button class="btn" style="background:linear-gradient(90deg,#FF0055,#FF8A00);color:#fff;width:100%" onclick="doRegister()">✅ REGISTER & START</button><p style="font-size:10px;color:#888;margin-top:8px">BD ADMIN Official ✅ Helpline 24/7</p></div></div>
-<div id="homePage" class="page">
-<div class="card" style="background:linear-gradient(135deg,#1A237E,#FF1744);color:#fff;text-align:center"><h2>🔴 ZERO SE HERO LIVE</h2><p style="font-size:12px">Dekho • Live Aao • Gift Karo • Hero Bano</p><button class="btn" style="background:#FFD700;color:#000" onclick="goLive()">🔴 GO LIVE +50</button><button class="btn" style="background:#fff;color:#000" onclick="showPage('wallet')">💎 Buy Coins</button><div style="margin-top:8px"><span class="badge">4.8★ 12k</span> <span class="official">✅ BD ADMIN</span></div></div>
-<div class="card"><b>🔴 LIVE NOW - Watch +5/min</b><div style="display:flex;gap:10px;overflow:auto;margin-top:8px">
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchLive('Pooja')"><div style="font-size:40px">👩‍🎤</div><small>Pooja 1.8k <span class="official">✓</span> ⭐4.9</small><br><button class="btn" style="background:#FF1744;color:#fff;padding:6px;font-size:11px;width:90%">WATCH</button></div>
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchLive('Raja')"><div style="font-size:40px">🛒</div><small>Raja Seller ⭐4.8</small><br><button class="btn" style="background:#FFD700;color:#000;padding:6px;font-size:11px;width:90%">BUY</button></div>
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchLive('BD Admin')"><div style="font-size:40px">👑</div><small>BD ADMIN ✅</small><br><button class="btn" style="background:#2962FF;color:#fff;padding:6px;font-size:11px;width:90%">JOIN</button></div>
-</div></div>
-<div class="card"><b>🎁 GIFT STORE</b><div style="margin-top:8px"><span class="gift" onclick="sendGift('🌹',10)">🌹10</span><span class="gift" onclick="sendGift('💎',50)">💎50</span><span class="gift" onclick="sendGift('🏆',100)">🏆100</span><span class="gift" onclick="sendGift('🚀',500)">🚀500</span><span class="gift" onclick="sendGift('👑',1000)">👑1000</span><span class="gift" onclick="sendGift('🦁',5000)">🦁5000</span></div></div>
-<div class="card"><b>🎮 LUCKY GAMES</b><div style="display:flex;gap:8px"><button class="btn" style="background:linear-gradient(90deg,#FF9100,#FF1744);color:#fff;flex:1" onclick="playGame()">🎡 SPIN 10</button><button class="btn" style="background:linear-gradient(90deg,#00C853,#009688);color:#fff;flex:1" onclick="playGame()">🎲 DICE x2</button><button class="btn" style="background:linear-gradient(90deg,#2962FF,#AA00FF);color:#fff;flex:1" onclick="playGame()">🍀 JACKPOT</button></div><h3 id="gameResult" style="text-align:center;margin-top:8px"></h3></div>
-</div>
-<div id="leaderPage" class="page" style="display:none"><div class="card"><h3>🏆 LEADERBOARD</h3><div style="display:flex;gap:6px;margin-top:8px"><button class="btn" style="background:#FFD700;flex:1" onclick="showLB('gifter')">💎 Gifter</button><button class="btn" style="background:#FF1744;color:#fff;flex:1" onclick="showLB('sender')">🚀 Sender</button><button class="btn" style="background:#2962FF;color:#fff;flex:1" onclick="showLB('seller')">🛒 Seller</button></div><div id="lbList" style="margin-top:10px"></div></div><div class="card"><b>⭐ RATING</b><div id="ratingList"></div></div></div>
-<div id="walletPage" class="page" style="display:none"><div class="card" style="background:linear-gradient(135deg,#FF6D00,#FF1744);color:#fff;text-align:center"><h2>💎 COIN SELLER OFFICIAL</h2><p>Coins: <span id="wCoins">0</span> | $<span id="wDol">0.00</span></p></div><div class="card"><b>🛒 BUY COINS</b><br><button class="btn" style="background:#fff;border:2px solid gold;width:100%" onclick="buyCoins(100,1)">100 Coins = $1</button><button class="btn" style="background:#FFD700;width:100%" onclick="buyCoins(550,5)">550 Coins = $5 +50 Bonus</button><button class="btn" style="background:linear-gradient(90deg,#FFD700,#FF8A00);width:100%" onclick="buyCoins(1200,10)">1200 Coins = $10 +200 Bonus</button></div><div class="card"><b>💵 WITHDRAW</b><p style="font-size:12px">Min $10 - JazzCash/Easypaisa</p><button class="btn" style="background:#00C853;color:#fff;width:100%" onclick="withdraw()">WITHDRAW $<span id="wd">0.00</span></button><button class="btn" style="background:#25D366;color:#fff;width:100%" onclick="contactAdmin()">💬 Helpline WhatsApp</button></div></div>
-<div id="invitePage" class="page" style="display:none"><div class="card" style="background:linear-gradient(135deg,#00C853,#00BFA5);color:#fff;text-align:center"><h2>💰 INVITE = $1</h2><div style="font-size:60px">🎁</div><h3>1 Invite = $1 Instant!</h3><div style="background:#fff;color:#000;padding:10px;border-radius:14px;font-size:12px;word-break:break-all;font-weight:800" id="inviteLink">https://zeroseherolive.vercel.app/?ref=USER</div><button class="btn" style="background:#FFD700;color:#000;width:100%;margin-top:8px" onclick="copyInvite()">📋 COPY LINK + $1</button><button class="btn" style="background:#fff;color:#000;width:100%" onclick="shareInvite()">📤 SHARE WHATSAPP</button><p style="margin-top:12px">Invites: <b id="invCount">0</b> | Earned: $<span id="invEarn">0</span></p></div></div>
-<div class="tab"><button class="active" onclick="showPage('home')" id="tHome">🏠</button><button onclick="showPage('leader')" id="tLead">🏆</button><button onclick="showPage('live')" style="background:#FF0055;color:#fff;border-radius:50%;width:56px;height:56px;margin-top:-18px;font-size:26px">🔴</button><button onclick="showPage('wallet')" id="tWallet">💎</button><button onclick="showPage('invite')" id="tInvite">💰</button></div>
-<script>
-var coins=parseInt(localStorage.getItem('zsh_coins')||0),dollars=parseFloat(localStorage.getItem('zsh_dol')||0),inv=parseInt(localStorage.getItem('zsh_inv')||0),user=JSON.parse(localStorage.getItem('zsh_user')||'null');
-var gifters=[{n:'Raja Gifter',c:15000},{n:'Pooja Queen',c:12000},{n:'HASMAT',c:1000}],senders=[{n:'Aman Sender',c:9000}],sellers=[{n:'Raja Seller',c:5000}];
-function init(){var p=new URLSearchParams(location.search).get('ref');if(p){document.getElementById('rRef').value=p;}if(!user){document.getElementById('regScreen').style.display='flex';}else{doLogin();}upd();}
-function doRegister(){var n=document.getElementById('rName').value||'Guest',ph=document.getElementById('rPhone').value,ref=document.getElementById('rRef').value;if(n.length<2||ph.length<6){alert('Naam aur Phone dalo!');return;}user={name:n,phone:ph,ref:ref};coins=100;if(ref){coins+=50;dollars+=0.5;}localStorage.setItem('zsh_user',JSON.stringify(user));save();document.getElementById('regScreen').style.display='none';doLogin();alert('✅ Registered! 100 Coins Free!');}
-function doLogin(){document.getElementById('userNameTop').innerText=user.name.toUpperCase().substring(0,10);document.getElementById('inviteLink').innerText='https://zeroseherolive.vercel.app/?ref='+user.name.replace(/\s+/g,'').toUpperCase()+'60';upd();showLB('gifter');}
-function save(){localStorage.setItem('zsh_coins',coins);localStorage.setItem('zsh_dol',dollars.toFixed(2));localStorage.setItem('zsh_inv',inv);if(user){gifters[2].n=user.name;gifters[2].c=coins;}upd();}
-function upd(){document.getElementById('coins').innerText=coins;document.getElementById('wCoins').innerText=coins;document.getElementById('dollars').innerText=dollars.toFixed(2);document.getElementById('wDol').innerText=dollars.toFixed(2);document.getElementById('wd').innerText=dollars.toFixed(2);document.getElementById('invCount').innerText=inv;document.getElementById('invEarn').innerText=inv;}
-function showPage(p){['homePage','leaderPage','walletPage','invitePage'].forEach(id=>document.getElementById(id).style.display='none');document.querySelectorAll('.tab button').forEach(b=>b.classList.remove('active'));if(p=='home'){homePage.style.display='block';tHome.classList.add('active')}else if(p=='leader'){leaderPage.style.display='block';tLead.classList.add('active');showLB('gifter')}else if(p=='wallet'){walletPage.style.display='block';tWallet.classList.add('active')}else if(p=='invite'){invitePage.style.display='block';
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZERO SE HERO - INSTA x SNAPCHAT</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff}
-.topTabs{display:flex;background:#111;position:sticky;top:0;z-index:100}
-.tab{flex:1;padding:15px;text-align:center;font-weight:bold;border-bottom:3px solid transparent}
-.tab.active{border-color:#ff006a;color:#ff006a}
-#camWrap{position:relative;width:100%;max-width:400px;margin:auto;height:75vh;background:#000;overflow:hidden}
-video,canvas{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-canvas{transform:scaleX(-1);pointer-events:none}
-.toolbar{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#111}
-.toolBtn{min-width:70px;background:#222;border-radius:15px;padding:8px;text-align:center;border:2px solid transparent;font-size:11px}
-.toolBtn.active{border-color:#ff006a;background:#ff006a22}
-.toolBtn span{font-size:26px;display:block}
-.instaBar{display:flex;justify-content:space-around;padding:10px;background:#111;border-top:1px solid #222}
-.instaBar button{background:none;border:none;color:#fff;font-size:22px}
-.goLive{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(#ff006a,#a00040);border:4px solid #fff;font-size:30px;z-index:20}
-</style>
-<!-- MediaPipe - Insta + Snapchat Face Tracking -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-</head>
-<body>
-
-<div class="topTabs">
-<div class="tab active" onclick="switchMode('insta',this)">📸 INSTA</div>
-<div class="tab" onclick="switchMode('snap',this)">👻 SNAPCHAT</div>
-<div class="tab" onclick="switchMode('live',this)">🔴 LIVE</div>
-</div>
-
-<div id="camWrap">
-<video id="video" autoplay muted playsinline></video>
-<canvas id="overlay"></canvas>
-<button class="goLive" onclick="takeSnap()">📸</button>
-<div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);padding:5px 10px;border-radius:20px;font-size:12px">ZERO SE HERO • <span id="filterName">Normal</span></div>
-</div>
-
-<!-- INSTA TOOLS -->
-<div id="instaTools">
-<div style="padding:8px 12px;font-weight:bold">✨ Instagram Tools</div>
-<div class="toolbar">
-<div class="toolBtn active" onclick="setFilterType('normal',this)"><span>😊</span>Normal</div>
-<div class="toolBtn" onclick="setFilterType('beauty',this)"><span>💖</span>Beauty</div>
-<div class="toolBtn" onclick="setFilterType('makeup',this)"><span>💄</span>Makeup</div>
-<div class="toolBtn" onclick="setFilterType('paris',this)"><span>🗼</span>Paris</div>
-<div class="toolBtn" onclick="setFilterType('golden',this)"><span>✨</span>Golden Hour</div>
-<div class="toolBtn" onclick="setFilterType('bw',this)"><span>⚫</span>B&W Story</div>
-<div class="toolBtn" onclick="setFilterType('vintage',this)"><span>📼</span>Vintage</div>
-</div>
-<div class="instaBar">
-<button onclick="addInstaText()">Aa</button>
-<button onclick="addSticker('❤️')">❤️</button>
-<button onclick="addSticker('🔥')">🔥</button>
-<button onclick="addSticker('😍')">😍</button>
-<button onclick="addMusic()">🎵</button>
-<button onclick="addPoll()">📊</button>
-</div>
-</div>
-
-<!-- SNAPCHAT TOOLS -->
-<div id="snapTools" style="display:none">
-<div style="padding:8px 12px;font-weight:bold">👻 Snapchat Lenses</div>
-<div class="toolbar">
-<div class="toolBtn active" onclick="setLens('none',this)"><span>👤</span>None</div>
-<div class="toolBtn" onclick="setLens('dog',this)"><span>🐶</span>Dog</div>
-<div class="toolBtn" onclick="setLens('cat',this)"><span>🐱</span>Cat Ears</div>
-<div class="toolBtn" onclick="setLens('glasses',this)"><span>😎</span>Glasses</div>
-<div class="toolBtn" onclick="setLens('flower',this)"><span>🌸</span>Flower</div>
-<div class="toolBtn" onclick="setLens('beard',this)"><span>🧔</span>Beard</div>
-<div class="toolBtn" onclick="setLens('crown',this)"><span>👑</span>Crown</div>
-<div class="toolBtn" onclick="setLens('kiss',this)"><span>💋</span>Kiss Lips</div>
-<div class="toolBtn" onclick="setLens('devil',this)"><span>😈</span>Devil</div>
-</div>
-<div class="instaBar">
-<button onclick="setLens('baby')">👶 Baby Face</button>
-<button onclick="setLens('old')">👴 Old</button>
-<button onclick="setLens('gender')">🔄 Gender Swap</button>
-</div>
-</div>
-
-<script>
-let video=document.getElementById('video');
-let canvas=document.getElementById('overlay');
-let ctx=canvas.getContext('2d');
-let currentFilter='normal';
-let currentLens='none';
-let mode='insta';
-let faceLandmarks=null;
-
-function switchMode(m,el){
-mode=m;
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-el.classList.add('active');
-document.getElementById('instaTools').style.display=m=='insta'?'block':'none';
-document.getElementById('snapTools').style.display=m=='snap'?'block':'none';
-}
-
-function setFilterType(type,el){
-currentFilter=type;
-document.querySelectorAll('#instaTools.toolBtn').forEach(b=>b.classList.remove('active'));
-el.classList.add('active');
-document.getElementById('filterName').innerText=type.toUpperCase();
-applyVideoFilter();
-}
-
-function setLens(lens,el){
-currentLens=lens;
-if(el){document.querySelectorAll('#snapTools.toolBtn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
-document.getElementById('filterName').innerText=lens.toUpperCase()+' LENS';
-}
-
-function applyVideoFilter(){
-let map={
-normal:'none',
-beauty:'brightness(1.15) contrast(1.1) saturate(1.25) blur(0.4px)',
-makeup:'brightness(1.1) saturate(1.6) contrast(1.15) sepia(0.1)',
-paris:'sepia(0.2) hue-rotate(-10deg) saturate(1.3)',
-golden:'brightness(1.2) sepia(0.35) saturate(1.5)',
-bw:'grayscale(1) contrast(1.2)',
-vintage:'sepia(0.7) contrast(1.1) brightness(0.9)'
-};
-video.style.filter=map[currentFilter]||'none';
-}
-
-// CAMERA + FACE TRACKING
-async function startCamera(){
-try{
-let stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:true});
-video.srcObject=stream;
-video.onloadedmetadata=()=>{
-canvas.width=video.videoWidth; canvas.height=video.videoHeight;
-initFaceMesh();
-};
-}catch(e){alert("Camera allow karo: "+e.message)}
-}
-
-function initFaceMesh(){
-const faceMesh=new FaceMesh({locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
-faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
-faceMesh.onResults(onFaceResults);
-let cam=new Camera(video,{onFrame:async()=>{await faceMesh.send({image:video})},width:400,height:600});
-cam.start();
-}
-
-function onFaceResults(results){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-if(results.multiFaceLandmarks && results.multiFaceLandmarks.length>0){
-faceLandmarks=results.multiFaceLandmarks[0];
-drawLens(faceLandmarks);
-}
-}
-
-function drawLens(landmarks){
-// LENS DRAWING - Snapchat style
-let nose=landmarks[1];
-let leftEye=landmarks[33];
-let rightEye=landmarks[263];
-let mouth=landmarks[13];
-
-let x=(p)=>p.x*canvas.width;
-let y=(p)=>p.y*canvas.height;
-
-ctx.font=`${canvas.width*0.15}px Arial`;
-ctx.textAlign='center';
-
-if(currentLens=='dog'){
-ctx.fillText('🐶', x(nose), y(nose)-60);
-ctx.fillText('👅', x(mouth), y(mouth)+20);
-ctx.fillText('🐾', x(leftEye)-60, y(leftEye));
-ctx.fillText('🐾', x(rightEye)+60, y(rightEye));
-}
-if(currentLens=='cat'){
-ctx.fillText('🐱', x(nose), y(nose)-80);
-ctx.font=`${canvas.width*0.08}px Arial`;
-ctx.fillText('✨', x(leftEye)-30, y(leftEye)-30);
-ctx.fillText('✨', x(rightEye)+30, y(rightEye)-30);
-}
-if(currentLens=='glasses'){
-ctx.font=`${canvas.width*0.25}px Arial`;
-ctx.fillText('😎', x(nose), y(leftEye)+20);
-}
-if(currentLens=='flower'){
-ctx.fillText('🌸🌸🌸', x(nose), y(nose)-70);
-ctx.fillText('🌸', x(leftEye)-50, y(leftEye)-20);
-ctx.fillText('🌸', x(rightEye)+50, y(rightEye)-20);
-}
-if(currentLens=='crown'){
-ctx.fillText('👑', x(nose), y(nose)-100);
-}
-if(currentLens=='kiss'){
-ctx.fillText('💋', x(mouth), y(mouth));
-ctx.fillText('💋💋', x(nose), y(nose)-40);
-}
-if(currentLens=='beard'){
-ctx.font=`${canvas.width*0.2}px Arial`;
-ctx.fillText('🧔', x(mouth), y(mouth)+60);
-}
-if(currentLens=='devil'){
-ctx.fillText('😈', x(nose), y(nose)-20);
-ctx.fillText('🔥', x(leftEye)-40, y(leftEye));
-ctx.fillText('🔥', x(rightEye)+40, y(rightEye));
-}
-
-// KISS GIFT FULL SCREEN TO LIPS - Tera wala feature
-if(window.kissActive && mouth){
-let tx=x(mouth), ty=y(mouth);
-ctx.font=`${canvas.width*0.4}px Arial`;
-ctx.fillText('💋', tx, ty);
-}
-}
-
-function addInstaText(){
-let t=prompt("Text likho (Insta Story):");
-if(t){ctx.fillStyle='#fff'; ctx.font='bold 40px Arial'; ctx.fillText(t, canvas.width/2, canvas.height/2);}
-}
-function addSticker(emoji){
-ctx.font='80px Arial'; ctx.fillText(emoji, Math.random()*canvas.width, Math.random()*canvas.height);
-}
-function addMusic(){alert("🎵 Music Sticker - Gaana select karo StarMaker se!"); searchSongs&&searchSongs();}
-function addPoll(){addSticker('📊 YES / NO?');}
-
-function takeSnap(){
-// Capture photo with filter + lens
-let temp=document.createElement('canvas');
-temp.width=video.videoWidth; temp.height=video.videoHeight;
-let tCtx=temp.getContext('2d');
-tCtx.filter=video.style.filter;
-tCtx.drawImage(video,0,0);
-tCtx.drawImage(canvas,0,0);
-let url=temp.toDataURL('image/png');
-let w=window.open(); w.document.write(`<img src="${url}" style="width:100%"><br><a href="${url}" download="zero-se-hero.png" style="display:block;padding:15px;background:#ff006a;color:#fff;text-align:center;border-radius:20px;margin:10px;text-decoration:none">📥 DOWNLOAD STORY</a>`);
-}
-
-// KISS GIFT FUNCTION - Full screen to lips
-function triggerKissGift(){
-window.kissActive=true;
-if(faceLandmarks){
-let mouth=faceLandmarks[13];
-let el=document.createElement('div');
-el.innerText='💋';
-el.style.position='fixed'; el.style.left='50%'; el.style.top='100%'; el.style.fontSize='100px'; el.style.zIndex='9999'; el.style.transition='all 1s cubic-bezier(.17,.67,.42,1.3)';
-document.body.appendChild(el);
-setTimeout(()=>{
-let mx=mouth.x*window.innerWidth; let my=mouth.y*window.innerHeight;
-el.style.left=mx+'px'; el.style.top=my+'px'; el.style.transform='translate(-50%,-50%) scale(3)';
-},100);
-setTimeout(()=>{el.remove(); window.kissActive=false},2000);
-}
-}
-
-startCamera();
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZERO SE HERO - SUPER SOCIAL</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff}
-.top{position:sticky;top:0;z-index:99;background:#000;display:flex;border-bottom:1px solid #222}
-.top div{flex:1;padding:14px;text-align:center;font-weight:bold;font-size:13px}
-.top .active{border-bottom:3px solid #ff006a;color:#ff006a}
-.card{background:#111;margin:10px;border-radius:18px;padding:12px;border:1px solid #222}
-.btn{padding:10px 16px;border-radius:25px;border:none;font-weight:bold;cursor:pointer}
-.primary{background:linear-gradient(90deg,#ff006a,#ff8c00);color:#fff}
-.user{ display:flex;gap:10px;align-items:center;padding:8px;background:#1a1a1a;border-radius:12px;margin:6px 0}
-.user img{width:45px;height:45px;border-radius:50%}
-.videoFeed{height:78vh;overflow-y:scroll;scroll-snap-type:y mandatory}
-.reel{height:78vh;position:relative;scroll-snap-align:start;background:#000;border-bottom:2px solid #111}
-.reel video{width:100%;height:100%;object-fit:cover}
-.reelInfo{position:absolute;bottom:0;left:0;width:100%;padding:15px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
-.quality{position:absolute;top:10px;right:10px;background:#ff006a;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:bold}
-.add100{background:#222;padding:12px;border-radius:12px;margin:10px 0;text-align:center;border:2px dashed #ff006a}
-</style>
-</head>
-<body>
-
-<div class="top">
-<div class="active" onclick="tab('random',this)">🎲 RANDOM</div>
-<div onclick="tab('group',this)">👥 GROUPS (100+)</div>
-<div onclick="tab('shorts',this)">🎬 SHORTS HD</div>
-</div>
-
-<!-- RANDOM TAB - Telegram Style -->
-<div id="randomTab">
-<div class="card">
-<div style="display:flex;gap:10px">
-<input id="groupNameInput" placeholder="Group ka naam likho - Eg: BD Lovers" style="flex:1;padding:14px;border-radius:25px;border:none;background:#222;color:#fff">
-<button class="btn primary" onclick="createGroup()">CREATE</button>
-</div>
-<div class="add100" onclick="addRandom100()">
-➕ <b>100+ Random Log Add Karo - Facebook Jaisa</b><br><span style="font-size:12px;opacity:.6">Tap karo - 100 random log turant group me</span>
-</div>
-<div id="randomPeople"></div>
-</div>
-<div id="myGroups"></div>
-</div>
-
-<!-- GROUPS TAB -->
-<div id="groupTab" style="display:none">
-<div class="card">
-<h3>👥 Mere Groups - Telegram Style</h3>
-<div id="groupList"></div>
-<button class="btn primary" style="width:100%;margin-top:10px" onclick="createRandomGroup()">🎲 Random Group Banao - 150 Logon Ke Saath</button>
-</div>
-<div class="card">
-<h4>🔥 Active Members (Online 1.2K)</h4>
-<div id="onlineList"></div>
-</div>
-</div>
-
-<!-- SHORTS TAB - Insta Best Quality + YouTube -->
-<div id="shortTab" style="display:none">
-<div style="display:flex;gap:8px;padding:10px;background:#111">
-<label class="btn primary" style="flex:1;text-align:center">📤 HD Short Upload (1080p)
-<input type="file" id="shortInput" accept="video/*" hidden onchange="uploadShort(event)">
-</label>
-<select id="qualitySelect" style="background:#222;color:#fff;border:none;padding:10px;border-radius:20px">
-<option>1080p HD - Insta Best</option>
-<option>4K - YouTube Quality</option>
-<option>720p</option>
-</select>
-</div>
-<div class="videoFeed" id="videoFeed"></div>
-</div>
-
-<script>
-// FAKE USERS POOL - 200 Users
-let users=[];
-for(let i=1;i<=200;i++){
-users.push({id:i,name:`Hero ${i} ${['🔥','❤️','💎','👑','😍'][i%5]}`,pic:`https://i.pravatar.cc/100?img=${(i%70)+1}`,online:Math.random()>0.3});
-}
-let myGroups=JSON.parse(localStorage.getItem('zsh_groups')||'[]');
-let shorts=JSON.parse(localStorage.getItem('zsh_shorts')||'[]');
-
-function tab(t,el){
-document.querySelectorAll('.top div').forEach(d=>d.classList.remove('active'));
-el.classList.add('active');
-document.getElementById('randomTab').style.display=t=='random'?'block':'none';
-document.getElementById('groupTab').style.display=t=='group'?'block':'none';
-document.getElementById('shortTab').style.display=t=='shorts'?'block':'none';
-if(t=='random') showRandom();
-if(t=='group') showGroups();
-if(t=='shorts') showShorts();
-}
-
-function showRandom(){
-let html='';
-let shuffled=[...users].sort(()=>0.5-Math.random()).slice(0,15);
-shuffled.forEach(u=>{
-html+=`<div class="user"><img src="${u.pic}"><div style="flex:1"><div style="font-weight:bold;font-size:14px">${u.name}</div><div style="font-size:11px;opacity:.6">${u.online?'🟢 Online':'⚪ Offline'} • Random</div></div><button class="btn primary" style="padding:6px 12px;font-size:12px" onclick="addToCurrentGroup(${u.id})">ADD +</button></div>`;
-});
-document.getElementById('randomPeople').innerHTML=html;
-}
-
-let currentGroup=null;
-function createGroup(){
-let name=document.getElementById('groupNameInput').value||`Zero Se Hero Group ${myGroups.length+1}`;
-let g={id:Date.now(),name, members:[], created: new Date().toLocaleString()};
-myGroups.push(g);
-currentGroup=g;
-localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
-showMyGroups();
-document.getElementById('groupNameInput').value='';
-alert(`✅ Group Ban Gaya: ${name} - Ab 100+ log add karo!`);
-addRandom100();
-}
-
-function addRandom100(){
-if(myGroups.length==0) return createGroup();
-if(!currentGroup) currentGroup=myGroups[myGroups.length-1];
-let random100=[...users].sort(()=>0.5-Math.random()).slice(0,100);
-random100.forEach(u=>{if(!currentGroup.members.find(m=>m.id==u.id)) currentGroup.members.push(u)});
-localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
-showMyGroups();
-showGroups();
-alert(`🔥 ${random100.length} Random Log Add Ho Gaye! Total: ${currentGroup.members.length}`);
-}
-
-function createRandomGroup(){
-let name=`Random Dhamaka Group ${Math.floor(Math.random()*1000)}`;
-let members=[...users].sort(()=>0.5-Math.random()).slice(0,150);
-let g={id:Date.now(),name,members,created:'Just Now'};
-myGroups.push(g);
-currentGroup=g;
-localStorage.setItem('zsh_groups',JSON.stringify(myGroups));
-showGroups();
-alert(`👥 ${name} ban gaya - 150 log add hain! Facebook jaise!`);
-}
-
-function addToCurrentGroup(uid){
-if(!currentGroup){alert("Pehle group banao!");return}
-let u=users.find(x=>x.id==uid);
-if(!currentGroup.members.find(m=>m.id==uid)){currentGroup.members.push(u); localStorage.setItem('zsh_groups',JSON.stringify(myGroups)); showMyGroups();}
-}
-
-function showMyGroups(){
-let html='';
-myGroups.slice().reverse().forEach(g=>{
-html+=`<div class="card"><div style="display:flex;justify-content:space-between"><div><div style="font-weight:bold">👑 ${g.name}</div><div style="font-size:11px;opacity:.6">${g.members.length} Members • ${g.created}</div></div><button class="btn" style="background:#222;color:#fff" onclick="openGroup(${g.id})">OPEN</button></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px">${g.members.slice(0,20).map(m=>`<img src="${m.pic}" style="width:28px;height:28px;border-radius:50%">`).join('')}${g.members.length>20?`<span style="font-size:11px;padding:6px;background:#ff006a;border-radius:20px">+${g.members.length-20}</span>`:''}</div></div>`;
-});
-document.getElementById('myGroups').innerHTML=html||'<div style="text-align:center;opacity:.5;padding:20px">Koi group nahi - Pehla banao!</div>';
-document.getElementById('groupList').innerHTML=html;
-}
-
-function showGroups(){
-showMyGroups();
-let html='';
-users.filter(u=>u.online).slice(0,30).forEach(u=>{
-html+=`<div class="user"><img src="${u.pic}"><div style="flex:1"><div style="font-weight:bold;font-size:13px">${u.name}</div><div style="font-size:11px;color:#0f0">Online • Insta Quality Reels Dekh Raha</div></div><div style="font-size:12px">❤️</div></div>`;
-});
-document.getElementById('onlineList').innerHTML=html;
-}
-
-function openGroup(id){
-let g=myGroups.find(x=>x.id==id);
-if(!g) return;
-alert(`👥 ${g.name} Opened\n${g.members.length} Members\n\nTelegram jaise chat yahan ayega!\nGroup Link: https://zero-se-hero.live/g/${g.id}`);
-}
-
-// SHORTS - Insta Best + YouTube Quality
-let demoVideos=[
-"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
-];
-
-function showShorts(){
-let all=[...shorts, ...demoVideos.map((url,i)=>({url, caption:`Zero Se Hero Trending #${i+1} 🔥 Insta HD Quality`, quality:"1080p HD", likes:Math.floor(Math.random()*5000)+500}))];
-let html='';
-all.forEach(v=>{
-html+=`<div class="reel"><video src="${v.url}" loop autoplay muted playsinline onclick="this.paused?this.play():this.pause()"></video><div class="quality">${v.quality||'1080p HD'}</div><div class="reelInfo"><div style="display:flex;gap:10px;align-items:center"><img src="https://i.pravatar.cc/40?img=${Math.floor(Math.random()*70)}" style="width:35px;height:35px;border-radius:50%;border:2px solid #ff006a"><div><div style="font-weight:bold;font-size:14px">Hero Official • ${v.quality||'1080p'}</div><div style="font-size:13px">${v.caption}</div></div></div><div style="display:flex;gap:15px;margin-top:10px;font-size:13px"><span>❤️ ${v.likes||1200}</span><span>💬 89</span><span>↗️ Share</span><span>🎵 Original Audio - HD</span></div></div></div>`;
-});
-document.getElementById('videoFeed').innerHTML=html||'<div style="text-align:center;padding:40px">Koi short nahi - Pehla upload karo 1080p me!</div>';
-}
-
-function uploadShort(e){
-let file=e.target.files[0];
-let url=URL.createObjectURL(file);
-let quality=document.getElementById('qualitySelect').value;
-let caption=prompt("Caption likho - #Hashtag ke saath:")||"My First HD Short 🔥 #ZeroSeHero";
-shorts.unshift({url,caption,quality,likes:0});
-localStorage.setItem('zsh_shorts',JSON.stringify(shorts.slice(0,10))); // Keep 10 local
-showShorts();
-alert(`✅ ${quality} me Upload Ho Gaya! Insta Best Quality me!`);
-}
-
-// INIT
-showRandom(); showMyGroups();
-</script>
-</body>
-</html>
-<link rel="icon" href="logo.png" type="image/png">
-<div style="position:absolute;top:10px;left:10px;z-index:20">
-<img src="live-watermark.png" style="width:150px;opacity:0.9">
-</div>
-<a href="level.html">⭐ LEVEL</a>
-<a href="ranking.html">🏆 RANKING</a>
-<!-- ZERO SE HERO LOGO - FRONT -->
-<div style="text-align:center;padding:16px;background:linear-gradient(180deg,#1a0033,#000)">
-  <img src="logo.png" style="width:130px;height:130px;border-radius:30px;box-shadow:0 0 25px gold;border:3px solid gold">
-  <div style="margin-top:8px">
-    <img src="live_banner.png" style="width:280px;max-width:90%;height:auto">
-  </div>
-  <p style="color:#ffcc00;font-size:11px;margin-top:6px;opacity:.8">👑 Camera On Karo - Zero Se Hero Bano</p>
-</div>
-
-<!-- FAVICON + APP ICON -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>ZERO SE HERO LIVE</title>
 <link rel="icon" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<!-- Video tag me playsinline zaruri hai -->
-<video autoplay muted playsinline></video>
-// SIMPLE SEARCH - LOCAL USERS
-const users = ["Riya","Simran","Pooja","BD ADMIN","Zero Hero"];
-function searchUser(){
-  let q = document.getElementById('searchInput').value.toLowerCase();
-  let result = users.filter(u => u.toLowerCase().includes(q));
-  document.getElementById('searchResult').innerHTML = result.length ? result.join("<br>") : "❌ Koi user nahi mila";
-}
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zero Se Hero Live</title>
 <style>
-body{margin:0;background:#0a001a;color:#fff;text-align:center;font-family:sans-serif}
-.header{padding:20px}
-.logo{width:90px;height:90px;border-radius:20px;border:2px solid gold}
-.liveGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
-.card{background:#1a0033;padding:10px;border-radius:15px}
-.card img{width:100%;border-radius:10px;height:120px;object-fit:cover}
-.btn{padding:12px 25px;background:linear-gradient(90deg,#ff006a,#ff9900);border:none;border-radius:30px;color:#fff;font-weight:bold;margin-top:20px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#070A1A;color:#fff;overflow-x:hidden}
+.top{position:fixed;top:0;left:0;right:0;z-index:999;background:linear-gradient(90deg,#FF0055,#FF8A00);padding:10px 12px;display:flex;justify-content:space-between;font-weight:900;font-size:13px}
+.page{padding:60px 0 90px 0;min-height:100vh}
+.card{background:#fff;color:#111;margin:10px;border-radius:20px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;margin:5px;cursor:pointer}
+.live-dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}@keyframes blink{50%{opacity:.3}}
+.tab{position:fixed;bottom:0;left:0;right:0;background:#0F1225;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0;z-index:999}
+.tab button{background:none;border:0;color:#666;font-size:22px}
+.tab button.active{color:#FFD700}
+.input{width:100%;padding:12px;border-radius:14px;border:2px solid #eee;margin:8px 0;font-size:14px}
+#regScreen{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0F1225,#1A237E);display:flex;align-items:center;justify-content:center;padding:16px}
+.regBox{background:#fff;color:#111;width:100%;max-width:380px;border-radius:24px;padding:20px;text-align:center}
+#liveModal{position:fixed;inset:0;z-index:10000;background:#000;display:none;flex-direction:column}
+#liveModal video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.gift{display:inline-block;font-size:18px;padding:8px 14px;border:2px solid #FFD700;border-radius:30px;margin:4px;background:linear-gradient(135deg,#FFF9C4,#FFEB3B);cursor:pointer;font-weight:800}
 </style>
 </head>
 <body>
+<div class="top"><span>💰<span id="coins">0</span> | $<span id="dollars">0.00</span></span><span><span class="live-dot"></span> 341 LIVE</span><span id="userNameTop">GUEST</span></div>
 
-<div class="header">
-  <h2 style="color:gold">🏆 ZERO SE HERO 🔴</h2>
-  <p style="opacity:.7">Live Streaming - No Login Needed</p>
+<div id="regScreen"><div class="regBox"><div style="font-size:50px">🏆🔴</div><h2>ZERO SE HERO LIVE</h2><p style="font-size:12px;color:#666">Register Karo • 100 Free Coins</p><input id="rName" class="input" placeholder="Apna Naam"><input id="rPhone" class="input" placeholder="Phone +880..."><input id="rRef" class="input" placeholder="Referral HASMAT60"><button class="btn" style="background:linear-gradient(90deg,#FF0055,#FF8A00);color:#fff;width:100%" onclick="doRegister()">✅ REGISTER & START</button></div></div>
+
+<!-- LIVE CAMERA MODAL - ONLY OPENS ON CLICK -->
+<div id="liveModal">
+<video id="liveVideo" autoplay playsinline muted></video>
+<div style="position:absolute;top:15px;left:15px;background:rgba(0,0,0,.6);padding:6px 12px;border-radius:20px;font-size:12px">🔴 LIVE: <span id="liveName">You</span> • ZERO SE HERO</div>
+<div style="position:absolute;bottom:20px;left:0;right:0;text-align:center">
+<div style="margin-bottom:12px"><span class="gift">🌹10</span><span class="gift">💎50</span><span class="gift">🏆100</span><span class="gift">💋 Kiss</span></div>
+<button class="btn" style="background:#fff;color:#000;padding:14px 30px;border-radius:30px" onclick="stopLive()">⏹️ STOP LIVE</button>
+</div>
 </div>
 
-<!-- FRONT SE LOGIN HATA DIYA - DIRECT LIVE GRID -->
-<div class="liveGrid">
-  <div class="card">🔴 Riya Live<br><small style="color:gold">12.5K Viewers</small></div>
-  <div class="card">🔴 Simran Queen<br><small style="color:gold">8.2K Viewers</small></div>
-  <div class="card">🔴 Pooja Official<br><small style="color:gold">15K Viewers</small></div>
-  <div class="card">🔴 BD ADMIN<br><small style="color:gold">25K Viewers</small></div>
+<div id="homePage" class="page">
+<div class="card" style="background:linear-gradient(135deg,#1A237E,#FF1744);color:#fff;text-align:center"><h2>🔴 ZERO SE HERO LIVE</h2><p style="font-size:12px">Dekho • Live Aao • Hero Bano</p><button class="btn" style="background:#FFD700;color:#000" onclick="startGoLive()">🔴 GO LIVE +50 - Camera ON</button><button class="btn" style="background:#fff;color:#000" onclick="showPage('wallet')">💎 Buy Coins</button></div>
+
+<div class="card"><b>🔴 LIVE NOW</b><div style="display:flex;gap:10px;overflow:auto;margin-top:8px">
+<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('Pooja')"><div style="font-size:40px">👩‍🎤</div><small>Pooja 1.8k</small><br><button class="btn" style="background:#FF1744;color:#fff;padding:6px;font-size:11px;width:90%">WATCH</button></div>
+<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('Raja')"><div style="font-size:40px">🛒</div><small>Raja Seller</small><br><button class="btn" style="background:#FFD700;color:#000;padding:6px;font-size:11px;width:90%">BUY</button></div>
+<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('BD ADMIN')"><div style="font-size:40px">👑</div><small>BD ADMIN ✅</small><br><button class="btn" style="background:#2962FF;color:#fff;padding:6px;font-size:11px;width:90%">JOIN</button></div>
+</div></div>
+
+<div class="card"><b>🎁 GIFT STORE</b><div style="margin-top:8px"><span class="gift" onclick="sendGift('🌹',10)">🌹10</span><span class="gift" onclick="sendGift('💎',50)">💎50</span><span class="gift" onclick="sendGift('🏆',100)">🏆100</span><span class="gift" onclick="sendGift('🚀',500)">🚀500</span><span class="gift" onclick="sendGift('💋',200)">💋 Kiss</span></div></div>
 </div>
 
-<button class="btn" onclick="enterApp()">🚀 ENTER LIVE</button>
+<div id="walletPage" class="page" style="display:none"><div class="card" style="background:linear-gradient(135deg,#FF6D00,#FF1744);color:#fff;text-align:center"><h2>💎 COINS</h2><p>Coins: <span id="wCoins">0</span> | $<span id="wDol">0.00</span></p></div><div class="card"><button class="btn" style="background:#FFD700;width:100%" onclick="buyCoins(550,5)">550 Coins = $5</button><button class="btn" style="background:#00C853;color:#fff;width:100%;margin-top:10px" onclick="alert('Withdraw - Min $10')">WITHDRAW</button></div></div>
 
-<p style="margin-top:30px;opacity:.5;font-size:12px">BD ADMIN Official ✅ Helpline 24/7</p>
+<div id="invitePage" class="page" style="display:none"><div class="card" style="text-align:center"><h2>💰 INVITE = $1</h2><div id="inviteLink" style="background:#eee;padding:10px;border-radius:12px;font-size:12px;word-break:break-all;margin-top:10px">link...</div><button class="btn" style="background:#FFD700;width:100%;margin-top:8px" onclick="copyInvite()">📋 COPY LINK</button></div></div>
+
+<div class="tab"><button class="active" onclick="showPage('home')" id="tHome">🏠</button><button onclick="showPage('wallet')" id="tWallet">💎</button><button onclick="startGoLive()" style="background:#FF0055;color:#fff;border-radius:50%;width:56px;height:56px;margin-top:-18px;font-size:26px">🔴</button><button onclick="showPage('invite')" id="tInvite">💰</button><button onclick="location.href='reels.html'">🎬</button></div>
 
 <script>
-function enterApp(){
-  // Direct andar bhejo - Bina login ke
-  window.location.href = "live.html"; // Ya jo bhi andar ka page hai
-  // Agar live.html nahi hai toh camera wala page kholo:
-  // window.location.href = "recharge.html";
+var coins=parseInt(localStorage.getItem('zsh_coins')||0),dollars=parseFloat(localStorage.getItem('zsh_dol')||0),user=JSON.parse(localStorage.getItem('zsh_user')||'null');
+let liveStream=null;
+
+function init(){if(user){document.getElementById('regScreen').style.display='none';doLogin();}upd();}
+function doRegister(){var n=document.getElementById('rName').value||'Guest',ph=document.getElementById('rPhone').value;if(n.length<2||ph.length<6){alert('Naam Phone dalo');return;}user={name:n,phone:ph};coins=100;localStorage.setItem('zsh_user',JSON.stringify(user));save();document.getElementById('regScreen').style.display='none';doLogin();}
+function doLogin(){document.getElementById('userNameTop').innerText=user.name.toUpperCase().substring(0,10);document.getElementById('inviteLink').innerText='https://mdhasmatali60-droid.github.io/Zero-se-Hero-live-streaming-app/?ref='+user.name.toUpperCase()+'60';}
+function save(){localStorage.setItem('zsh_coins',coins);localStorage.setItem('zsh_dol',dollars.toFixed(2));upd();}
+function upd(){document.getElementById('coins').innerText=coins;if(document.getElementById('wCoins')){document.getElementById('wCoins').innerText=coins;document.getElementById('wDol').innerText=dollars.toFixed(2);}document.getElementById('dollars').innerText=dollars.toFixed(2);}
+function showPage(p){['homePage','walletPage','invitePage'].forEach(id=>document.getElementById(id).style.display='none');document.querySelectorAll('.tab button').forEach(b=>b.classList.remove('active'));if(p=='home'){homePage.style.display='block';}else if(p=='wallet'){walletPage.style.display='block';}else if(p=='invite'){invitePage.style.display='block';}}
+
+// *** YAHI FIX HAI - CAMERA SIRF BUTTON CLICK PE ***
+async function startGoLive(){
+  const modal=document.getElementById('liveModal');
+  const video=document.getElementById('liveVideo');
+  modal.style.display='flex';
+  try{
+    // User gesture ke andar mang rahe hain - Safari allow karega
+    liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:true});
+    video.srcObject=liveStream;
+    document.getElementById('liveName').innerText=user?user.name:'You';
+    coins+=50; save();
+  }catch(e){
+    modal.style.display='none';
+    if(e.name=='NotAllowedError'){
+      alert('❌ iPhone Setting se Allow karo:\nSettings > Apps > Safari > Camera > Allow\n\nFir Safari me aA > Website Settings > Camera > Allow');
+    }else{
+      alert('Camera Error: '+e.message);
+    }
+  }
 }
+function stopLive(){
+  if(liveStream){liveStream.getTracks().forEach(t=>t.stop());}
+  document.getElementById('liveModal').style.display='none';
+}
+function watchFake(n){alert(n+' ka Live dekh rahe ho - Watch +5 coins!');coins+=5;save();}
+function sendGift(e,c){if(coins<c){alert('Coins kam hain!');return;}coins-=c;save();alert(e+' Gift bheja!');}
+function buyCoins(c,d){coins+=c;dollars+=d;save();alert(c+' Coins Added!');}
+function copyInvite(){navigator.clipboard.writeText(document.getElementById('inviteLink').innerText);alert('Link Copied!');}
 
-// Camera error wala code hata diya - Front pe ab kuch nahi maangega
+init();
 </script>
-
 </body>
 </html>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zero Se Hero Live</title>
-<style>
-body{margin:0;background:#0a001a;color:#fff;font-family:sans-serif}
-.header{text-align:center;padding:15px;background:#000;position:sticky;top:0;z-index:10}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px;padding-bottom:90px}
-.card{background:#1a0033;border-radius:16px;padding:8px;border:1px solid #30006a;position:relative}
-.card img{width:100%;height:130px;object-fit:cover;border-radius:12px;background:#222}
-.liveTag{position:absolute;top:14px;left:14px;background:red;color:#fff;font-size:10px;padding:3px 8px;border-radius:20px}
-.btn{flex:1;padding:7px;border:none;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer}
-.btn-live{background:linear-gradient(90deg,#ff006a,#ff9900);color:#fff}
-.btn-msg{background:#2a0055;color:#fff;border:1px solid #7000ff}
-.goLiveBar{position:fixed;bottom:0;width:100%;background:#000;padding:12px;text-align:center;border-top:1px solid #333;z-index:20}
-</style>
-</head>
-<body>
-
-<div class="header">
-<h2 style="color:gold;margin:5px">🏆 ZERO SE HERO 🔴 LIVE</h2>
-<button onclick="location.href='task.html'" style="padding:7px 18px;background:gold;color:#000;border:none;border-radius:20px;font-weight:bold;font-size:12px;margin-top:8px">🎯 Daily Tasks - 930 Coins</button>
-</div>
-
-<div class="grid">
-<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=5"><div style="font-size:13px;font-weight:bold;margin-top:4px">Riya 🔥 12.5K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Riya'">Watch</button><button class="btn btn-msg" onclick="openChat('Riya')">Msg</button></div></div>
-<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=9"><div style="font-size:13px;font-weight:bold;margin-top:4px">Simran 8.2K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Simran'">Watch</button><button class="btn btn-msg" onclick="openChat('Simran')">Msg</button></div></div>
-<div class="card"><div class="liveTag">🔴 LIVE</div><img src="https://i.pravatar.cc/300?img=26"><div style="font-size:13px;font-weight:bold;margin-top:4px">Pooja 15K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=Pooja'">Watch</button><button class="btn btn-msg" onclick="openChat('Pooja')">Msg</button></div></div>
-<div class="card"><div class="liveTag" style="background:gold;color:#000">⭐ ADMIN</div><img src="https://i.pravatar.cc/300?img=12"><div style="font-size:13px;font-weight:bold;margin-top:4px">BD ADMIN 25K</div><div style="display:flex;gap:6px;margin-top:6px"><button class="btn btn-live" onclick="location.href='live.html?watch=BD ADMIN'">Watch</button><button class="btn btn-msg" onclick="openChat('BD ADMIN')">Msg</button></div></div>
-</div>
-
-<div class="goLiveBar"><button onclick="location.href='live.html'" style="padding:14px 40px;background:red;color:#fff;border:none;border-radius:30px;font-weight:bold;font-size:16px">🔴 GO LIVE</button></div>
-
-<div id="chatBox" style="display:none;position:fixed;bottom:0;width:100%;height:55%;background:#0f0025;z-index:99;border-radius:20px 20px 0 0;border-top:2px solid gold;flex-direction:column">
-<div style="padding:12px;display:flex;justify-content:space-between;border-bottom:1px solid #333"><b id="chatName"></b><span onclick="closeChat()" style="background:red;padding:4px 12px;border-radius:20px;cursor:pointer">X</span></div>
-<div id="messages" style="flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px"></div>
-<div style="padding:10px;display:flex;gap:8px;background:#000"><input id="msgInput" placeholder="Message..." style="flex:1;padding:12px;border-radius:20px;background:#1a0033;color:#fff;border:1px solid #7000ff"><button onclick="sendMsg()" style="padding:12px 20px;background:gold;border:none;border-radius:20px;font-weight:bold">Send</button></div>
-</div>
-
-<script>
-let cur='';
-function openChat(n){cur=n;document.getElementById('chatName').innerText='💬 '+n;document.getElementById('chatBox').style.display='flex';document.getElementById('messages').innerHTML='<div style="background:#1a0033;padding:8px;border-radius:10px">Hi! '+n+' se baat karo 👇</div>';}
-function closeChat(){document.getElementById('chatBox').style.display='none';}
-function sendMsg(){let v=document.getElementById('msgInput').value.trim();if(!v)return;document.getElementById('messages').innerHTML+='<div style="align-self:flex-end;background:linear-gradient(90deg,#ff006a,#ff9900);padding:8px 12px;border-radius:12px;max-width:70%">You: '+v+'</div>';document.getElementById('msgInput').value='';setTimeout(()=>{document.getElementById('messages').innerHTML+='<div style="align-self:flex-start;background:#2a0055;padding:8px 12px;border-radius:12px;max-width:70%">'+cur+': Thanks! 😍</div>';document.getElementById('messages').scrollTop=9999;},800);document.getElementById('messages').scrollTop=9999;}
-</script>
-
-</body>
-</html>
-<button onclick="location.href='reels.html'" style="padding:7px 14px;background:#fff;color:#000;border:none;border-radius:20px;font-weight:bold;font-size:12px;margin-left:6px">🎬 Reels</button>
