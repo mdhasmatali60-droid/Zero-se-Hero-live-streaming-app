@@ -1,277 +1,134 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>ZERO SE HERO LIVE</title>
-<link rel="icon" href="logo.png">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#070A1A;color:#fff;overflow-x:hidden}
-.top{position:fixed;top:0;left:0;right:0;z-index:999;background:linear-gradient(90deg,#FF0055,#FF8A00);padding:10px 12px;display:flex;justify-content:space-between;font-weight:900;font-size:13px}
-.page{padding:60px 0 90px 0;min-height:100vh}
-.card{background:#fff;color:#111;margin:10px;border-radius:20px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.3)}
-.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;margin:5px;cursor:pointer}
-.live-dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}@keyframes blink{50%{opacity:.3}}
-.tab{position:fixed;bottom:0;left:0;right:0;background:#0F1225;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0;z-index:999}
-.tab button{background:none;border:0;color:#666;font-size:22px}
-.tab button.active{color:#FFD700}
-.input{width:100%;padding:12px;border-radius:14px;border:2px solid #eee;margin:8px 0;font-size:14px}
-#regScreen{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0F1225,#1A237E);display:flex;align-items:center;justify-content:center;padding:16px}
-.regBox{background:#fff;color:#111;width:100%;max-width:380px;border-radius:24px;padding:20px;text-align:center}
-#liveModal{position:fixed;inset:0;z-index:10000;background:#000;display:none;flex-direction:column}
-#liveModal video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
-.gift{display:inline-block;font-size:18px;padding:8px 14px;border:2px solid #FFD700;border-radius:30px;margin:4px;background:linear-gradient(135deg,#FFF9C4,#FFEB3B);cursor:pointer;font-weight:800}
-</style>
-</head>
-<body>
-<div class="top"><span>💰<span id="coins">0</span> | $<span id="dollars">0.00</span></span><span><span class="live-dot"></span> 341 LIVE</span><span id="userNameTop">GUEST</span></div>
-
-<div id="regScreen"><div class="regBox"><div style="font-size:50px">🏆🔴</div><h2>ZERO SE HERO LIVE</h2><p style="font-size:12px;color:#666">Register Karo • 100 Free Coins</p><input id="rName" class="input" placeholder="Apna Naam"><input id="rPhone" class="input" placeholder="Phone +880..."><input id="rRef" class="input" placeholder="Referral HASMAT60"><button class="btn" style="background:linear-gradient(90deg,#FF0055,#FF8A00);color:#fff;width:100%" onclick="doRegister()">✅ REGISTER & START</button></div></div>
-
-<!-- LIVE CAMERA MODAL - ONLY OPENS ON CLICK -->
-<div id="liveModal">
-<video id="liveVideo" autoplay playsinline muted></video>
-<div style="position:absolute;top:15px;left:15px;background:rgba(0,0,0,.6);padding:6px 12px;border-radius:20px;font-size:12px">🔴 LIVE: <span id="liveName">You</span> • ZERO SE HERO</div>
-<div style="position:absolute;bottom:20px;left:0;right:0;text-align:center">
-<div style="margin-bottom:12px"><span class="gift">🌹10</span><span class="gift">💎50</span><span class="gift">🏆100</span><span class="gift">💋 Kiss</span></div>
-<button class="btn" style="background:#fff;color:#000;padding:14px 30px;border-radius:30px" onclick="stopLive()">⏹️ STOP LIVE</button>
-</div>
-</div>
-
-<div id="homePage" class="page">
-<div class="card" style="background:linear-gradient(135deg,#1A237E,#FF1744);color:#fff;text-align:center"><h2>🔴 ZERO SE HERO LIVE</h2><p style="font-size:12px">Dekho • Live Aao • Hero Bano</p><button class="btn" style="background:#FFD700;color:#000" onclick="startGoLive()">🔴 GO LIVE +50 - Camera ON</button><button class="btn" style="background:#fff;color:#000" onclick="showPage('wallet')">💎 Buy Coins</button></div>
-
-<div class="card"><b>🔴 LIVE NOW</b><div style="display:flex;gap:10px;overflow:auto;margin-top:8px">
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('Pooja')"><div style="font-size:40px">👩‍🎤</div><small>Pooja 1.8k</small><br><button class="btn" style="background:#FF1744;color:#fff;padding:6px;font-size:11px;width:90%">WATCH</button></div>
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('Raja')"><div style="font-size:40px">🛒</div><small>Raja Seller</small><br><button class="btn" style="background:#FFD700;color:#000;padding:6px;font-size:11px;width:90%">BUY</button></div>
-<div style="min-width:120px;background:#111;border-radius:16px;padding:8px;color:#fff;text-align:center" onclick="watchFake('BD ADMIN')"><div style="font-size:40px">👑</div><small>BD ADMIN ✅</small><br><button class="btn" style="background:#2962FF;color:#fff;padding:6px;font-size:11px;width:90%">JOIN</button></div>
-</div></div>
-
-<div class="card"><b>🎁 GIFT STORE</b><div style="margin-top:8px"><span class="gift" onclick="sendGift('🌹',10)">🌹10</span><span class="gift" onclick="sendGift('💎',50)">💎50</span><span class="gift" onclick="sendGift('🏆',100)">🏆100</span><span class="gift" onclick="sendGift('🚀',500)">🚀500</span><span class="gift" onclick="sendGift('💋',200)">💋 Kiss</span></div></div>
-</div>
-
-<div id="walletPage" class="page" style="display:none"><div class="card" style="background:linear-gradient(135deg,#FF6D00,#FF1744);color:#fff;text-align:center"><h2>💎 COINS</h2><p>Coins: <span id="wCoins">0</span> | $<span id="wDol">0.00</span></p></div><div class="card"><button class="btn" style="background:#FFD700;width:100%" onclick="buyCoins(550,5)">550 Coins = $5</button><button class="btn" style="background:#00C853;color:#fff;width:100%;margin-top:10px" onclick="alert('Withdraw - Min $10')">WITHDRAW</button></div></div>
-
-<div id="invitePage" class="page" style="display:none"><div class="card" style="text-align:center"><h2>💰 INVITE = $1</h2><div id="inviteLink" style="background:#eee;padding:10px;border-radius:12px;font-size:12px;word-break:break-all;margin-top:10px">link...</div><button class="btn" style="background:#FFD700;width:100%;margin-top:8px" onclick="copyInvite()">📋 COPY LINK</button></div></div>
-
-<div class="tab"><button class="active" onclick="showPage('home')" id="tHome">🏠</button><button onclick="showPage('wallet')" id="tWallet">💎</button><button onclick="startGoLive()" style="background:#FF0055;color:#fff;border-radius:50%;width:56px;height:56px;margin-top:-18px;font-size:26px">🔴</button><button onclick="showPage('invite')" id="tInvite">💰</button><button onclick="location.href='reels.html'">🎬</button></div>
-
-<script>
-var coins=parseInt(localStorage.getItem('zsh_coins')||0),dollars=parseFloat(localStorage.getItem('zsh_dol')||0),user=JSON.parse(localStorage.getItem('zsh_user')||'null');
-let liveStream=null;
-
-function init(){if(user){document.getElementById('regScreen').style.display='none';doLogin();}upd();}
-function doRegister(){var n=document.getElementById('rName').value||'Guest',ph=document.getElementById('rPhone').value;if(n.length<2||ph.length<6){alert('Naam Phone dalo');return;}user={name:n,phone:ph};coins=100;localStorage.setItem('zsh_user',JSON.stringify(user));save();document.getElementById('regScreen').style.display='none';doLogin();}
-function doLogin(){document.getElementById('userNameTop').innerText=user.name.toUpperCase().substring(0,10);document.getElementById('inviteLink').innerText='https://mdhasmatali60-droid.github.io/Zero-se-Hero-live-streaming-app/?ref='+user.name.toUpperCase()+'60';}
-function save(){localStorage.setItem('zsh_coins',coins);localStorage.setItem('zsh_dol',dollars.toFixed(2));upd();}
-function upd(){document.getElementById('coins').innerText=coins;if(document.getElementById('wCoins')){document.getElementById('wCoins').innerText=coins;document.getElementById('wDol').innerText=dollars.toFixed(2);}document.getElementById('dollars').innerText=dollars.toFixed(2);}
-function showPage(p){['homePage','walletPage','invitePage'].forEach(id=>document.getElementById(id).style.display='none');document.querySelectorAll('.tab button').forEach(b=>b.classList.remove('active'));if(p=='home'){homePage.style.display='block';}else if(p=='wallet'){walletPage.style.display='block';}else if(p=='invite'){invitePage.style.display='block';}}
-
-// *** YAHI FIX HAI - CAMERA SIRF BUTTON CLICK PE ***
-async function startGoLive(){
-  const modal=document.getElementById('liveModal');
-  const video=document.getElementById('liveVideo');
-  modal.style.display='flex';
-  try{
-    // User gesture ke andar mang rahe hain - Safari allow karega
-    liveStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:true});
-    video.srcObject=liveStream;
-    document.getElementById('liveName').innerText=user?user.name:'You';
-    coins+=50; save();
-  }catch(e){
-    modal.style.display='none';
-    if(e.name=='NotAllowedError'){
-      alert('❌ iPhone Setting se Allow karo:\nSettings > Apps > Safari > Camera > Allow\n\nFir Safari me aA > Website Settings > Camera > Allow');
-    }else{
-      alert('Camera Error: '+e.message);
-    }
-  }
-}
-function stopLive(){
-  if(liveStream){liveStream.getTracks().forEach(t=>t.stop());}
-  document.getElementById('liveModal').style.display='none';
-}
-function watchFake(n){alert(n+' ka Live dekh rahe ho - Watch +5 coins!');coins+=5;save();}
-function sendGift(e,c){if(coins<c){alert('Coins kam hain!');return;}coins-=c;save();alert(e+' Gift bheja!');}
-function buyCoins(c,d){coins+=c;dollars+=d;save();alert(c+' Coins Added!');}
-function copyInvite(){navigator.clipboard.writeText(document.getElementById('inviteLink').innerText);alert('Link Copied!');}
-
-init();
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="hi">
-<head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZERO SE HERO - STARMAKER SINGING</title>
+<title>ZERO SE HERO - FINAL TIKKO STARMAKER</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#0A0A12;color:#fff;min-height:100vh;padding-bottom:85px}
-.topPurple{background:linear-gradient(135deg,#9C4DFF,#FF3D9A);padding:12px;border-radius:0 0 20px 20px;position:sticky;top:0;z-index:10}
-.searchBar{background:rgba(255,255,255,.2);padding:10px 14px;border-radius:25px;display:flex;align-items:center;gap:8px}
-.searchBar input{background:transparent;border:0;outline:0;color:#fff;width:100%}.searchBar input::placeholder{color:rgba(255,255,255,.7)}
-.tabBar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0 12px 0;z-index:99}
-.tabBtn{background:none;border:0;color:#666;font-size:10px;text-align:center;font-weight:700}
-.tabBtn.active{color:#FF3D9A}.tabBtn span{display:block;font-size:20px}
-
-/* STARMAKER SINGING UI */
-.songCard{background:#1A1A2E;margin:10px;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center;border:1px solid #2A2A4A}
-.songThumb{width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,#FF3D9A,#9C4DFF);display:flex;align-items:center;justify-content:center;font-size:28px}
-.singBtn{background:linear-gradient(90deg,#FF3D9A,#FF8A00);color:#fff;border:0;padding:8px 16px;border-radius:20px;font-weight:900;font-size:12px;cursor:pointer}
-.liveSingModal{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#1A0A2E,#000);display:none;flex-direction:column;padding:14px}
-.lyricsBox{background:rgba(255,255,255,.08);border-radius:16px;padding:14px;height:220px;overflow:auto;margin:10px 0;text-align:center;line-height:2;font-size:15px}
-.micAnim{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FF8A00);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:40px;animation:pulse 1.2s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1);box-shadow:0 0 30px #FF3D9A}100%{transform:scale(1)}}
-.recordBar{display:flex;gap:8px;justify-content:center;margin-top:10px}
-.actionBtn{padding:12px 20px;border-radius:30px;border:0;font-weight:900;cursor:pointer}
-.postCard{background:#fff;color:#111;border-radius:18px;margin:10px;overflow:hidden}
+body{background:#0F0A1A;color:#fff;min-height:100vh;padding-bottom:85px}
+.top{background:linear-gradient(135deg,#9C4DFF,#FF3D9A);padding:12px 12px 16px;border-radius:0 0 22px 22px;position:sticky;top:0;z-index:10}
+.sBar{background:rgba(255,255,255,.25);padding:10px 14px;border-radius:25px;display:flex;gap:8px;align-items:center;margin-top:8px}
+.sBar input{background:transparent;border:0;outline:0;color:#fff;width:100%}.sBar input::placeholder{color:rgba(255,255,255,.8)}
+.tabBar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:99}
+.tabBtn{background:none;border:0;color:#666;font-size:10px;font-weight:700;text-align:center}.tabBtn.active{color:#FF3D9A}.tabBtn span{display:block;font-size:20px}
+.banner{margin:10px;border-radius:18px;height:130px;background:linear-gradient(90deg,#FFD700,#FF8A00);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px}
+.card{background:#1A1A2E;border-radius:18px;overflow:hidden;position:relative}
+.card img{width:100%;height:160px;object-fit:cover}.info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:8px;font-size:11px;color:#fff}
+.hot{position:absolute;top:6px;left:6px;background:linear-gradient(90deg,red,orange);color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:12px;transform:rotate(-8deg)}
+.gameGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px}
+.gCard{border-radius:20px;overflow:hidden;background:#fff;border:3px solid #9C4DFF}.gCard img{width:100%;height:110px;object-fit:cover}.gTitle{background:linear-gradient(90deg,#9C4DFF,#7B2CBF);color:#fff;text-align:center;padding:6px;font-weight:900;font-size:12px}
+.meHead{background:linear-gradient(180deg,#E9D5FF,#fff);padding:18px;color:#111;border-radius:0 0 22px 22px}
+.taskGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#fff;border-radius:20px;padding:14px;margin:10px;color:#111}
+.task{text-align:center;font-size:11px;font-weight:600}.taskIcon{width:44px;height:44px;border-radius:14px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center;font-size:22px;background:#EDE7FF}
+.post{background:#fff;color:#111;border-radius:18px;margin:10px;overflow:hidden}
+#cam{position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
 
-<div class="topPurple">
-<div style="display:flex;justify-content:space-between;align-items:center"><b>🎤 STARMAKER SINGING</b><span style="font-size:12px">🔴 1.2k Singing Live</span></div>
-<div class="searchBar" style="margin-top:10px">🔍 <input id="songSearch" placeholder="Song search karo - Arijit, Shreya, Atif..." oninput="searchSong(this.value)"></div>
-<div style="display:flex;gap:8px;margin-top:10px;overflow:auto;white-space:nowrap"><button onclick="filterSongs('all')" style="background:#fff;color:#111;padding:6px 12px;border-radius:20px;border:0;font-weight:800;font-size:11px">All</button><button onclick="filterSongs('hindi')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">Hindi</button><button onclick="filterSongs('punjabi')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">Punjabi</button><button onclick="filterSongs('english')" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:20px;border:0;font-size:11px">English</button></div>
+<!-- LIVE TAB -->
+<div id="tabLive">
+<div class="top"><div style="display:flex;gap:14px;font-weight:900"><span>Follow</span><span style="border-bottom:3px solid #fff">Popular</span><span style="opacity:.6">New star</span><span style="opacity:.6">PK</span></div><div class="sBar">🔍<input placeholder="Search User ID"></div></div>
+<div class="banner">🏆 Game Party - Weekly Reward</div>
+<div class="grid2">
+<div class="card" onclick="startLive()"><span class="hot">HOT</span><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400"><div class="info">PK 1v1 • Inayat ✨ | 15776 🔥</div></div>
+<div class="card"><span class="hot">HOT</span><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400"><div class="info">radhe radhe 🌼 • Rashmika | 8344</div></div>
+<div class="card"><span class="hot">HOT</span><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400"><div class="info">🙏 Mini 🦋 | 6717</div></div>
+<div class="card"><span class="hot">HOT</span><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400"><div class="info">welcome • tashu | 5354</div></div>
+</div>
 </div>
 
-<!-- SONG LIST + POSTS -->
-<div id="singHome">
-<div style="margin:10px;font-weight:900">🔥 Trending Songs - Live Singing</div>
+<!-- PARTY TAB -->
+<div id="tabParty" style="display:none">
+<div style="background:#fff;color:#111;padding:14px;display:flex;justify-content:space-between"><h2>Party</h2><span>🔍 🗂️</span></div>
+<div style="background:linear-gradient(90deg,#FF8AE0,#9C4DFF);margin:10px;border-radius:16px;padding:10px;font-weight:700">👑🔥 Send to MissHarry 🌸 x1</div>
+<div class="grid2">
+<div class="card"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400"><div class="info">ZIYAN... 🔥 57008</div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400"><div class="info">Rolex... 🔥 47015</div></div>
+</div>
+</div>
+
+<!-- SING TAB - STARMAKER -->
+<div id="tabSing" style="display:none">
+<div class="top"><b>🎤 STARMAKER LIVE SINGING</b><div class="sBar">🔍<input id="songSearch" placeholder="Song search - Arijit, Shreya, Atif..." oninput="searchSong(this.value)"></div><div style="display:flex;gap:6px;margin-top:8px"><button onclick="filterSongs('all')" style="background:#fff;color:#111;padding:5px 12px;border-radius:20px;border:0;font-weight:800;font-size:11px">All</button><button onclick="filterSongs('hindi')" style="background:rgba(255,255,255,.2);color:#fff;padding:5px 12px;border-radius:20px;border:0;font-size:11px">Hindi</button><button onclick="filterSongs('punjabi')" style="background:rgba(255,255,255,.2);color:#fff;padding:5px 12px;border-radius:20px;border:0;font-size:11px">Punjabi</button></div></div>
 <div id="songList"></div>
-
-<div style="margin:16px 10px 6px 10px;display:flex;justify-content:space-between;align-items:center"><b>📱 User Posts - Khud ka Gana</b><button onclick="openMyPosts()" style="background:gold;color:#000;border:0;padding:6px 10px;border-radius:20px;font-weight:800;font-size:11px">My Posts</button></div>
-<div id="userPosts"></div>
+<div style="margin:14px 10px 6px;font-weight:900;display:flex;justify-content:space-between"><span>📱 My Posts - Edit/Delete</span><span id="pc" style="font-size:11px;background:gold;color:#000;padding:3px 8px;border-radius:12px">0</span></div>
+<div id="myPosts"></div>
 </div>
 
-<!-- LIVE SINGING ROOM -->
-<div class="liveSingModal" id="singModal">
-<div style="display:flex;justify-content:space-between;align-items:center"><button onclick="closeSing()" style="background:rgba(255,255,255,.2);color:#fff;border:0;padding:8px 12px;border-radius:20px">← Back</button><b id="nowSingingTitle">Kesariya - Arijit</b><button onclick="closeSing()" style="background:#FF1744;color:#fff;border:0;padding:8px 12px;border-radius:20px">END</button></div>
-
-<div class="micAnim">🎤</div>
-<div style="text-align:center"><b id="singerName">Hasmat Ali is Singing Live</b><div style="font-size:11px;opacity:.6">🔴 342 Listeners • Gift Right Corner me hai</div></div>
-
-<div class="lyricsBox" id="lyrics">Lyrics yaha ayenge...<br><br>Tune jo na kaha<br>Main wo sunta raha<br>Khamkha bewajah<br>Khwab bunta raha...</div>
-
-<div style="position:relative;height:120px;background:rgba(255,255,255,.05);border-radius:16px;margin:10px 0;overflow:hidden">
-<div style="position:absolute;left:0;top:50%;width:100%;height:3px;background:linear-gradient(90deg,#FF3D9A,#FFD700);animation:wave 2s infinite"></div>
-<div style="text-align:center;padding-top:50px;font-size:12px;opacity:.6">🎵 Music Playing - Sing along!</div>
+<!-- MESSAGE TAB -->
+<div id="tabMessage" style="display:none">
+<div style="background:#fff;color:#111;padding:16px"><h2>Messages</h2></div>
+<div style="background:#fff;color:#111;padding:12px;border-bottom:1px solid #eee;display:flex;gap:10px"><img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" style="width:44px;height:44px;border-radius:50%"><div><b>Tikko Live team ✅</b><div style="font-size:12px;color:#666">Game Party Partner Rewards</div></div></div>
+<div style="background:#fff;color:#111;padding:12px;border-bottom:1px solid #eee;display:flex;gap:10px"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100" style="width:44px;height:44px;border-radius:50%"><div><b>Sherya ❤️</b><div style="font-size:12px;color:#666">good afternoon</div></div></div>
 </div>
 
-<div class="recordBar">
-<button class="actionBtn" style="background:#fff;color:#000" id="recBtn" onclick="toggleRecord()">🔴 Start Recording</button>
-<button class="actionBtn" style="background:#00E676;color:#000" onclick="goLiveSing()">🔴 Go Live Singing</button>
-<button class="actionBtn" style="background:#9C4DFF;color:#fff" onclick="postMySing()">📤 Post Karo</button>
+<!-- ME TAB -->
+<div id="tabMe" style="display:none">
+<div class="meHead"><div style="display:flex;gap:12px;align-items:center"><div style="width:70px;height:70px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;border:3px solid #FF3D8A">❤️</div><div><div style="font-weight:900;font-size:18px">🔥 H💔RTLess 🔥</div><div style="font-size:12px">ID 66278246 | 2547 Followers</div></div></div>
+<div style="display:flex;gap:30px;margin-top:14px;text-align:center"><div><b>36</b><div style="font-size:11px;color:#666">Friends</div></div><div><b>79</b><div style="font-size:11px;color:#666">Followings</div></div><div><b>2547</b><div style="font-size:11px;color:#666">Followers</div></div></div>
+<div style="display:flex;gap:8px;margin-top:12px"><div style="flex:1;background:linear-gradient(90deg,#9C4DFF,#D946EF);color:#fff;padding:10px 14px;border-radius:14px;font-weight:900;display:flex;justify-content:space-between">Level <span>V</span></div><div style="flex:1;background:linear-gradient(90deg,#8D6E63,#FFD700);color:#fff;padding:10px 14px;border-radius:14px;font-weight:900">Aristo 👑</div></div>
+</div>
+<div class="taskGrid">
+<div class="task" onclick="showTab('Sing')"><div class="taskIcon">🎤</div>My Tasks</div>
+<div class="task" onclick="openGames()"><div class="taskIcon">🎮</div>Game</div>
+<div class="task"><div class="taskIcon">💰</div>Invite</div>
+<div class="task"><div class="taskIcon">🏅</div>Medal</div>
+<div class="task"><div class="taskIcon">🏪</div>Store</div>
+<div class="task"><div class="taskIcon">🎒</div>Backpack</div>
+<div class="task" onclick="showTab('Sing')"><div class="taskIcon">📤</div>My Posts</div>
+<div class="task"><div class="taskIcon">💎</div>2093 Diamond</div>
+</div>
+<div id="gamesBox" style="display:none"><div style="margin:10px;font-weight:900;color:#fff">🎮 Games Lobby - HOT</div><div class="gameGrid"><div class="gCard"><img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?w=400"><div class="gTitle">Teen Patti Green</div></div><div class="gCard"><img src="https://images.unsplash.com/photo-1596838132731-3301c3fd4317?w=400"><div class="gTitle">SLOT FRENZY</div></div><div class="gCard"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400"><div class="gTitle">Crazy Greedy</div></div><div class="gCard"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400"><div class="gTitle">Blue Teenpatti</div></div></div></div>
 </div>
 
-<!-- Gift Right Side - Singing me bhi -->
-<div style="position:absolute;right:10px;top:50%;display:flex;flex-direction:column;gap:8px">
-<div style="background:gold;padding:8px 12px;border-radius:20px;font-weight:900;color:#000;font-size:12px" onclick="sendGiftSing('🌹')">🌹 10</div>
-<div style="background:gold;padding:8px 12px;border-radius:20px;font-weight:900;color:#000;font-size:12px" onclick="sendGiftSing('💎')">💎 50</div>
-<div style="background:linear-gradient(135deg,#FF6EC7,#FF3D9A);padding:8px 12px;border-radius:20px;font-weight:900;color:#fff;font-size:12px" onclick="sendGiftSing('🎤')">🎤 100</div>
-</div>
-</div>
-
+<!-- BOTTOM NAV - TIKKO STYLE -->
 <div class="tabBar">
-<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>🏠</span>Live</button>
-<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>🎉</span>Party</button>
-<button class="tabBtn active"><span>🎤</span>Sing</button>
-<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>💬</span>Message</button>
-<button class="tabBtn" onclick="location.href='index.html?v=TIKKO'"><span>👤</span>Me</button>
+<button class="tabBtn active" id="bLive" onclick="showTab('Live')"><span>▶️</span>Live</button>
+<button class="tabBtn" id="bParty" onclick="showTab('Party')"><span>🎉</span>Party</button>
+<button class="tabBtn" id="bSing" onclick="showTab('Sing')"><span>🎤</span>Sing</button>
+<button class="tabBtn" id="bMessage" onclick="showTab('Message')"><span>💬</span>Message</button>
+<button class="tabBtn" id="bMe" onclick="showTab('Me')"><span>👤</span>Me</button>
 </div>
+
+<!-- SING LIVE MODAL -->
+<div id="singModal" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#1A0A2E,#000);display:none;flex-direction:column;padding:14px">
+<div style="display:flex;justify-content:space-between"><button onclick="closeSing()" style="background:rgba(255,255,255,.2);color:#fff;border:0;padding:8px 12px;border-radius:20px">← Back</button><b id="nowT">Song</b><button onclick="closeSing()" style="background:#FF1744;color:#fff;border:0;padding:8px 12px;border-radius:20px">END</button></div>
+<div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FFD700);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:40px">🎤</div>
+<div style="text-align:center"><b>Hasmat Live Singing</b><div style="font-size:11px;opacity:.6" id="lyr">Lyrics...</div></div>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+<button id="recB" onclick="toggleRec()" style="background:#fff;color:#000;border:0;padding:12px 18px;border-radius:30px;font-weight:900">🔴 Record</button>
+<button onclick="postSong()" style="background:#00E676;color:#000;border:0;padding:12px 18px;border-radius:30px;font-weight:900">📤 Post</button>
+<button onclick="alert('🔴 Live Singing Party me!')" style="background:linear-gradient(90deg,#FF3D9A,#FF8A00);color:#fff;border:0;padding:12px 18px;border-radius:30px;font-weight:900">🔴 Go Live</button>
+</div>
+</div>
+
+<video id="cam" autoplay muted playsinline></video>
 
 <script>
-let songs=[
-{id:1,title:"Kesariya",singer:"Arijit Singh",cat:"hindi",emoji:"💖",plays:"12.5k"},
-{id:2,title:"Heeriye",singer:"Arijit",cat:"hindi",emoji:"💘",plays:"9.2k"},
-{id:3,title:"Apna Bana Le",singer:"Arijit",cat:"hindi",emoji:"❤️",plays:"15k"},
-{id:4,title:"Brown Munde",singer:"AP Dhillon",cat:"punjabi",emoji:"🔥",plays:"22k"},
-{id:5,title:"Calm Down",singer:"Rema",cat:"english",emoji:"🌊",plays:"18k"},
-{id:6,title:"Tum Hi Ho",singer:"Arijit",cat:"hindi",emoji:"🥀",plays:"30k"},
-{id:7,title:"295",singer:"Sidhu Moosewala",cat:"punjabi",emoji:"🦁",plays:"25k"},
-{id:8,title:"Perfect",singer:"Ed Sheeran",cat:"english",emoji:"💍",plays:"11k"},
-];
-
+let curS=null,stream=null,mr=null,ch=[],rec=false;
+let songs=[{id:1,t:"Kesariya",s:"Arijit Singh",c:"hindi",e:"💖",p:"12.5k"},{id:2,t:"Heeriye",s:"Arijit",c:"hindi",e:"💘",p:"9.2k"},{id:3,t:"Brown Munde",s:"AP Dhillon",c:"punjabi",e:"🔥",p:"22k"},{id:4,t:"Tum Hi Ho",s:"Arijit",c:"hindi",e:"🥀",p:"30k"},{id:5,t:"Calm Down",s:"Rema",c:"english",e:"🌊",p:"18k"}];
 let myPosts=JSON.parse(localStorage.getItem('my_songs')||'[]');
-let isRecording=false;
-let currentSong=null;
-let mediaRecorder=null;
-let audioChunks=[];
 
-function renderSongs(list){
-  let html='';
-  list.forEach(s=>{
-    html+=`<div class="songCard"><div class="songThumb">${s.emoji}</div><div style="flex:1"><b>${s.title}</b><div style="font-size:11px;opacity:.7">${s.singer} • ${s.plays} sings • ${s.cat}</div></div><button class="singBtn" onclick="openSing(${s.id})">🎤 SING</button></div>`;
-  });
-  document.getElementById('songList').innerHTML=html;
-}
+function showTab(n){stopCam();['Live','Party','Sing','Message','Me'].forEach(x=>{let e=document.getElementById('tab'+x);if(e)e.style.display='none';let b=document.getElementById('b'+x);if(b)b.classList.remove('active');});document.getElementById('tab'+n).style.display='block';document.getElementById('b'+n).classList.add('active');window.scrollTo(0,0);}
+function stopCam(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}let v=document.getElementById('cam');if(v)v.srcObject=null;}
+async function startLive(){if(!confirm('🔴 Go Live? Camera ON hoga'))return;let v=document.getElementById('cam');try{stream=await navigator.mediaDevices.getUserMedia({video:true,audio:false});v.srcObject=stream;alert('🔴 LIVE ON! Tab change pe OFF hoga');}catch(e){alert('Camera Allow karo');}}
+function openGames(){let g=document.getElementById('gamesBox');g.style.display=g.style.display=='none'?'block':'none';}
 
-function searchSong(q){
-  q=q.toLowerCase();
-  let filtered=songs.filter(s=>s.title.toLowerCase().includes(q)||s.singer.toLowerCase().includes(q));
-  renderSongs(filtered.length?filtered:songs);
-}
+// SINGING LOGIC + EDIT DELETE
+function renderSongs(l){let h='';l.forEach(x=>{h+=`<div style="background:#1E1A33;margin:10px;border-radius:16px;padding:12px;display:flex;gap:12px;align-items:center"><div style="width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#FFD700,#FF3D9A);display:flex;align-items:center;justify-content:center;font-size:24px">${x.e}</div><div style="flex:1"><b>${x.t}</b><div style="font-size:11px;opacity:.6">${x.s} • ${x.p}</div></div><button onclick="openSing(${x.id})" style="background:linear-gradient(90deg,#FF3D9A,#FF8A00);color:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:900">SING</button></div>`});document.getElementById('songList').innerHTML=h;}
+function searchSong(q){q=q.toLowerCase();let f=songs.filter(s=>s.t.toLowerCase().includes(q)||s.s.toLowerCase().includes(q));renderSongs(f.length?f:songs);}
+function filterSongs(c){if(c=='all')renderSongs(songs);else renderSongs(songs.filter(s=>s.c==c));}
+function openSing(id){curS=songs.find(s=>s.id==id);document.getElementById('nowT').innerText=curS.t;document.getElementById('lyr').innerHTML=curS.t+"<br>Tune jo na kaha... Main wo sunta raha...";document.getElementById('singModal').style.display='flex';}
+function closeSing(){document.getElementById('singModal').style.display='none';if(mr&&mr.state!='inactive')mr.stop();}
+async function toggleRec(){let b=document.getElementById('recB');if(!rec){try{let st=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(st);ch=[];mr.ondataavailable=e=>ch.push(e.data);mr.onstop=()=>{let blob=new Blob(ch,{type:'audio/webm'});let url=URL.createObjectURL(blob);myPosts.unshift({title:curS.t,singer:curS.s,url:url,date:new Date().toLocaleString(),likes:0});localStorage.setItem('my_songs',JSON.stringify(myPosts));renderPosts();alert('Saved! Post dabao');};mr.start();rec=true;b.innerText='⏹️ Stop';b.style.background='#FF1744';b.style.color='#fff';}catch(e){alert('Mic Allow karo');}}else{mr.stop();rec=false;b.innerText='🔴 Record';b.style.background='#fff';b.style.color='#000';}}
+function postSong(){if(myPosts.length==0){alert('Pehle Record karo');return;}renderPosts();closeSing();alert('✅ Post Ho Gaya! Me > My Posts me dekho');}
+function renderPosts(){let h='';myPosts.forEach((p,i)=>{h+=`<div class="post"><div style="padding:10px;display:flex;gap:8px;align-items:center"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#9C4DFF,#FF3D9A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">H</div><div style="flex:1"><b>${p.title}</b><div style="font-size:10px;color:#666">${p.date} • ${p.singer}</div></div><button onclick="editP(${i})" style="background:#2196F3;color:#fff;border:0;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:800">✏️ EDIT</button><button onclick="delP(${i})" style="background:#FF1744;color:#fff;border:0;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:800">🗑️ DELETE</button></div><div style="background:#111;padding:8px"><audio controls src="${p.url}" style="width:100%"></audio><div style="color:#fff;text-align:center;font-size:11px;margin-top:4px">${p.singer} - ${p.title} 🎤 ❤️ ${p.likes}</div></div></div>`});document.getElementById('myPosts').innerHTML=h||"<div style='text-align:center;opacity:.4;padding:20px;color:#fff'>Koi post nahi - Gana gao!</div>";document.getElementById('pc').innerText=myPosts.length+' posts';}
+function delP(i){if(!confirm('🗑️ Delete? '+myPosts[i].title))return;myPosts.splice(i,1);localStorage.setItem('my_songs',JSON.stringify(myPosts));renderPosts();}
+function editP(i){let p=myPosts[i];let t=prompt('✏️ Title Edit:',p.title);if(t===null)return;let s=prompt('🎤 Singer Edit:',p.singer);if(s===null)s=p.singer;myPosts[i].title=t;myPosts[i].singer=s;myPosts[i].date=new Date().toLocaleString()+' (Edited)';localStorage.setItem('my_songs',JSON.stringify(myPosts));renderPosts();}
 
-function filterSongs(cat){
-  if(cat=='all') renderSongs(songs);
-  else renderSongs(songs.filter(s=>s.cat==cat));
-}
-
-function openSing(id){
-  currentSong=songs.find(s=>s.id==id);
-  document.getElementById('nowSingingTitle').innerText=currentSong.title+' - '+currentSong.singer;
-  document.getElementById('lyrics').innerHTML=`${currentSong.title} Lyrics...<br><br>Tune jo na kaha<br>Main wo sunta raha<br>${currentSong.title} tera ishq hai piya...<br><br>[Music]...<br>Rang sari...`;
-  document.getElementById('singModal').style.display='flex';
-}
-
-function closeSing(){ document.getElementById('singModal').style.display='none'; if(mediaRecorder && mediaRecorder.state!='inactive'){ mediaRecorder.stop(); } isRecording=false; document.getElementById('recBtn').innerText='🔴 Start Recording'; }
-
-async function toggleRecord(){
-  let btn=document.getElementById('recBtn');
-  if(!isRecording){
-    try{
-      let stream=await navigator.mediaDevices.getUserMedia({audio:true});
-      mediaRecorder=new MediaRecorder(stream);
-      audioChunks=[];
-      mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
-      mediaRecorder.onstop=()=>{ let blob=new Blob(audioChunks,{type:'audio/webm'}); let url=URL.createObjectURL(blob); myPosts.unshift({title:currentSong.title,singer:currentSong.singer,url:url,date:new Date().toLocaleString(),likes:0}); localStorage.setItem('my_songs',JSON.stringify(myPosts)); renderMyPosts(); alert('Recording saved! Ab Post Karo pe click karo'); };
-      mediaRecorder.start();
-      isRecording=true; btn.innerText='⏹️ Stop Recording'; btn.style.background='#FF1744'; btn.style.color='#fff';
-    }catch(e){ alert('Mic Allow karo'); }
-  }else{
-    mediaRecorder.stop(); isRecording=false; btn.innerText='🔴 Start Recording'; btn.style.background='#fff'; btn.style.color='#000';
-  }
-}
-
-function goLiveSing(){
-  alert('🔴 LIVE Singing Started! '+currentSong.title+' - 20 Seats Party Room me log sun rahe hai! Gift Right Corner me bhejenge!');
-}
-
-function postMySing(){
-  if(myPosts.length==0){ alert('Pehle Record karo!'); return; }
-  let last=myPosts[0];
-  if(!last.posted){ last.posted=true; localStorage.setItem('my_songs',JSON.stringify(myPosts)); }
-  renderMyPosts();
-  alert('✅ Post Ho Gaya! Sabko dikhega - Profile me jayega!');
-  closeSing();
-}
-
-function renderMyPosts(){
-  let html='';
-  myPosts.forEach((p,i)=>{
-    html+=`<div class="postCard"><div style="padding:12px;display:flex;gap:10px;align-items:center"><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FF8A00);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">H</div><div><b>Hasmat Ali</b><div style="font-size:11px;color:#666">${p.date} • ${p.title}</div></div><div style="margin-left:auto">❤️ ${p.likes}</div></div><div style="background:#111;padding:10px;text-align:center;color:#fff"><audio controls src="${p.url}" style="width:100%"></audio><div style="margin-top:6px;font-size:12px">${p.singer} - ${p.title} Cover 🎤</div></div></div>`;
-  });
-  document.getElementById('userPosts').innerHTML=html||'<div style="text-align:center;opacity:.5;padding:20px">Koi post nahi - Gana gao aur post karo!</div>';
-}
-
-function sendGiftSing(e){ alert(e+' Gift Sent Singing Pe! 🎤'); }
-
-function openMyPosts(){ document.getElementById('singHome').scrollIntoView(); }
-
-renderSongs(songs);
-renderMyPosts();
+showTab('Live');renderSongs(songs);renderPosts();stopCam();
 </script>
 </body>
 </html>
