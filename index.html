@@ -24,3 +24,261 @@ function doLogin(){document.getElementById('userNameTop').innerText=user.name.to
 function save(){localStorage.setItem('zsh_coins',coins);localStorage.setItem('zsh_dol',dollars.toFixed(2));localStorage.setItem('zsh_inv',inv);if(user){gifters[2].n=user.name;gifters[2].c=coins;}upd();}
 function upd(){document.getElementById('coins').innerText=coins;document.getElementById('wCoins').innerText=coins;document.getElementById('dollars').innerText=dollars.toFixed(2);document.getElementById('wDol').innerText=dollars.toFixed(2);document.getElementById('wd').innerText=dollars.toFixed(2);document.getElementById('invCount').innerText=inv;document.getElementById('invEarn').innerText=inv;}
 function showPage(p){['homePage','leaderPage','walletPage','invitePage'].forEach(id=>document.getElementById(id).style.display='none');document.querySelectorAll('.tab button').forEach(b=>b.classList.remove('active'));if(p=='home'){homePage.style.display='block';tHome.classList.add('active')}else if(p=='leader'){leaderPage.style.display='block';tLead.classList.add('active');showLB('gifter')}else if(p=='wallet'){walletPage.style.display='block';tWallet.classList.add('active')}else if(p=='invite'){invitePage.style.display='block';
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - INSTA x SNAPCHAT</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.topTabs{display:flex;background:#111;position:sticky;top:0;z-index:100}
+.tab{flex:1;padding:15px;text-align:center;font-weight:bold;border-bottom:3px solid transparent}
+.tab.active{border-color:#ff006a;color:#ff006a}
+#camWrap{position:relative;width:100%;max-width:400px;margin:auto;height:75vh;background:#000;overflow:hidden}
+video,canvas{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+canvas{transform:scaleX(-1);pointer-events:none}
+.toolbar{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#111}
+.toolBtn{min-width:70px;background:#222;border-radius:15px;padding:8px;text-align:center;border:2px solid transparent;font-size:11px}
+.toolBtn.active{border-color:#ff006a;background:#ff006a22}
+.toolBtn span{font-size:26px;display:block}
+.instaBar{display:flex;justify-content:space-around;padding:10px;background:#111;border-top:1px solid #222}
+.instaBar button{background:none;border:none;color:#fff;font-size:22px}
+.goLive{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(#ff006a,#a00040);border:4px solid #fff;font-size:30px;z-index:20}
+</style>
+<!-- MediaPipe - Insta + Snapchat Face Tracking -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+</head>
+<body>
+
+<div class="topTabs">
+<div class="tab active" onclick="switchMode('insta',this)">📸 INSTA</div>
+<div class="tab" onclick="switchMode('snap',this)">👻 SNAPCHAT</div>
+<div class="tab" onclick="switchMode('live',this)">🔴 LIVE</div>
+</div>
+
+<div id="camWrap">
+<video id="video" autoplay muted playsinline></video>
+<canvas id="overlay"></canvas>
+<button class="goLive" onclick="takeSnap()">📸</button>
+<div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);padding:5px 10px;border-radius:20px;font-size:12px">ZERO SE HERO • <span id="filterName">Normal</span></div>
+</div>
+
+<!-- INSTA TOOLS -->
+<div id="instaTools">
+<div style="padding:8px 12px;font-weight:bold">✨ Instagram Tools</div>
+<div class="toolbar">
+<div class="toolBtn active" onclick="setFilterType('normal',this)"><span>😊</span>Normal</div>
+<div class="toolBtn" onclick="setFilterType('beauty',this)"><span>💖</span>Beauty</div>
+<div class="toolBtn" onclick="setFilterType('makeup',this)"><span>💄</span>Makeup</div>
+<div class="toolBtn" onclick="setFilterType('paris',this)"><span>🗼</span>Paris</div>
+<div class="toolBtn" onclick="setFilterType('golden',this)"><span>✨</span>Golden Hour</div>
+<div class="toolBtn" onclick="setFilterType('bw',this)"><span>⚫</span>B&W Story</div>
+<div class="toolBtn" onclick="setFilterType('vintage',this)"><span>📼</span>Vintage</div>
+</div>
+<div class="instaBar">
+<button onclick="addInstaText()">Aa</button>
+<button onclick="addSticker('❤️')">❤️</button>
+<button onclick="addSticker('🔥')">🔥</button>
+<button onclick="addSticker('😍')">😍</button>
+<button onclick="addMusic()">🎵</button>
+<button onclick="addPoll()">📊</button>
+</div>
+</div>
+
+<!-- SNAPCHAT TOOLS -->
+<div id="snapTools" style="display:none">
+<div style="padding:8px 12px;font-weight:bold">👻 Snapchat Lenses</div>
+<div class="toolbar">
+<div class="toolBtn active" onclick="setLens('none',this)"><span>👤</span>None</div>
+<div class="toolBtn" onclick="setLens('dog',this)"><span>🐶</span>Dog</div>
+<div class="toolBtn" onclick="setLens('cat',this)"><span>🐱</span>Cat Ears</div>
+<div class="toolBtn" onclick="setLens('glasses',this)"><span>😎</span>Glasses</div>
+<div class="toolBtn" onclick="setLens('flower',this)"><span>🌸</span>Flower</div>
+<div class="toolBtn" onclick="setLens('beard',this)"><span>🧔</span>Beard</div>
+<div class="toolBtn" onclick="setLens('crown',this)"><span>👑</span>Crown</div>
+<div class="toolBtn" onclick="setLens('kiss',this)"><span>💋</span>Kiss Lips</div>
+<div class="toolBtn" onclick="setLens('devil',this)"><span>😈</span>Devil</div>
+</div>
+<div class="instaBar">
+<button onclick="setLens('baby')">👶 Baby Face</button>
+<button onclick="setLens('old')">👴 Old</button>
+<button onclick="setLens('gender')">🔄 Gender Swap</button>
+</div>
+</div>
+
+<script>
+let video=document.getElementById('video');
+let canvas=document.getElementById('overlay');
+let ctx=canvas.getContext('2d');
+let currentFilter='normal';
+let currentLens='none';
+let mode='insta';
+let faceLandmarks=null;
+
+function switchMode(m,el){
+mode=m;
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('instaTools').style.display=m=='insta'?'block':'none';
+document.getElementById('snapTools').style.display=m=='snap'?'block':'none';
+}
+
+function setFilterType(type,el){
+currentFilter=type;
+document.querySelectorAll('#instaTools.toolBtn').forEach(b=>b.classList.remove('active'));
+el.classList.add('active');
+document.getElementById('filterName').innerText=type.toUpperCase();
+applyVideoFilter();
+}
+
+function setLens(lens,el){
+currentLens=lens;
+if(el){document.querySelectorAll('#snapTools.toolBtn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
+document.getElementById('filterName').innerText=lens.toUpperCase()+' LENS';
+}
+
+function applyVideoFilter(){
+let map={
+normal:'none',
+beauty:'brightness(1.15) contrast(1.1) saturate(1.25) blur(0.4px)',
+makeup:'brightness(1.1) saturate(1.6) contrast(1.15) sepia(0.1)',
+paris:'sepia(0.2) hue-rotate(-10deg) saturate(1.3)',
+golden:'brightness(1.2) sepia(0.35) saturate(1.5)',
+bw:'grayscale(1) contrast(1.2)',
+vintage:'sepia(0.7) contrast(1.1) brightness(0.9)'
+};
+video.style.filter=map[currentFilter]||'none';
+}
+
+// CAMERA + FACE TRACKING
+async function startCamera(){
+try{
+let stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:true});
+video.srcObject=stream;
+video.onloadedmetadata=()=>{
+canvas.width=video.videoWidth; canvas.height=video.videoHeight;
+initFaceMesh();
+};
+}catch(e){alert("Camera allow karo: "+e.message)}
+}
+
+function initFaceMesh(){
+const faceMesh=new FaceMesh({locateFile:(file)=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
+faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
+faceMesh.onResults(onFaceResults);
+let cam=new Camera(video,{onFrame:async()=>{await faceMesh.send({image:video})},width:400,height:600});
+cam.start();
+}
+
+function onFaceResults(results){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+if(results.multiFaceLandmarks && results.multiFaceLandmarks.length>0){
+faceLandmarks=results.multiFaceLandmarks[0];
+drawLens(faceLandmarks);
+}
+}
+
+function drawLens(landmarks){
+// LENS DRAWING - Snapchat style
+let nose=landmarks[1];
+let leftEye=landmarks[33];
+let rightEye=landmarks[263];
+let mouth=landmarks[13];
+
+let x=(p)=>p.x*canvas.width;
+let y=(p)=>p.y*canvas.height;
+
+ctx.font=`${canvas.width*0.15}px Arial`;
+ctx.textAlign='center';
+
+if(currentLens=='dog'){
+ctx.fillText('🐶', x(nose), y(nose)-60);
+ctx.fillText('👅', x(mouth), y(mouth)+20);
+ctx.fillText('🐾', x(leftEye)-60, y(leftEye));
+ctx.fillText('🐾', x(rightEye)+60, y(rightEye));
+}
+if(currentLens=='cat'){
+ctx.fillText('🐱', x(nose), y(nose)-80);
+ctx.font=`${canvas.width*0.08}px Arial`;
+ctx.fillText('✨', x(leftEye)-30, y(leftEye)-30);
+ctx.fillText('✨', x(rightEye)+30, y(rightEye)-30);
+}
+if(currentLens=='glasses'){
+ctx.font=`${canvas.width*0.25}px Arial`;
+ctx.fillText('😎', x(nose), y(leftEye)+20);
+}
+if(currentLens=='flower'){
+ctx.fillText('🌸🌸🌸', x(nose), y(nose)-70);
+ctx.fillText('🌸', x(leftEye)-50, y(leftEye)-20);
+ctx.fillText('🌸', x(rightEye)+50, y(rightEye)-20);
+}
+if(currentLens=='crown'){
+ctx.fillText('👑', x(nose), y(nose)-100);
+}
+if(currentLens=='kiss'){
+ctx.fillText('💋', x(mouth), y(mouth));
+ctx.fillText('💋💋', x(nose), y(nose)-40);
+}
+if(currentLens=='beard'){
+ctx.font=`${canvas.width*0.2}px Arial`;
+ctx.fillText('🧔', x(mouth), y(mouth)+60);
+}
+if(currentLens=='devil'){
+ctx.fillText('😈', x(nose), y(nose)-20);
+ctx.fillText('🔥', x(leftEye)-40, y(leftEye));
+ctx.fillText('🔥', x(rightEye)+40, y(rightEye));
+}
+
+// KISS GIFT FULL SCREEN TO LIPS - Tera wala feature
+if(window.kissActive && mouth){
+let tx=x(mouth), ty=y(mouth);
+ctx.font=`${canvas.width*0.4}px Arial`;
+ctx.fillText('💋', tx, ty);
+}
+}
+
+function addInstaText(){
+let t=prompt("Text likho (Insta Story):");
+if(t){ctx.fillStyle='#fff'; ctx.font='bold 40px Arial'; ctx.fillText(t, canvas.width/2, canvas.height/2);}
+}
+function addSticker(emoji){
+ctx.font='80px Arial'; ctx.fillText(emoji, Math.random()*canvas.width, Math.random()*canvas.height);
+}
+function addMusic(){alert("🎵 Music Sticker - Gaana select karo StarMaker se!"); searchSongs&&searchSongs();}
+function addPoll(){addSticker('📊 YES / NO?');}
+
+function takeSnap(){
+// Capture photo with filter + lens
+let temp=document.createElement('canvas');
+temp.width=video.videoWidth; temp.height=video.videoHeight;
+let tCtx=temp.getContext('2d');
+tCtx.filter=video.style.filter;
+tCtx.drawImage(video,0,0);
+tCtx.drawImage(canvas,0,0);
+let url=temp.toDataURL('image/png');
+let w=window.open(); w.document.write(`<img src="${url}" style="width:100%"><br><a href="${url}" download="zero-se-hero.png" style="display:block;padding:15px;background:#ff006a;color:#fff;text-align:center;border-radius:20px;margin:10px;text-decoration:none">📥 DOWNLOAD STORY</a>`);
+}
+
+// KISS GIFT FUNCTION - Full screen to lips
+function triggerKissGift(){
+window.kissActive=true;
+if(faceLandmarks){
+let mouth=faceLandmarks[13];
+let el=document.createElement('div');
+el.innerText='💋';
+el.style.position='fixed'; el.style.left='50%'; el.style.top='100%'; el.style.fontSize='100px'; el.style.zIndex='9999'; el.style.transition='all 1s cubic-bezier(.17,.67,.42,1.3)';
+document.body.appendChild(el);
+setTimeout(()=>{
+let mx=mouth.x*window.innerWidth; let my=mouth.y*window.innerHeight;
+el.style.left=mx+'px'; el.style.top=my+'px'; el.style.transform='translate(-50%,-50%) scale(3)';
+},100);
+setTimeout(()=>{el.remove(); window.kissActive=false},2000);
+}
+}
+
+startCamera();
+</script>
+</body>
+</html>
