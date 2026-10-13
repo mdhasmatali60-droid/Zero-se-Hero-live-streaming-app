@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking - Zero Se Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:linear-gradient(180deg,#1a0033,#330066,#4d0099);color:#fff;min-height:100vh}
+.tabs{display:flex;gap:16px;padding:12px 16px;font-size:18px;font-weight:700;opacity:.6}
+.tabs.active{color:#ff66ff;opacity:1;border-bottom:2px solid #ff66ff}
+.subtabs{display:flex;background:rgba(0,0,0,.4);border-radius:20px;margin:10px;padding:4px;width:fit-content}
+.subtabs div{padding:6px 14px;border-radius:14px;font-size:13px;cursor:pointer}
+.subtabs.active{background:#f5e6a0;color:#000;font-weight:700}
+.timer{padding:8px 16px;font-size:13px;opacity:.8}
+.podium{display:flex;align-items:end;justify-content:center;gap:8px;padding:20px 10px;position:relative}
+.card2,.card3{width:30%;background:linear-gradient(180deg,#4da6ff,#003366);border-radius:12px 12px 0 0;padding:10px 6px;text-align:center;position:relative}
+.card1{width:36%;background:linear-gradient(180deg,#ffcc00,#ff6600);border-radius:16px 16px 0 0;padding:12px 8px;text-align:center;transform:scale(1.1);z-index:2;box-shadow:0 -10px 30px gold}
+.avatar{width:60px;height:60px;border-radius:50%;border:3px solid gold;margin:0 auto;background:#000;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.wings{font-size:32px;margin-top:-20px}
+.no1{background:#cc0000;color:#fff;padding:2px 10px;border-radius:10px;font-weight:900;font-size:12px;display:inline-block;margin-top:4px}
+.beans{background:#000;color:#ffcc00;padding:4px 8px;border-radius:12px;font-size:12px;margin-top:6px;display:inline-block}
+.list{background:rgba(0,0,0,.3);margin:6px 10px;border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px}
+.rank{font-size:16px;width:20px;font-weight:900}
+.small-av{width:40px;height:40px;border-radius:50%;background:#333}
+.badge{font-size:10px;background:linear-gradient(90deg,#ff66ff,#6600ff);padding:2px 6px;border-radius:8px}
+.today{position:fixed;bottom:80px;right:16px;background:#a020f0;color:#fff;padding:10px 18px;border-radius:20px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px">
+<span style="font-size:20px"><</span>
+<div class="tabs"><div class="active">Charm</div><div>Rich</div><div>Gift</div><div>Age</div></div>
+<div>?</div>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:0 10px">
+<div class="subtabs"><div class="active">Daily</div><div onclick="setTab('weekly')">Weekly</div><div onclick="setTab('monthly')">Monthly</div></div>
+<div style="background:rgba(255,255,255,.2);padding:4px 8px;border-radius:12px;font-size:12px">🇮🇳 🇳🇵 🇮🇳 ▼</div>
+</div>
+
+<div class="timer">⏱️ <span id="countdown">04:07:23</span> - Daily Reset</div>
+
+<div class="podium">
+<div class="card2">
+<div class="avatar"><img src="https://i.pravatar.cc/100?img=12"></div>
+<div class="no1" style="background:#003399">No.2</div>
+<div style="font-size:12px;margin-top:4px">Mystery man</div>
+<div style="font-size:10px;opacity:.8">LV 156</div>
+<div class="beans">7,719,688 🪙</div>
+</div>
+
+<div class="card1">
+<div style="font-size:28px">👑</div>
+<div class="avatar" style="width:70px;height:70px;border-color:gold"><img src="https://i.pravatar.cc/100?img=8"></div>
+<div class="no1">No.1</div>
+<div style="font-weight:900;margin-top:4px">SHIVAA</div>
+<div style="font-size:11px;background:#0044aa;display:inline-block;padding:2px 6px;border-radius:8px;margin-top:2px">🔹 208</div>
+<div style="font-size:10px;background:linear-gradient(90deg,#ffcc00,#ff6600);padding:2px 6px;border-radius:8px;margin-top:4px">Legend Top1</div>
+<div class="beans" style="font-size:13px">33,051,391 🪙</div>
+</div>
+
+<div class="card2" style="background:linear-gradient(180deg,#cc9900,#663300)">
+<div class="avatar"><img src="https://i.pravatar.cc/100?img=15"></div>
+<div class="no1" style="background:#660000">No.3</div>
+<div style="font-size:12px;margin-top:4px">Thakur Saheb</div>
+<div style="font-size:10px">❤️ 159</div>
+<div style="font-size:10px;background:#aa0000;padding:2px 6px;border-radius:8px;margin-top:2px">Legend Top</div>
+<div class="beans">6,933,826 🪙</div>
+</div>
+</div>
+
+<div id="listArea">
+<div class="list"><div class="rank">4</div><div class="small-av"><img src="https://i.pravatar.cc/100?img=32" style="width:100%;border-radius:50%"></div><div style="flex:1"><div>"Warriors"</div><div style="font-size:10px">🔹 202 <span class="badge">Emperor Top7</span></div></div><div>6 🪙</div></div>
+<div class="list"><div class="rank">5</div><div class="small-av"><img src="https://i.pravatar.cc/100?img=33" style="width:100%;border-radius:50%"></div><div style="flex:1"><div>infinity_8x</div><div style="font-size:10px">🔹 203 <span style="background:gold;color:#000;padding:2px 4px;border-radius:6px">VIP</span></div></div><div>5 🪙</div></div>
+<div class="list"><div class="rank">6</div><div class="small-av"><img src="https://i.pravatar.cc/100?img=34" style="width:100%;border-radius:50%"></div><div style="flex:1"><div>Rockstar_99</div><div style="font-size:10px">🔹 180</div></div><div>4 🪙</div></div>
+</div>
+
+<div style="background:rgba(0,0,0,.6);padding:10px;display:flex;align-items:center;gap:10px;position:fixed;bottom:0;width:100%">
+<div class="rank">--</div><div class="small-av" style="background:#330033"><div style="text-align:center;line-height:40px">❤️</div></div><div style="flex:1"><div>Mysterious</div><div style="font-size:11px">⭐ 55</div></div><div>200 🪙</div>
+</div>
+
+<div class="today" onclick="refreshRank()">Today ⇄</div>
+
+<script>
+// Countdown Timer - Roz auto reset
+function updateTimer(){
+let now=new Date(); let tomorrow=new Date(); tomorrow.setHours(23,59,59,999);
+let diff=tomorrow-now; let h=Math.floor(diff/3600000); let m=Math.floor((diff%3600000)/60000); let s=Math.floor((diff%60000)/1000);
+document.getElementById('countdown').innerText=(h<10?'0'+h:h)+":"+(m<10?'0'+m:m)+":"+(s<10?'0'+s:s);
+}
+setInterval(updateTimer,1000); updateTimer();
+
+// Ranking Auto Change Daily - Local Storage se
+let hosts=["SHIVAA","Mystery man","Thakur Saheb","Warriors","infinity_8x","Rockstar_99","Desi Boy","Queen","Hero_OP","Mysterious"];
+function shuffleRanking(){
+let today=new Date().toDateString();
+let lastUpdate=localStorage.getItem('rankDate');
+if(lastUpdate!==today){
+let shuffled=[...hosts].sort(()=>0.5-Math.random());
+localStorage.setItem('rankDate',today);
+localStorage.setItem('top1',shuffled[0]);
+document.querySelector('.card1 div:nth-child(4)').innerText=shuffled[0];
+}
+}
+shuffleRanking();
+
+function setTab(t){alert(t+" ranking - Weekly/Monthly data Firebase se aayega");}
+function refreshRank(){shuffleRanking(); alert("Ranking Updated - Roz 12 baje auto change hota hai!"); location.reload();}
+</script>
+</body>
+</html>
