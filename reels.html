@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reels - Zero Se Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:sans-serif;overflow:hidden}
+.reelWrap{height:100vh;width:100%;overflow-y:scroll;scroll-snap-type:y mandatory}
+.reel{height:100vh;width:100%;scroll-snap-align:start;position:relative;background:#111;display:flex;align-items:center;justify-content:center}
+.reel video{height:100%;width:100%;object-fit:cover}
+.overlay{position:absolute;bottom:0;width:100%;padding:15px;background:linear-gradient(transparent,#000 90%)}
+.sideBtn{position:absolute;right:10px;bottom:120px;display:flex;flex-direction:column;gap:18px;text-align:center}
+.sbtn{font-size:24px;background:rgba(255,255,255,.15);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.topBar{position:fixed;top:0;width:100%;z-index:10;padding:12px;display:flex;justify-content:space-between;background:linear-gradient(#000,transparent)}
+.createBtn{padding:8px 18px;background:linear-gradient(90deg,#ff006a,gold);border:none;border-radius:20px;font-weight:bold;color:#fff}
+#maker{position:fixed;inset:0;background:#0a001a;z-index:100;display:none;flex-direction:column;padding:12px;overflow:auto}
+input,select{width:100%;padding:12px;border-radius:12px;border:1px solid #7000ff;background:#1a0033;color:#fff;margin:8px 0}
+</style>
+</head>
+<body>
+
+<div class="topBar">
+<button onclick="location.href='index.html'" style="background:#333;color:#fff;border:none;padding:7px 14px;border-radius:20px">← Back</button>
+<b style="color:gold">🔥 REELS</b>
+<button class="createBtn" onclick="openMaker()">+ Create Reel</button>
+</div>
+
+<div class="reelWrap" id="reelFeed">
+<!-- Default Reels -->
+<div class="reel">
+<video src="https://www.w3schools.com/html/mov_bbb.mp4" loop autoplay muted playsinline onclick="this.paused?this.play():this.pause()"></video>
+<div class="sideBtn"><div class="sbtn" onclick="like(this)">❤️<br><small style="font-size:10px" class="lc">12.5K</small></div><div class="sbtn" onclick="alert('Comment karo!')">💬</div><div class="sbtn" onclick="shareReel()">↗️</div></div>
+<div class="overlay"><b>@Riya 🔥</b><p style="font-size:13px;margin-top:4px">Zero se Hero Day 1 ❤️ #viral #live</p><p style="font-size:11px;opacity:.7;margin-top:4px">🎵 Original Audio - BD Music</p></div>
+</div>
+</div>
+
+<!-- MAKER -->
+<div id="maker">
+<h2 style="color:gold;text-align:center">🎬 Create Reel - PRO Maker</h2>
+<video id="preview" style="width:100%;max-height:45vh;border-radius:16px;background:#000;margin:10px 0" controls playsinline></video>
+
+<label>📤 Video Upload (Gallery se lo)</label>
+<input type="file" id="videoFile" accept="video/*" onchange="loadVideo(event)">
+
+<label>🎵 Music Add</label>
+<select id="music">
+<option value="">No Music (Original)</option>
+<option value="trending1">🔥 Trending - Punjabi Beat</option>
+<option value="trending2">💃 Viral - Hindi Lofi</option>
+<option value="trending3">🎧 BD - Love Beat</option>
+</select>
+
+<label>✂️ Trim (Start - End in sec)</label>
+<div style="display:flex;gap:8px"><input type="number" id="tStart" placeholder="Start 0" value="0"><input type="number" id="tEnd" placeholder="End 15" value="15"></div>
+
+<label>🔤 Text On Reel</label>
+<input type="text" id="reelText" placeholder="Ex: Zero Se Hero 🔥">
+<select id="textStyle"><option>Style: Big White</option><option>Style: Gold Glow</option><option>Style: Neon</option></select>
+
+<label>🤖 AI Auto Mode</label>
+<div style="display:flex;gap:8px">
+<button onclick="autoCut()" style="flex:1;padding:10px;background:#7000ff;color:#fff;border:none;border-radius:12px">✂️ AI Auto-Cut (Best 15 sec)</button>
+<button onclick="autoCaption()" style="flex:1;padding:10px;background:gold;color:#000;border:none;border-radius:12px">🔤 AI Auto-Captions</button>
+</div>
+
+<button onclick="publishReel()" style="width:100%;padding:14px;background:linear-gradient(90deg,#ff006a,gold);border:none;border-radius:25px;font-weight:bold;color:#fff;margin-top:15px;font-size:16px">🚀 Publish Reel</button>
+<button onclick="closeMaker()" style="width:100%;padding:12px;background:#333;color:#fff;border:none;border-radius:25px;margin-top:8px">Cancel</button>
+<p style="font-size:11px;opacity:.5;text-align:center;margin-top:10px">Reels local me save hogi - Sabko dikhegi!</p>
+</div>
+
+<script>
+let reels=JSON.parse(localStorage.getItem('zh_reels')||'[]');
+let preview=document.getElementById('preview');
+let feed=document.getElementById('reelFeed');
+
+function renderReels(){
+  reels.forEach(r=>{
+    let div=document.createElement('div');
+    div.className='reel';
+    div.innerHTML=`<video src="${r.video}" loop playsinline onclick="this.paused?this.play():this.pause()"></video>
+    <div class="sideBtn"><div class="sbtn" onclick="like(this)">❤️<br><small class="lc">${r.likes}</small></div><div class="sbtn">💬</div><div class="sbtn" onclick="shareReel()">↗️</div></div>
+    <div class="overlay"><b>@You 🔥</b><p style="font-size:13px;margin-top:4px">${r.text}</p><p style="font-size:11px;opacity:.7">🎵 ${r.music||'Original'}</p></div>`;
+    feed.prepend(div);
+  });
+}
+renderReels();
+
+function openMaker(){document.getElementById('maker').style.display='flex';}
+function closeMaker(){document.getElementById('maker').style.display='none';}
+function loadVideo(e){let f=e.target.files[0];if(!f)return;let url=URL.createObjectURL(f);preview.src=url;preview.load();}
+function autoCut(){if(!preview.src){alert('Pehle video upload karo');return;}let d=preview.duration||30;let s=Math.floor(d/3);document.getElementById('tStart').value=s;document.getElementById('tEnd').value=s+15;alert('🤖 AI ne best 15 sec cut kar diya: '+s+'s se '+(s+15)+'s');}
+function autoCaption(){let t=document.getElementById('reelText');if(!t.value)t.value='Zero Se Hero 🔥 Viral Reel #fyp';alert('🤖 AI Caption Added: '+t.value);}
+let storedVideoURL='';
+preview.addEventListener('loadeddata',()=>{storedVideoURL=preview.src;});
+function publishReel(){
+  let txt=document.getElementById('reelText').value||'My First Reel 🔥 #ZeroSeHero';
+  let mus=document.getElementById('music').value||'Original';
+  if(!preview.src){alert('Video upload karo pehle!');return;}
+  // Use blob url as is (local) - real app me server pe upload hota
+  let newR={video:preview.src,text:txt,music:mus,likes:Math.floor(Math.random()*900+100)+'K'};
+  reels.unshift(newR);
+  localStorage.setItem('zh_reels',JSON.stringify(reels));
+  alert('🚀 Reel Published! Ab sabko dikhegi!');
+  location.reload();
+}
+function like(el){let c=el.querySelector('.lc');let n=parseFloat(c.innerText);c.innerText=(n+0.1).toFixed(1)+'K';el.style.background='red';}
+function shareReel(){if(navigator.share){navigator.share({title:'Zero Se Hero Reel',url:location.href})}else{alert('Link Copied! '+location.href)}}
+
+// AI Auto Reel from Live
+let qp=new URLSearchParams(location.search);
+if(qp.get('fromLive')){openMaker();setTimeout(()=>{document.getElementById('reelText').value='My LIVE ka best moment 🔥 #Live #Viral';autoCut();},800);}
+</script>
+</body>
+</html>
