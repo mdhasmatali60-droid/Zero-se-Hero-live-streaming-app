@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Photo</title></head><body style="background:#000;color:#fff;text-align:center;padding:20px">
+<h2>📸 ZERO SE HERO - AI PHOTO STUDIO</h2>
+<p>8 Modes - Coming Soon LIVE</p>
+<input type="file" id="f" accept="image/*"><br><br>
+<canvas id="c" style="max-width:100%"></canvas><br>
+<button onclick="enhance()" style="padding:12px 20px;background:red;color:#fff;border:none;border-radius:20px">✨ ENHANCE PHOTO</button>
+<script>
+let img,canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+document.getElementById('f').onchange=e=>{
+let r=new FileReader();
+r.onload=ev=>{img=new Image();img.onload=()=>{canvas.width=img.width;canvas.height=img.height;ctx.drawImage(img,0,0)};img.src=ev.target.result};
+r.readAsDataURL(e.target.files[0])}
+function enhance(){let d=ctx.getImageData(0,0,canvas.width,canvas.height);for(let i=0;i<d.data.length;i+=4){d.data[i]=Math.min(255,d.data[i]*1.2);d.data[i+1]=Math.min(255,d.data[i+1]*1.2);d.data[i+2]=Math.min(255,d.data[i+2]*1.2)}ctx.putImageData(d,0,0)}
+</script></body></html>
