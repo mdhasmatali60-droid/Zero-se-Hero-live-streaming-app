@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - LUDO KING</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0a3d1a;color:#fff}
+.header{background:linear-gradient(90deg,#00a000,#ffd700);padding:12px;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.boardWrap{display:flex;flex-direction:column;align-items:center;padding:10px}
+#board{width:360px;height:360px;background:#fff;border-radius:12px;position:relative;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);border:6px solid #222;overflow:hidden}
+.cell{border:0.5px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px}
+.home{grid-column:span 6;grid-row:span 6;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px}
+.token{width:22px;height:22px;border-radius:50%;border:2px solid #000;cursor:pointer;box-shadow:0 2px 0 #000}
+.red{background:#ff0000} .green{background:#00b300} .yellow{background:#ffcc00} .blue{background:#0066ff}
+.path{background:#f5f5f5}
+.center{grid-column:7/10;grid-row:7/10;background:conic-gradient(red,green,yellow,blue,red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;text-shadow:1px 1px 0 #000}
+.players{display:flex;gap:8px;padding:10px;overflow-x:auto;width:100%}
+.pCard{background:#111;border-radius:15px;padding:10px;min-width:150px;border:2px solid transparent;position:relative}
+.pCard.active{border-color:#ffd700;box-shadow:0 0 15px #ffd700}
+.pCard video{width:100%;height:80px;background:#000;border-radius:10px;object-fit:cover;transform:scaleX(-1);margin-top:5px}
+.micBtn{padding:5px 10px;border-radius:20px;border:none;font-size:11px;font-weight:bold;margin-top:5px;width:48%}
+.speaking{animation:pulse 0.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #00ff00}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.dice{width:70px;height:70px;background:#fff;color:#000;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;cursor:pointer;border:4px solid #ffd700;margin:10px auto}
+.controls{display:flex;gap:10px;padding:10px;justify-content:center}
+</style>
+</head>
+<body>
+<div class="header">
+<span>🎲 LUDO KING - ZERO SE HERO</span>
+<span style="font-size:12px">🎤 Mic + 📹 Video On</span>
+</div>
+
+<div class="players" id="players"></div>
+
+<div class="boardWrap">
+<div id="board"></div>
+<div class="dice" id="dice" onclick="rollDice()">🎲</div>
+<div style="font-size:12px;opacity:.7" id="turnInfo">Red ki baari - Dice dabao</div>
+<div class="controls">
+<button class="btn" onclick="toggleAllMic()" style="padding:10px 16px;border-radius:20px;background:#222;color:#fff;border:none">🎤 All Mic Mute/Unmute</button>
+<button class="btn" onclick="toggleAllVideo()" style="padding:10px 16px;border-radius:20px;background:#222;color:#fff;border:none">📹 All Video On/Off</button>
+</div>
+</div>
+
+<script>
+// PLAYERS - 4 Color
+let playersData=[
+{id:'red',name:'You (Red) 🔥',color:'red',mic:false,video:false,tokens:[0,0,0,0],home:true},
+{id:'green',name:'Hero 2 (Green)',color:'green',mic:false,video:false,tokens:[0,0,0,0],home:true},
+{id:'yellow',name:'Hero 3 (Yellow)',color:'yellow',mic:false,video:false,tokens:[0,0,0,0],home:true},
+{id:'blue',name:'Hero 4 (Blue)',color:'blue',mic:false,video:false,tokens:[0,0,0,0],home:true},
+];
+let currentTurn=0;
+let diceVal=0;
+let streams={};
+
+function renderPlayers(){
+let html='';
+playersData.forEach((p,i)=>{
+html+=`<div class="pCard ${i==currentTurn?'active':''} ${p.mic?'speaking':''}" id="card-${p.id}">
+<div style="display:flex;justify-content:space-between"><span style="font-weight:bold;font-size:13px">● ${p.name}</span><span style="font-size:10px">${p.mic?'🎤 On':'🔇 Off'} ${p.video?'📹 On':'📷 Off'}</span></div>
+<video id="vid-${p.id}" autoplay muted playsinline style="display:${p.video?'block':'none'}"></video>
+<div style="display:flex;gap:4px;margin-top:5px">
+<button class="micBtn" style="background:${p.mic?'#00aa00':'#333'};color:#fff" onclick="toggleMic('${p.id}')">${p.mic?'🎤 Mic On':'🔇 Mic Off'}</button>
+<button class="micBtn" style="background:${p.video?'#0066ff':'#333'};color:#fff" onclick="toggleVideo('${p.id}')">${p.video?'📹 Video On':'📷 Video Off'}</button>
+</div>
+</div>`;
+});
+document.getElementById('players').innerHTML=html;
+}
+
+// BOARD GENERATE - Simple Ludo Path
+function makeBoard(){
+let board=document.getElementById('board');
+let html='';
+for(let r=0;r<15;r++){
+for(let c=0;c<15;c++){
+let cls='cell ';
+let bg='';
+if(r<6&&c<6){cls='home'; bg='#ffcccc'; if(r==1||r==4||c==1||c==4) bg='#ff0000';}
+else if(r<6&&c>8){cls='home'; bg='#ccffcc';}
+else if(r>8&&c<6){cls='home'; bg='#ffffcc';}
+else if(r>8&&c>8){cls='home'; bg='#cce0ff';}
+else if(r==7&&c==7){cls='center';}
+else{cls='path';}
+
+if((r==6&&c>=0)||(r==8&&c>=0)||(c==6&&r>=0)||(c==8&&r>=0)) bg='#eee';
+if(r==6&&c==1) bg='red';
+if(r==1&&c==8) bg='green';
+if(r==13&&c==6) bg='yellow';
+if(r==8&&c==13) bg='blue';
+
+html+=`<div class="cell" style="background:${bg||'#fff'};grid-row:${r+1};grid-column:${c+1}" id="c-${r}-${c}"></div>`;
+}
+}
+board.innerHTML=html;
+board.innerHTML+=`<div class="center" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;z-index:5">LUDO</div>`;
+// Add tokens
+playersData.forEach(p=>{
+p.tokens.forEach((pos,ti)=>{
+let el=document.createElement('div');
+el.className=`token ${p.color}`;
+el.id=`tok-${p.id}-${ti}`;
+el.style.position='absolute';
+el.style.left=(p.id=='red'?20+ti%2*60:p.id=='green'?250+ti%2*60:p.id=='yellow'?20+ti%2*60:250+ti%2*60)+'px';
+el.style.top=(p.id=='red'?20+Math.floor(ti/2)*60:p.id=='green'?20+Math.floor(ti/2)*60:p.id=='yellow'?250+Math.floor(ti/2)*60:250+Math.floor(ti/2)*60)+'px';
+el.onclick=()=>moveToken(p.id,ti);
+document.getElementById('board').appendChild(el);
+});
+});
+}
+
+async function toggleMic(pid){
+let p=playersData.find(x=>x.id==pid);
+if(!p.mic){
+try{
+let s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});
+streams[pid+'_audio']=s;
+p.mic=true;
+// Simulate speaking detection
+let audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+let src=audioCtx.createMediaStreamSource(s);
+let analyser=audioCtx.createAnalyser();
+src.connect(analyser);
+setInterval(()=>{
+let data=new Uint8Array(analyser.frequencyBinCount);
+analyser.getByteFrequencyData(data);
+let avg=data.reduce((a,b)=>a+b)/data.length;
+let card=document.getElementById(`card-${pid}`);
+if(avg>20) card.classList.add('speaking'); else card.classList.remove('speaking');
+},200);
+}catch(e){alert("Mic allow karo: "+e.message);return}
+}else{
+if(streams[pid+'_audio']) streams[pid+'_audio'].getTracks().forEach(t=>t.stop());
+p.mic=false;
+}
+renderPlayers();
+}
+
+async function toggleVideo(pid){
+let p=playersData.find(x=>x.id==pid);
+if(!p.video){
+try{
+let s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
+streams[pid+'_video']=s;
+document.getElementById(`vid-${pid}`).srcObject=s;
+p.video=true;
+}catch(e){alert("Camera allow karo: "+e.message);return}
+}else{
+if(streams[pid+'_video']) streams[pid+'_video'].getTracks().forEach(t=>t.stop());
+p.video=false;
+}
+renderPlayers();
+// Re-attach existing streams after re-render
+setTimeout(()=>{
+playersData.forEach(pl=>{
+if(pl.video && streams[pl.id+'_video']){
+let v=document.getElementById(`vid-${pl.id}`);
+if(v) v.srcObject=streams[pl.id+'_video'];
+}
+});
+},100);
+}
+
+function toggleAllMic(){playersData.forEach(p=>{if(p.id=='red') toggleMic(p.id)});}
+function toggleAllVideo(){playersData.forEach(p=>{if(p.id=='red') toggleVideo(p.id)});}
+
+function rollDice(){
+let val=Math.floor(Math.random()*6)+1;
+diceVal=val;
+document.getElementById('dice').innerText=val;
+document.getElementById('turnInfo').innerText=`${playersData[currentTurn].color.toUpperCase()} ne ${val} nikala - Token dabao`;
+if(val!==6 && playersData[currentTurn].tokens.every(t=>t==0)){
+setTimeout(nextTurn,1500);
+}
+}
+
+function moveToken(pid,ti){
+if(playersData[currentTurn].id!==pid) return alert("Tumhari baari nahi!");
+if(diceVal==0) return alert("Pehle dice roll karo!");
+let token=document.getElementById(`tok-${pid}-${ti}`);
+let curLeft=parseInt(token.style.left);
+token.style.left=(curLeft+30)%330+'px';
+token.style.transition='all 0.5s';
+if(diceVal!==6) nextTurn();
+else document.getElementById('turnInfo').innerText='🎉 6 Aaya! Fir se khelo!';
+diceVal=0;
+}
+
+function nextTurn(){
+currentTurn=(currentTurn+1)%4;
+document.getElementById('turnInfo').innerText=`${playersData[currentTurn].name} ki baari`;
+renderPlayers();
+}
+
+makeBoard(); renderPlayers();
+</script>
+</body>
+</html>
