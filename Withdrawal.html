@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZERO SE HERO - Withdrawal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.header{background:linear-gradient(90deg,#00aa00,#00ff88);padding:14px;text-align:center;font-weight:900}
+.card{background:#111;margin:10px;padding:16px;border-radius:18px;border:1px solid #222}
+.btn{width:100%;padding:14px;border-radius:25px;border:none;font-weight:bold;cursor:pointer;margin-top:8px}
+.primary{background:linear-gradient(90deg,#00aa00,#00ff88);color:#000}
+.tab{display:flex;gap:8px;margin:10px 0}
+.tab button{flex:1;padding:12px;border-radius:25px;border:none;background:#222;color:#fff;font-weight:bold}
+.tab button.active{background:#00aa00;color:#000}
+input,select{width:100%;padding:14px;border-radius:12px;border:1px solid #333;background:#1a1a1a;color:#fff;margin:6px 0}
+.earning{background:#1a1a1a;padding:12px;border-radius:12px;margin:6px 0;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="header">💸 ZERO SE HERO - WITHDRAWAL - Daily / Weekly - Host Earnings</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div><div style="font-size:12px;opacity:.6">Total Earnings (Host)</div><div style="font-size:24px;font-weight:900;color:#00ff88">💰 <span id="earnBal">2450</span> Coins = $<span id="usdBal">24.5</span></div><div style="font-size:11px;opacity:.6">1 Coin = $0.01 • From Gifts + 1-to-1 Calls + Live</div></div>
+<div style="text-align:right"><div style="font-size:11px;background:#00aa00;color:#000;padding:4px 8px;border-radius:10px">✅ KYC Verified</div><div style="font-size:10px;margin-top:6px">Min Withdraw: 500 Coins ($5)</div></div>
+</div>
+</div>
+
+<div class="card">
+<h3>📅 Withdrawal Type - Select</h3>
+<div class="tab">
+<button class="active" id="dailyBtn" onclick="setType('daily')">📅 Daily<br><span style="font-size:10px">Every 24 Hours</span></button>
+<button id="weeklyBtn" onclick="setType('weekly')">📆 Weekly<br><span style="font-size:10px">Every Monday</span></button>
+</div>
+<div id="typeDesc" style="font-size:12px;background:#1a1a1a;padding:10px;border-radius:10px;margin-top:8px">
+📅 <b>Daily Based:</b> Har din raat 12 baje auto withdraw request jaayega - Minimum $5 - 24 hours me bank me ayega - Best for active hosts
+</div>
+</div>
+
+<div class="card">
+<h3>💳 Withdrawal Method - Global</h3>
+<select id="payMethod" onchange="changeMethod()">
+<option value="bank">🏦 Bank Transfer - India, Oman, Global</option>
+<option value="upi">🇮🇳 UPI - India Only - Instant</option>
+<option value="paypal">🅿️ PayPal - Global - 200 Countries</option>
+<option value="payoneer">🌍 Payoneer - Global Hosts</option>
+<option value="telr">🇴🇲 Telr/PayTabs - Oman, Saudi, UAE</option>
+<option value="crypto">₿ USDT - Crypto - Global No Bank</option>
+</select>
+<div id="bankFields">
+<input id="accName" placeholder="👤 Account Holder Name - As per Bank">
+<input id="accNo" placeholder="🏦 Account No / IBAN - Oman: OMxx, India: Acc No">
+<input id="ifsc" placeholder="🔑 IFSC / SWIFT Code - Oman: SWIFT, India: IFSC">
+<input id="kycId" placeholder="🪪 KYC ID - Aadhar / Iqama / Passport No">
+</div>
+<div style="font-size:10px;opacity:.5;margin-top:6px">KYC must - 1 Person 1 ID - Face verified account pe hi withdraw</div>
+</div>
+
+<div class="card">
+<h3>📊 Earnings Breakdown - Where Coins Came From</h3>
+<div class="earning"><span>🎁 Gifts from Fans - Live pe</span><span><b>1200 Coins</b></span></div>
+<div class="earning"><span>📞 1-to-1 Call - 85 min x 10 coins</span><span><b>850 Coins</b></span></div>
+<div class="earning"><span>🔴 Live Streaming - Bonus</span><span><b>400 Coins</b></span></div>
+<div class="earning" style="border-top:1px solid #333;margin-top:8px;padding-top:12px;font-weight:bold"><span>Total Earnings</span><span style="color:#00ff88">2450 Coins</span></div>
+<div style="font-size:10px;color:#ff5555;margin-top:8px">❌ Gambling/Ludo winnings withdraw nahi hoga - Only Host Earnings from Gifts/Calls/Live - Policy Safe</div>
+</div>
+
+<div class="card">
+<h3>💸 Withdraw Now</h3>
+<input id="withdrawAmt" type="number" placeholder="Amount - Min 500 Coins ($5) - Max 10000">
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn" style="flex:1;background:#222;color:#fff" onclick="setAmt(500)">$5 - 500</button>
+<button class="btn" style="flex:1;background:#222;color:#fff" onclick="setAmt(1000)">$10 - 1000</button>
+<button class="btn" style="flex:1;background:#222;color:#fff" onclick="setAmt(2450)">All - 2450</button>
+</div>
+<button class="btn primary" onclick="requestWithdraw()">💸 Request Withdrawal - <span id="wTypeText">Daily</span></button>
+<div style="font-size:10px;opacity:.6;text-align:center;margin-top:8px">Withdrawal Fee: 5% • Daily: 24h • Weekly: Monday 10 AM • KYC Verified Only • No Gambling Earnings</div>
+</div>
+
+<div class="card">
+<h3>📜 Withdrawal History</h3>
+<div id="history" style="font-size:12px">
+<div style="padding:10px;background:#1a1a1a;border-radius:10px;margin:6px 0;display:flex;justify-content:space-between"><span>Oct 10 - $15 - Bank - ✅ Paid</span><span style="color:#0f0">Done</span></div>
+<div style="padding:10px;background:#1a1a1a;border-radius:10px;margin:6px 0;display:flex;justify-content:space-between"><span>Oct 8 - $8 - PayPal - ⏳ Pending</span><span style="color:#ff0">Pending</span></div>
+</div>
+</div>
+
+<div style="font-size:10px;opacity:.4;text-align:center;padding:12px;margin:10px;background:#111;border-radius:10px">
+⚠️ Host Earnings Only - Gifts + Calls + Live Bonus - No Gambling/Ludo/Shorts earnings withdrawal - Virtual coins converted to USD for host payout - 18+ - KYC + Face Verification must - Tax as per your country (India TDS 10%, Oman no tax) - Policy: Entertainment platform - Host is independent creator
+</div>
+
+<script>
+let type='daily', earnings=2450;
+function setType(t){
+type=t;
+document.getElementById('dailyBtn').className=t=='daily'?'active':'';
+document.getElementById('weeklyBtn').className=t=='weekly'?'active':'';
+document.getElementById('wTypeText').innerText=t=='daily'?'Daily':'Weekly';
+document.getElementById('typeDesc').innerHTML=t=='daily'?
+'📅 <b>Daily Based:</b> Har din raat 12 baje auto withdraw request jaayega - Minimum $5 - 24 hours me bank me ayega - Best for active hosts - Fee 5%':
+'📆 <b>Weekly Based:</b> Har Monday subah 10 baje auto withdraw - Minimum $10 - 48 hours me bank me - Fee 3% (Kam fee) - Best for big hosts - Pura week ka earning ek saath';
+}
+function setAmt(a){document.getElementById('withdrawAmt').value=a;}
+function changeMethod(){
+let m=document.getElementById('payMethod').value;
+if(m=='upi'){document.getElementById('accNo').placeholder='UPI ID - yourname@paytm'; document.getElementById('ifsc').placeholder='UPI - No IFSC';}
+else if(m=='paypal'){document.getElementById('accNo').placeholder='PayPal Email'; document.getElementById('ifsc').placeholder='PayPal - No Code';}
+else if(m=='crypto'){document.getElementById('accNo').placeholder='USDT Wallet - TRC20 Address'; document.getElementById('ifsc').placeholder='Network - TRC20 / ERC20';}
+else{document.getElementById('accNo').placeholder='Account No / IBAN'; document.getElementById('ifsc').placeholder='IFSC / SWIFT';}
+}
+function requestWithdraw(){
+let amt=parseInt(document.getElementById('withdrawAmt').value);
+if(!amt||amt<500){alert("Min 500 Coins ($5) withdraw");return;}
+if(amt>earnings){alert("Balance se zyada nahi - Max "+earnings);return;}
+let name=document.getElementById('accName').value.trim();
+let acc=document.getElementById('accNo').value.trim();
+let kyc=document.getElementById('kycId').value.trim();
+if(!name||!acc||!kyc){alert("Bank details + KYC ID bharo!");return;}
+let fee=type=='daily'?5:3;
+let finalAmt=amt*(100-fee)/100;
+let usd=finalAmt*0.01;
+alert(`✅ ${type.toUpperCase()} Withdrawal Requested!\n\nAmount: ${amt} Coins ($${amt*0.01})\nFee (${fee}%): ${amt*fee/100} Coins\nYou Get: ${finalAmt} Coins = $${usd.toFixed(2)}\nMethod: ${document.getElementById('payMethod').value}\nType: ${type} - ${type=='daily'?'24h me':'Monday 10 AM'}\n\nKYC: ${kyc}\nAccount: ${acc}\n\nHost Earnings Only - Gambling earnings nahi - Policy Safe!\n\nStatus: Pending - Admin approve karega`);
+
+let hist=document.getElementById('history');
+let div=document.createElement('div');
+div.style.cssText='padding:10px;background:#1a1a1a;border-radius:10px;margin:6px 0;display:flex;justify-content:space-between';
+div.innerHTML=`<span>Just Now - $${usd.toFixed(2)} - ${document.getElementById('payMethod').value} - ${type}</span><span style="color:#ff0">⏳ Pending</span>`;
+hist.prepend(div);
+earnings-=amt; document.getElementById('earnBal').innerText=earnings; document.getElementById('usdBal').innerText=(earnings*0.01).toFixed(1);
+}
+changeMethod();
+</script>
+</body>
+</html>
