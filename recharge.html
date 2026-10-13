@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coins Recharge - Zero Se Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff;padding:12px}
+.header{background:linear-gradient(90deg,#7000ff,#E50914);padding:16px;border-radius:12px;text-align:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.card{background:#111;border:1px solid #333;border-radius:14px;padding:14px;text-align:center;cursor:pointer}
+.card.popular{border-color:#E50914;background:#1a0a0a}
+.card.vip{background:linear-gradient(135deg,#7000ff,#E50914);border:none}
+.coins{font-size:18px;font-weight:900}
+.bonus{font-size:10px;opacity:.7;margin:4px 0}
+.price{color:#00ff00;font-weight:bold;margin:6px 0}
+.btn{background:#E50914;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:bold;width:100%}
+</style>
+</head>
+<body>
+<div class="header">
+<div style="font-size:20px;font-weight:900">💰 ZERO SE HERO</div>
+<div style="font-size:13px">COINS RECHARGE - No Fixed Salary - Gift System</div>
+<div style="font-size:11px;margin-top:6px;opacity:.8">100 Coins = ₹10 = 1 Kite = 99 Coins</div>
+</div>
+
+<div class="grid">
+<div class="card" onclick="buy(100,10)">
+<div class="coins">100</div><div class="bonus">Coins</div><div class="price">₹10</div><button class="btn">BUY</button>
+</div>
+<div class="card popular" onclick="buy(1150,100)">
+<div class="coins">1,150</div><div class="bonus">1,000 + 150 Bonus 🔥</div><div class="price">₹100 POPULAR</div><button class="btn">BUY</button>
+</div>
+<div class="card" onclick="buy(6000,500)">
+<div class="coins">6,000</div><div class="bonus">5,000 + 1,000 Bonus</div><div class="price">₹500</div><button class="btn">BUY</button>
+</div>
+<div class="card" onclick="buy(12500,1000)">
+<div class="coins">12,500</div><div class="bonus">10k + 2.5k Bonus</div><div class="price">₹1,000</div><button class="btn">BUY</button>
+</div>
+<div class="card vip" onclick="buy(65000,5000)">
+<div class="coins">65,000</div><div class="bonus">50k + 15k Bonus VIP</div><div class="price" style="color:#fff">₹5,000</div><button class="btn" style="background:#fff;color:#000">BUY VIP</button>
+</div>
+<div class="card vip" onclick="buy(140000,10000)">
+<div class="coins">140,000</div><div class="bonus">100k + 40k Bonus</div><div class="price" style="color:#fff">₹10,000 ⭐</div><button class="btn" style="background:#fff;color:#000">BUY SUPER VIP</button>
+</div>
+</div>
+
+<div style="background:#111;border-radius:12px;padding:12px;margin-top:14px">
+<h4>🎁 Gift Rate:</h4>
+<p style="font-size:12px;margin-top:6px">🪁 1 Kite = 99 Coins | 💎 Diamond Kite = 1999 Coins | 🏆 Golden Kite = 9999 Coins</p>
+<h4 style="margin-top:12px">💳 Payment:</h4>
+<p style="font-size:12px">India: UPI - zerohero@upi<br>Pakistan: JazzCash - 03XX-XXXXXXX<br>Contact Admin for Manual Recharge</p>
+</div>
+
+<script>
+function buy(coins, price){
+let msg = coins+" Coins = ₹"+price+"\nPayment: UPI / JazzCash pe bhejo\nScreenshot Admin ko bhejo\nCoins 5 min me add ho jayenge";
+alert(msg);
+let wa = "https://wa.me/91XXXXXXXXXX?text=Hi Admin, I want "+coins+" coins for Rs."+price+" - Zero Se Hero";
+window.open(wa,"_blank");
+}
+</script>
+</body>
+</html>
