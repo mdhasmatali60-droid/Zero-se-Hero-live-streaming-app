@@ -1,0 +1,12 @@
+<script>
+let guest=new URLSearchParams(location.search).get('guest');
+let cur=JSON.parse(localStorage.getItem('zsh_current')||'null');
+if(guest=='1'){
+document.body.innerHTML+='<div style="position:fixed;bottom:0;width:100%;background:#ff006a;padding:12px;text-align:center;z-index:999">Guest Mode - <a href=\"login.html\" style=\"color:#fff;font-weight:bold\">Register Karo Full Access Ke Liye</a></div>';
+}
+function needLogin(feature){
+if(!cur){alert('🔐 '+feature+' ke liye Register Karo! Face Verification = 1 Person 1 ID'); location.href='login.html'; return false;}
+return true;
+}
+// Example: MSG button pe: onclick="if(needLogin('Live Chat')) openChat()"
+</script>
