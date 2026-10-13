@@ -1,74 +1,18 @@
-<!-- SEARCH BAR ADD KARO TOP PE -->
-<div style="padding:15px;background:#111;position:sticky;top:0;z-index:100">
-<div style="display:flex;gap:10px">
-<input id="searchInput" placeholder="🔍 Gaana Search Karo - Arijit, Yo Yo, Bhojpuri..." style="flex:1;padding:15px;border-radius:30px;border:none;background:#222;color:#fff;font-size:16px" onkeyup="if(event.key==='Enter') searchSongs()">
-<button onclick="searchSongs()" style="padding:15px 25px;border-radius:30px;background:linear-gradient(90deg,#ff006a,#ff8c00);border:none;color:#fff;font-weight:bold">SEARCH</button>
-</div>
-<div style="font-size:11px;opacity:.5;margin-top:8px">Powered by YouTube + iTunes • Full Songs</div>
-</div>
-
-<div id="searchResults" style="padding:0 15px"></div>
-
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>STARMAKER FINAL</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#0F0A1A;color:#fff;padding-bottom:80px}.top{background:linear-gradient(135deg,#9C4DFF,#FF3D9A);padding:12px;border-radius:0 0 20px 20px;position:sticky;top:0}.search{background:rgba(255,255,255,.25);padding:10px 14px;border-radius:25px;display:flex;gap:8px}.search input{background:0;border:0;outline:0;color:#fff;width:100%}.card{background:#1E1A33;margin:8px;border-radius:16px;padding:10px;display:flex;gap:10px;align-items:center}.post{background:#fff;color:#111;margin:10px;border-radius:18px;overflow:hidden}.b1{background:#2196F3;color:#fff;border:0;padding:6px 10px;border-radius:20px;font-size:11px}.b2{background:#FF1744;color:#fff;border:0;padding:6px 10px;border-radius:20px;font-size:11px}.mic{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FF3D9A,#FFD700);margin:15px auto;display:flex;align-items:center;justify-content:center;font-size:36px}</style></head><body>
+<div class="top"><b>🎤 STARMAKER - EDIT/DELETE</b><div class="search" style="margin-top:8px">🔍<input id="s" placeholder="Search - Arijit, Shreya..." oninput="searchSong(this.value)"></div></div>
+<div id="songs"></div><div style="margin:12px 10px;font-weight:900">📱 My Posts - Edit Delete Yaha Hai</div><div id="posts"></div>
+<div id="live" style="position:fixed;inset:0;z-index:999;background:#111;display:none;flex-direction:column;padding:14px"><div style="display:flex;justify-content:space-between"><button onclick="closeL()" style="padding:8px 12px;border-radius:20px;border:0">←</button><b id="nt">Song</b><button onclick="closeL()" style="background:#FF1744;color:#fff;padding:8px 12px;border-radius:20px;border:0">END</button></div><div class="mic">🎤</div><div style="text-align:center"><b id="sn">Singing</b><div style="font-size:11px;opacity:.6" id="ly">Lyrics...</div></div><div style="display:flex;gap:8px;justify-content:center;margin-top:15px;flex-wrap:wrap"><button id="rb" onclick="toggleR()" style="padding:12px 16px;border-radius:30px;border:0;font-weight:900">🔴 Record</button><button onclick="postIt()" style="padding:12px 16px;border-radius:30px;border:0;background:#00E676;font-weight:900">📤 Post</button></div></div>
 <script>
-// FULL SONG SEARCH ENGINE
-async function searchSongs(){
-let q=document.getElementById('searchInput').value.trim();
-if(!q){alert("Gaane ka naam likho!");return}
-document.getElementById('searchResults').innerHTML='<div style="text-align:center;padding:20px">🔍 Searching... '+q+'</div>';
-
-// 1. iTunes Search - Free, No Key
-try{
-let res=await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&media=music&entity=song&limit=20`);
-let data=await res.json();
-let html='';
-if(data.results.length==0) html='<div style="text-align:center;opacity:.6">Kuch nahi mila, dusra naam try karo</div>';
-else{
-data.results.forEach((song,i)=>{
-html+=`
-<div class="resultCard" style="display:flex;gap:12px;background:#1a1a1a;padding:12px;border-radius:15px;margin:10px 0;align-items:center" onclick="selectSearchSong('${song.previewUrl.replace(/'/g,"\\'")}','${song.trackName.replace(/'/g,"\\'")}','${song.artistName.replace(/'/g,"\\'")}','${song.artworkUrl100}')">
-<img src="${song.artworkUrl100}" style="width:60px;height:60px;border-radius:10px">
-<div style="flex:1;text-align:left"><div style="font-weight:bold;font-size:14px">${song.trackName}</div><div style="font-size:12px;opacity:.6">${song.artistName} • ${song.primaryGenreName}</div><div style="font-size:10px;color:#ff006a">▶️ TAP TO SING - Full Karaoke Track</div></div>
-<div style="background:#ff006a;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:bold">SING</div>
-</div>`;
-});
-}
-document.getElementById('searchResults').innerHTML=html;
-}catch(e){
-// Fallback - YouTube Search Links
-document.getElementById('searchResults').innerHTML=`
-<div style="background:#1a1a1a;padding:15px;border-radius:15px">
-<div style="font-weight:bold;margin-bottom:10px">🔥 Top Results for "${q}"</div>
-<div onclick="playYoutubeKaraoke('${q}')" style="padding:12px;background:#222;border-radius:12px;margin:6px 0">🎤 ${q} - Karaoke (YouTube) <span style="float:right;color:#ff006a">SING ▶️</span></div>
-<div onclick="playYoutubeKaraoke('${q} love song')" style="padding:12px;background:#222;border-radius:12px;margin:6px 0">❤️ ${q} Love Version <span style="float:right;color:#ff006a">SING ▶️</span></div>
-<div onclick="playYoutubeKaraoke('${q} bhojpuri')" style="padding:12px;background:#222;border-radius:12px;margin:6px 0">💃 ${q} Bhojpuri Mix <span style="float:right;color:#ff006a">SING ▶️</span></div>
-</div>`;
-}
-}
-
-function selectSearchSong(previewUrl,trackName,artist,artwork){
-// Set as current karaoke track
-let karaoke=document.getElementById('karaokeTrack');
-// Use preview (30 sec) + YouTube full for actual singing
-karaoke.src=previewUrl;
-karaoke.dataset.fullName=trackName;
-
-// Update UI
-document.getElementById('lyrics').innerHTML=`<img src="${artwork}" style="width:100px;height:100px;border-radius:15px;margin-bottom:10px"><div style="font-weight:bold;font-size:18px">${trackName}</div><div style="opacity:.6">${artist}</div><div style="margin-top:10px;color:#ff006a">🎵 Track Ready - Mic Dabao Aur Gaao!</div><button onclick="playYoutubeKaraoke('${trackName} ${artist} karaoke')" style="margin-top:10px;padding:8px 15px;border-radius:20px;background:#fff;color:#000;border:none">▶️ Full YouTube Karaoke Kholu</button>`;
-
-// Auto scroll to recorder
-document.querySelector('.controls').scrollIntoView({behavior:'smooth'});
-}
-
-function playYoutubeKaraoke(query){
-// Open YouTube Karaoke in mini player
-let container=document.getElementById('lyrics');
-container.innerHTML=`
-<div style="font-weight:bold;margin-bottom:10px">🎬 Full Karaoke - ${query}</div>
-<iframe width="100%" height="200" style="border-radius:15px" src="https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-<div style="font-size:12px;opacity:.6;margin-top:8px">YouTube pe full track baj raha hai - Upar se apni voice record karo!</div>
-`;
-}
-
-// Auto search on load - Trending
-window.onload=()=>{document.getElementById('searchInput').value="Arijit Singh"; searchSongs();}
-</script>
+let songs=[{id:1,t:"Kesariya",s:"Arijit",c:"hindi"},{id:2,t:"Heeriye",s:"Arijit",c:"hindi"},{id:3,t:"Brown Munde",s:"AP Dhillon",c:"punjabi"},{id:4,t:"Tum Hi Ho",s:"Arijit",c:"hindi"},{id:5,t:"Calm Down",s:"Rema",c:"english"}];
+let myPosts=JSON.parse(localStorage.getItem('my_songs')||'[]');let cur=null,rec=false,mr=null,ch=[];
+function renderSongs(l){let h='';l.forEach(x=>{h+=`<div class="card"><div style="width:48px;height:48px;border-radius:12px;background:gold;display:flex;align-items:center;justify-content:center">🎵</div><div style="flex:1"><b>${x.t}</b><div style="font-size:11px;opacity:.6">${x.s}</div></div><button onclick="openL(${x.id})" style="background:linear-gradient(90deg,#FF3D9A,#FF8A00);color:#fff;border:0;padding:8px 14px;border-radius:20px;font-weight:900">SING</button></div>`});document.getElementById('songs').innerHTML=h;}
+function searchSong(q){q=q.toLowerCase();renderSongs(songs.filter(s=>s.t.toLowerCase().includes(q)||s.s.toLowerCase().includes(q))||songs);}
+function openL(id){cur=songs.find(s=>s.id==id);document.getElementById('nt').innerText=cur.t;document.getElementById('sn').innerText=cur.t+" Live";document.getElementById('ly').innerHTML=cur.t+"<br>Tune jo na kaha...";document.getElementById('live').style.display='flex';}
+function closeL(){document.getElementById('live').style.display='none';if(mr&&mr.state!='inactive')mr.stop();}
+async function toggleR(){let b=document.getElementById('rb');if(!rec){try{let st=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(st);ch=[];mr.ondataavailable=e=>ch.push(e.data);mr.onstop=()=>{let blob=new Blob(ch,{type:'audio/webm'});let url=URL.createObjectURL(blob);myPosts.unshift({title:cur.t,singer:cur.s,url:url,date:new Date().toLocaleString()});localStorage.setItem('my_songs',JSON.stringify(myPosts));renderP();alert('Saved! Post dabao');};mr.start();rec=true;b.innerText='⏹️ Stop';b.style.background='#FF1744';b.style.color='#fff';}catch(e){alert('Mic allow karo');}}else{mr.stop();rec=false;b.innerText='🔴 Record';b.style.background='#fff';}}
+function postIt(){if(myPosts.length==0){alert('Pehle Record karo');return;}renderP();alert('Posted!');closeL();}
+function renderP(){let h='';myPosts.forEach((p,i)=>{h+=`<div class="post"><div style="padding:10px;display:flex;gap:8px;align-items:center"><div style="width:32px;height:32px;border-radius:50%;background:#FF3D9A;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">H</div><div style="flex:1"><b>${p.title}</b><div style="font-size:10px;color:#666">${p.date}</div></div><button class="b1" onclick="editP(${i})">✏️ EDIT</button><button class="b2" onclick="delP(${i})">🗑️ DEL</button></div><div style="background:#111;padding:8px"><audio controls src="${p.url}" style="width:100%"></audio></div></div>`});document.getElementById('posts').innerHTML=h||"<div style='text-align:center;opacity:.4;padding:20px'>No post</div>";}
+function delP(i){if(!confirm('Delete? '+myPosts[i].title))return;myPosts.splice(i,1);localStorage.setItem('my_songs',JSON.stringify(myPosts));renderP();}
+function editP(i){let p=myPosts[i];let t=prompt('Title edit:',p.title);if(t===null)return;let s=prompt('Singer edit:',p.singer);myPosts[i].title=t;myPosts[i].singer=s||p.singer;myPosts[i].date=new Date().toLocaleString()+' (Edited)';localStorage.setItem('my_songs',JSON.stringify(myPosts));renderP();}
+renderSongs(songs);renderP();
+</script></body></html>
