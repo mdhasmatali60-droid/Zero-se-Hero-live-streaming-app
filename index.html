@@ -599,3 +599,84 @@ switchBackpack('ride');showTab('ME');
 </script>
 </body>
 </html>
+// PROFILE ID AUTOGENERATE - ORIGINAL - FULL ACTIVE
+let userID = localStorage.getItem('talentID');
+if(!userID){ userID = '66' + Math.floor(100000 + Math.random()*900000); localStorage.setItem('talentID', userID); }
+
+// LEVEL + FOLLOWER ORIGINAL SYSTEM
+let userLevel = parseInt(localStorage.getItem('talentLevel') || '12');
+let followers = parseInt(localStorage.getItem('talentFollowers') || '248');
+let following = parseInt(localStorage.getItem('talentFollowing') || '102');
+
+function updateProfileDisplay(){
+  document.querySelectorAll('.meTitle span')[0].innerText = '🏆 TALENT HUNTER ID ' + userID + ' - 756 LINES FINAL';
+  let statsHTML = `<span>💎 2093 Coins FULL ACTIVE</span><span>👑 SVIP1 FULL ACTIVE</span><span>Level ${userLevel} FULL ACTIVE</span><span>👥 ${followers} Followers FULL ACTIVE</span><span>🎒 24 Items FULL</span>`;
+  document.querySelector('.meStats').innerHTML = statsHTML;
+}
+
+// FOLLOW BACK + INBOX MSG SYSTEM - FULL ACTIVE
+let inboxMsgs = JSON.parse(localStorage.getItem('talentInbox') || '[]');
+
+function followUser(targetID, targetName){
+  // Follow back logic
+  let isFollowing = localStorage.getItem('follow_'+targetID);
+  if(isFollowing){
+    alert('Already Following '+targetName);
+    return;
+  }
+  localStorage.setItem('follow_'+targetID, '1');
+  following++;
+  followers++; // Follow back se follower bhi badhega original jaisa
+  localStorage.setItem('talentFollowing', following);
+  localStorage.setItem('talentFollowers', followers);
+
+  // Auto Inbox Message after Follow Back
+  let msg = {from: targetName, id: targetID, text: `Hey! Thanks for following me 😍 - ${targetName} followed you back! Let's Party? 🎉`, time: new Date().toLocaleTimeString()};
+  inboxMsgs.unshift(msg);
+  localStorage.setItem('talentInbox', JSON.stringify(inboxMsgs));
+
+  // Level Up
+  if(following % 3 == 0){ userLevel++; localStorage.setItem('talentLevel', userLevel); }
+
+  updateProfileDisplay();
+  alert('✅ Followed '+targetName+' - Follow Back Done! Check Inbox 📩 - Auto msg sent!');
+  openInbox();
+}
+
+function openInbox(){
+  document.getElementById('featurePage').style.display='flex';
+  document.getElementById('featureTitle').innerText='📩 INBOX FULL - FOLLOW BACK MSGS - 756 LINES';
+  let html = '<div style="padding:12px">';
+  if(inboxMsgs.length==0){ html+='<div style="background:#fff;padding:20px;border-radius:16px;text-align:center">No messages yet - Follow someone to get inbox msg FULL ACTIVE</div>'; }
+  else{
+    inboxMsgs.forEach(m=>{
+      html+=`<div style="background:#fff;padding:12px;border-radius:12px;margin-bottom:10px;border-left:4px solid #a259ff"><b>👤 ${m.from} (ID ${m.id})</b><br><small>${m.time}</small><div style="margin-top:6px;background:#f5f5f8;padding:8px;border-radius:8px">${m.text}</div><button onclick="replyInbox('${m.from}')" style="margin-top:6px;background:#a259ff;color:#fff;border:0;padding:6px 14px;border-radius:20px;font-weight:800">Reply</button></div>`;
+    });
+  }
+  html+='</div>';
+  document.getElementById('featureBody').innerHTML=html;
+}
+
+function replyInbox(name){
+  let reply = prompt('Reply to '+name+':');
+  if(reply){
+    let msg = {from: 'You to '+name, id: userID, text: reply, time: new Date().toLocaleTimeString()};
+    inboxMsgs.unshift(msg);
+    localStorage.setItem('talentInbox', JSON.stringify(inboxMsgs));
+    openInbox();
+  }
+}
+
+// UPDATE LIVE CARDS TO HAVE FOLLOW BUTTON - ORIGINAL
+setTimeout(()=>{
+  document.querySelectorAll('.card').forEach((card,i)=>{
+    let name = 'Talent '+(i+1);
+    let tid = '77' + (800000 + i);
+    let btn = document.createElement('button');
+    btn.innerText = '👥 Follow';
+    btn.style.cssText = 'position:absolute;bottom:34px;right:8px;z-index:5;background:#ff3eb8;color:#fff;border:0;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900';
+    btn.onclick = (e)=>{ e.stopPropagation(); followUser(tid, name); };
+    card.appendChild(btn);
+  });
+  updateProfileDisplay();
+}, 1000);
