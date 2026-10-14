@@ -1,10 +1,10 @@
 const TMDB_API_KEY = "d0bf1edf9bce13874f519004464a9be2";
-const TMDB_BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMGJmMWVkZjliY2UxMzg3NGY1OTAwNDQ2YTRkOWJlMiIsIm5iZiI6MTc5MTg4OTI3Ni42Njc0NTk5TkLCJzdWIiOiI2YWNiMGY3YzM5NzJmNTFjZWQxMzVlZTEiLCJzY29wZXMiOlsieHBpX3JlYWQiXSwiZXZpIjoiMXgwIn0.fykqstcZQ0RiMB1BxYh9tEDE_H3IKzbUE0u4Cclr5Mk";
-const TMDB_URL = "https://api.themoviedb.org/3";// ZERO SE HERO - 100% STATIC FIX - NO BACKEND NEEDED
+const TMDB_BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMGJmMWVkZjliY2UxMzg3NGY1OTAwNDQ2YTRkOWJlMiIsIm5iZiI6MTc5MTg4OTI3Ni42Njc0NTk5LCJzdWIiOiI2YWNiMGY3YzM5NzJmNTFjZWQxMzVlZTEiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwiZXZpIjoiMXgwIn0.fykqstcZQ0RiMB1BxYh9tEDE_H3IKzbUE0u4Cclr5Mk";
+const TMDB_URL = "https://api.themoviedb.org/3";
 const API_URL = "";
 const API_BASE = "";
 
-console.log("API FIXED - STATIC MODE");
+console.log("API FIXED - STATIC MODE + TMDB ENABLED");
 
 // Init - Local Storage
 if (!localStorage.getItem('talentLevel')) localStorage.setItem('talentLevel', '1');
@@ -34,7 +34,6 @@ function followUserAPI(targetID, targetName) {
     console.log(e);
     alert('✅ Followed ' + targetName);
   }
-  // NO FETCH - STATIC ONLY
 }
 
 async function getBackpack() {
@@ -56,24 +55,11 @@ async function sendGift() {
   return { success: true };
 }
 
-// Sab fetch ko rok do jo black screen deta hai
+// Sab fetch ko rok do jo black screen deta hai - PAR TMDB KO MAT ROKO
 const originalFetch = window.fetch;
 window.fetch = function(url, options) {
-  if (typeof url === 'string' && (url.includes('/follow') || url.includes('/api') || url.includes('/backpack') || url.includes('/recharge'))) {
-    console.log("Blocked fetch:", url);
-    return Promise.resolve(new Response(JSON.stringify({ success: true, data: [] }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  const u = typeof url === 'string' ? url : (url && url.url ? url.url : '');
+  if (u.includes('themoviedb.org')) {
+    return originalFetch.apply(this, arguments);
   }
-  return originalFetch.apply(this, arguments);
-};// TMDB Movies Lene Ke Liye
-async function getPopularMovies() {
-  try {
-    const response = await fetch(`${TMDB_URL}/movie/popular?api_key=${TMDB_API_KEY}`);
-    const data = await response.json();
-    console.log("Movies:", data.results);
-    return data.results;
-  } catch (err) {
-    console.log("TMDB Error", err);
-    return [];
-  }
-}
-
+  if (u.includes('/follow') || u.includes('/api/') || u.includes('/backpack
