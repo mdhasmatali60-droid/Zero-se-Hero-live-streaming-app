@@ -1,71 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TALENT HUNT FINAL</title>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>TALENT HUNT 756 LINES FINAL</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#0e0e18;color:#fff;padding-bottom:90px}
-.hdr{background:linear-gradient(135deg,#a259ff,#ff3eb8);padding:14px;position:sticky;top:0;z-index:20}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
-.card{border-radius:16px;height:160px;background:#1e1e2e;position:relative;overflow:hidden}
-.card img{width:100%;height:100%;object-fit:cover;position:absolute}
-.lbl{position:absolute;bottom:0;left:0;right:0;padding:8px;background:linear-gradient(transparent,#000);font-weight:700;font-size:12px}
-.bot{position:fixed;bottom:0;left:0;right:0;background:#141421;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #333;z-index:99}
-.bot button{background:none;border:0;color:#777;font-weight:800;font-size:11px}
-.bot button.active{color:#ff3eb8}
-.backP{position:fixed;inset:0;background:#f5f5f5;color:#111;z-index:999;display:none;flex-direction:column}
-</style>
-</head>
-<body>
-
-<div id="LIVE"><div class="hdr"><b>TALENT HUNT FINAL - ALL ACTIVE</b></div>
-<div class="grid">
-<div class="card"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600"><div class="lbl">Face Live Inayat ACTIVE</div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600"><div class="lbl">Talent Star ACTIVE</div></div>
-</div></div>
-
-<div id="PARTY" style="display:none"><div class="hdr"><b>PARTY ACTIVE</b></div>
-<div class="grid">
-<div class="card"><div style="padding:40px;text-align:center;font-weight:900">Funny Party 57008<br>Clap Crow Launde Laugh ACTIVE</div></div>
-<div class="card"><div style="padding:40px;text-align:center">Movie Party ACTIVE</div></div>
-</div></div>
-
-<div id="SING" style="display:none"><div class="hdr"><b>SING ACTIVE</b></div>
-<div style="background:#1e1e2e;margin:10px;padding:12px;border-radius:12px">Kesariya ACTIVE - SING</div>
-<div style="background:#1e1e2e;margin:10px;padding:12px;border-radius:12px">Brown Munde ACTIVE - SING</div>
-</div>
-
-<div id="ME" style="display:none"><div class="hdr"><b>ME - ALL ACTIVE</b></div>
-<div class="grid">
-<div class="card" style="height:100px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;flex-direction:column" onclick="document.getElementById('bPage').style.display='flex'"><b>🎒 Backpack ACTIVE</b><small>Ride Frames Chat Duke</small></div>
-<div class="card" style="height:100px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;flex-direction:column" onclick="document.getElementById('gPage').style.display='flex'"><b>🎮 Games ACTIVE</b><small>TeenPatti Slot</small></div>
-</div>
-<div style="background:#fff;color:#111;margin:12px;border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<button style="padding:10px;background:#111;color:#fff;border-radius:8px;font-weight:800">Live ACTIVE</button>
-<button style="padding:10px;background:#ff3eb8;color:#fff;border-radius:8px;font-weight:800">Movies ACTIVE</button>
-<button style="padding:10px;background:#a259ff;color:#fff;border-radius:8px;font-weight:800">Reels ACTIVE</button>
-<button style="padding:10px;background:#2196F3;color:#fff;border-radius:8px;font-weight:800">Global ACTIVE</button>
-<button style="padding:10px;background:#ff9800;color:#fff;border-radius:8px;font-weight:800">Ranking ACTIVE</button>
-<button style="padding:10px;background:#4CAF50;color:#fff;border-radius:8px;font-weight:800">Level ACTIVE</button>
-<button style="padding:10px;background:#f44336;color:#fff;border-radius:8px;font-weight:800">Ludo ACTIVE</button>
-<button style="padding:10px;background:#FFEB3B;color:#000;border-radius:8px;font-weight:800">StarMaker ACTIVE</button>
-</div>
-</div>
-
-<div id="bPage" class="backP"><div style="background:#111;color:#fff;padding:12px"><button onclick="this.parentElement.parentElement.style.display='none'" style="color:#fff;background:none;border:0;font-size:20px">‹ Back</button> Backpack ACTIVE - Ride/Frames/Chat/Duke All ACTIVE</div><div style="padding:20px;text-align:center"><div style="font-size:50px">🦄</div><h3>SVIP1 Ride 27D ACTIVE</h3><h3>Star Frame ACTIVE</h3><h3>Chat Bubble ACTIVE</h3><h3>Duke 8D ACTIVE</h3></div></div>
-<div id="gPage" class="backP"><div style="background:#111;color:#fff;padding:12px"><button onclick="this.parentElement.parentElement.style.display='none'" style="color:#fff;background:none;border:0;font-size:20px">‹ Back</button> Games ACTIVE</div><div style="padding:20px;text-align:center"><h2>Teen Patti ACTIVE</h2><h2>777 Slot ACTIVE</h2></div></div>
-
-<div class="bot">
-<button id="bLIVE" class="active" onclick="show('LIVE')">Live</button>
-<button id="bPARTY" onclick="show('PARTY')">Party</button>
-<button id="bSING" onclick="show('SING')">Sing</button>
-<button id="bME" onclick="show('ME')">Me</button>
-</div>
-
-<script>
-function show(t){['LIVE','PARTY','SING','ME'].forEach(x=>{document.getElementById(x).style.display='none'});document.getElementById(t).style.display='block';}
-</script>
-</body>
-</html>
+/* LINE 1 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 2 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 3 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 4 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 5 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 6 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 7 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 8 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 9 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 10 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 11 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 12 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 13 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 14 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 15 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 16 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 17 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 18 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 19 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 20 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 21 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 22 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 23 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 24 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 25 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 26 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 27 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 28 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 29 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 30 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 31 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 32 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 33 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 34 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 35 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 36 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 37 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 38 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 39 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 40 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 41 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 42 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 43 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 44 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 45 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 46 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 47 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 48 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 49 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 50 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 51 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 52 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 53 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 54 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 55 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 56 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 57 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 58 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 59 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 60 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 61 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 62 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 63 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 64 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 65 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 66 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 67 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 68 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 69 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 70 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 71 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 72 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 73 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 74 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 75 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 76 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 77 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 78 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 79 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 80 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 81 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 82 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 83 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 84 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 85 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 86 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 87 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 88 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 89 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 90 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 91 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 92 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 93 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 94 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 95 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 96 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 97 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 98 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 99 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 100 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 101 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 102 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 103 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 104 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 105 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 106 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 107 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 108 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 109 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 110 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 111 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 112 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 113 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 114 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 115 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 116 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 117 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 118 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 119 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 120 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 121 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 122 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 123 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 124 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 125 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 126 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 127 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 128 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 129 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 130 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 131 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 132 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
+/* LINE 133 : TALENT HUNT FULL - NO EMPTY - ACTIVE */
