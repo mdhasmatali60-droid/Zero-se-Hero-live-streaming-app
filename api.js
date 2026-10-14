@@ -1,4 +1,4 @@
-const API_URL = "https://your-api-url.com"; // 👈 Yahan apna pura URL daal de
+const API_URL = "https://zero-se-hero-live-streaming-app.vercel.app";
 
 // GET BACKPACK - ORIGINAL
 function getBackpack(){
