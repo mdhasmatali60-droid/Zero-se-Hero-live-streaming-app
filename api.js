@@ -1,4 +1,6 @@
-// ZERO SE HERO - 100% STATIC FIX - NO BACKEND NEEDED
+const TMDB_API_KEY = "d0bf1edf9bce13874f519004464a9be2";
+const TMDB_BEARER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMGJmMWVkZjliY2UxMzg3NGY1OTAwNDQ2YTRkOWJlMiIsIm5iZiI6MTc5MTg4OTI3Ni42Njc0NTk5TkLCJzdWIiOiI2YWNiMGY3YzM5NzJmNTFjZWQxMzVlZTEiLCJzY29wZXMiOlsieHBpX3JlYWQiXSwiZXZpIjoiMXgwIn0.fykqstcZQ0RiMB1BxYh9tEDE_H3IKzbUE0u4Cclr5Mk";
+const TMDB_URL = "https://api.themoviedb.org/3";// ZERO SE HERO - 100% STATIC FIX - NO BACKEND NEEDED
 const API_URL = "";
 const API_BASE = "";
 
@@ -62,5 +64,16 @@ window.fetch = function(url, options) {
     return Promise.resolve(new Response(JSON.stringify({ success: true, data: [] }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
   }
   return originalFetch.apply(this, arguments);
-};
+};// TMDB Movies Lene Ke Liye
+async function getPopularMovies() {
+  try {
+    const response = await fetch(`${TMDB_URL}/movie/popular?api_key=${TMDB_API_KEY}`);
+    const data = await response.json();
+    console.log("Movies:", data.results);
+    return data.results;
+  } catch (err) {
+    console.log("TMDB Error", err);
+    return [];
+  }
+}
 
